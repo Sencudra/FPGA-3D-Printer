@@ -18,8 +18,8 @@ gcodeParser::~gcodeParser() {
     f.close();
 }
 
-pair<string, dict<char, float>> gcodeParser::parse_command() {
-    dict<char, float> d = {
+pair<string, Parameters> gcodeParser::parse_command() {
+    Parameters d = {
             {'X', 15.0},
             {'Y', 20.0}
     };

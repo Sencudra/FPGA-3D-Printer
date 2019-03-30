@@ -34,7 +34,17 @@ void PrinterController::printing() {
     // state == Printing
     gcodeParser parser(to_print);
     while (!parser.is_done() && state != Stop_Printing) {
-        parser.parse_command();
+        string command;
+        Parameters parameters;
+        tie(command, parameters) = parser.parse_command();
+
+        if (gcode_commands.find(command)) {
+            (this->*gcode_commands[command])(parameters);
+            // auto error = (this->*gcode_commands[command])(parameters);
+            // далее обработка ошибки
+        } else {
+            // передать на экран ошибку
+        }
 
         // передать на экран кол-во пройденных комманд
         // обратобать события экрана
@@ -44,6 +54,6 @@ void PrinterController::printing() {
         }
     }
 
-    // если a.is_done то все хорошо
+    // если parser.is_done то все хорошо
     // иначе печать завершилась аварийно
 }

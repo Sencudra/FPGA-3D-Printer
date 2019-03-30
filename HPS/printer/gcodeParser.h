@@ -19,8 +19,7 @@ public:
     explicit gcodeParser(const string& path);
     ~gcodeParser();
 
-    // pair<char, float> - это Parameters
-    pair<string, dict<char, float>> parse_command();
+    pair<string, Parameters> parse_command();
     bool is_done();
 };
 

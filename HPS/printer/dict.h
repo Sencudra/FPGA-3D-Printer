@@ -13,16 +13,21 @@ class dict {
 public:
     dict()= default;
 
-    dict(const initializer_list<value_type>& _values) {
+    dict(initializer_list<value_type> _values) {
+        values.resize(_values.size());
         copy(_values.begin(), _values.end(), values.begin());
     }
-    /*dict(const dict& _dict) {
-        copy(_dict.values.begin(), _dict.values.end(), this->values.begin());
-    }*/
 
-    /*dict(const vector<value_type>& values) {
-        copy(values.begin(), values.end(), this->values.begin());
-    }*/
+    dict(const dict& _dict) {
+        values.resize(_dict.values.size());
+        copy(_dict.values.begin(), _dict.values.end(), values.begin());
+    }
+
+    dict& operator=(const dict& _dict) {
+        values.resize(_dict.values.size());
+        copy(_dict.values.begin(), _dict.values.end(), values.begin());
+        return *this;
+    }
 
     void insert(K key, V value) {
         values.emplace_back(key, value);
@@ -43,5 +48,6 @@ public:
 
 };
 
+typedef dict<char, float> Parameters;
 
 #endif //INC_3D_PRINTER_DICT_H
