@@ -33,13 +33,13 @@ public:
         values.emplace_back(key, value);
     }
 
-    bool find(K key) {
+    bool find(K key) const {
         return values.end() != find_if(values.begin(), values.end(), [&key] (const value_type& parameter) -> bool {
             return parameter.first == key;
         });
     }
 
-    V& operator[](K key) {
+    const V& operator[](K key) const {
         auto parameter = find_if(values.begin(), values.end(), [&key] (const value_type& parameter) -> bool {
             return parameter.first == key;
         });
