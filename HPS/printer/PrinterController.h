@@ -12,6 +12,10 @@
 using namespace std;
 
 class PrinterController {
+
+    void calc_steps_speed(float dx, float dy, float dz, float de,
+            uint32_t& speed_a, uint32_t& speed_b, uint32_t& speed_z, uint32_t& speed_e,
+            int32_t& steps_a, int32_t& steps_b, int32_t& steps_z, int32_t& steps_e);
 public:
     PrinterController();
 
