@@ -3,3 +3,5 @@
 MechanicsController::MechanicsController() {
     // инициацизация памяти
 }
+
+// методы работы с памятью

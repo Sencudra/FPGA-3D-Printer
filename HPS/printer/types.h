@@ -11,7 +11,7 @@ struct Position {
     float z = 0.0f;
     float e = 0.0f;
 
-    float f = 0.0f;
+    float s = 0.0f;
 
     CoordinateSystemType xyz_type = Absolute;
     CoordinateSystemType extruder_type = Absolute;
