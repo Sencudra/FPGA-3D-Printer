@@ -7,11 +7,20 @@ gcodeParser::gcodeParser(const string& path) {
     if (!f.is_open()) {
         throw invalid_argument("Wrong gcode file path!");
     }
-    // прочитать его - почтитать кол-во commands
+
+    current_command = 0;
+    commands = 0;
+    // прочитать файл - почтитать кол-во commands
+    string line;
+    while (getline(f, line)) {
+        if (line[0] == 'G' || line[0] == 'M') {
+            ++commands;
+        }
+    }
 
     // вернуть позиционирование в начало файла
-    f.seekg(0, ios_base::beg);
-    current_command = 0;
+    f.clear();
+    f.seekg(0, f.beg);
 }
 
 gcodeParser::~gcodeParser() {
@@ -19,21 +28,33 @@ gcodeParser::~gcodeParser() {
 }
 
 pair<string, Parameters> gcodeParser::parse_command() {
-    Parameters d = {
-            {'X', 15.0},
-            {'Y', 20.0}
-    };
+    string command;
+    Parameters parameters;
 
     string line;
-    getline(f, line);
-    /*
-     * line.split() - не реализовано в c++(
-     *
-    */
+    while (line.length() == 0 || (line[0] != 'G' && line[0] != 'M')) {
+        getline(f, line);
+    }
+
+    int space_idx = -1;
+    int i = 0;
+    for (; i < line.size() && line[i] != ';'; ++i) {
+        if (line[i] == ' ') {
+            if (space_idx == -1) {
+                command = line.substr(0, i);
+            } else {
+                parameters.insert(line[space_idx + 1], stof(line.substr(space_idx + 2, i - space_idx - 2)));
+            }
+            space_idx = i;
+        }
+    }
+    // TODO: Think about M10;
+    if (i == line.size()) {
+        parameters.insert(line[space_idx + 1], stof(line.substr(space_idx + 2, i - space_idx - 2)));
+    }
     ++current_command;
 
-
-    return make_pair("G0", d);
+    return make_pair(command, parameters);
 }
 
 bool gcodeParser::is_done() {
