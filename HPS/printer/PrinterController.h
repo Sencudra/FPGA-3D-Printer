@@ -8,6 +8,7 @@
 #include "dict.h"
 #include "types.h"
 #include "gcodeParser.h"
+#include <math.h>
 
 using namespace std;
 
@@ -16,6 +17,11 @@ class PrinterController {
     void calc_steps_speed(float dx, float dy, float dz, float de,
             uint32_t& speed_a, uint32_t& speed_b, uint32_t& speed_z, uint32_t& speed_e,
             int32_t& steps_a, int32_t& steps_b, int32_t& steps_z, int32_t& steps_e);
+    void correction(int a_numofmicrosteps, int b_numofmicrosteps, int z_numofmicrosteps, int e_numofmicrosteps,
+                    float& dx, float& dy, float& dz, float& de);
+    int32_t voltage_adc(int32_t temp);
+    int32_t temperature_adc(int32_t volt);
+
 public:
     PrinterController();
 

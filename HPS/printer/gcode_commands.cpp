@@ -6,12 +6,60 @@ void PrinterController::calc_steps_speed(float dx, float dy, float dz, float de,
     //TODO: написать функцию
 }
 
-void PrinterController::gcode_G0(const Parameters& parameters) {
+void PrinterController::correction(int a_numofmicrosteps, int b_numofmicrosteps, int z_numofmicrosteps,
+                                   int e_numofmicrosteps, float &dx, float &dy, float &dz, float &de)
+{
+    da = a_numofmicrosteps * rotlength / stepsperrot / microsteps;
+    db = b_numofmicrosteps * rotlength / stepsperrot / microsteps;
+    dx = (da + db) / 2;
+    dy = (da - db) / 2;
+    de = e_numofmicrosteps * rotlength / stepsperrot / microsteps;
+    dl = z_numofmicrosteps * rotlength / stepsperrot / microsteps;
+    dz = dl * h / circlelength;
+}
 
+int32_t PrinterController::voltage_adc(int32_t temp)
+{
+    if (temp >= 0 and temp <= MAX_TEMP)
+    {
+        int i = -1;
+        while (temptable_11[++i][1] > temp);
+        if (temp != temptable_11[i][1])
+        {
+            float k = (float)(temp - temptable_11[i][1])/(temptable_11[i-1][1] - temptable_11[i][1]);
+            return (round((int)temptable_11[i][0] + (int)(temptable_11[i-1][0] - temptable_11[i][0])*k));
+        }
+        else
+            return temptable_11[i][0];
+    }
+    return 3255;
+}
+
+int32_t PrinterController::temperature_adc(int32_t volt)
+{
+    if (volt >= temptable_11[0][0] and volt <= 3255*oversampling_rate)
+    {
+        int i = -1;
+        while (temptable_11[++i][0] < volt);
+        if (volt != temptable_11[i][0])
+        {
+            float k = (float)((int)(volt - temptable_11[i][0]))/(int)((temptable_11[i-1][0] - temptable_11[i][0]));
+            return (round(temptable_11[i][1] + (temptable_11[i-1][1] - temptable_11[i][1])*k));
+        }
+        else return temptable_11[i][1];
+    }
+    return 0;
+}
+
+void PrinterController::gcode_G0(const Parameters& parameters) {
+    gcode_G1(parameters);
 }
 
 void PrinterController::gcode_G1(const Parameters& parameters) {
+
     float dx = 0, dy = 0, dz = 0, de = 0;
+    if (parameters.find('F'))
+        position.s = parameters['F'];
     if (position.xyz_type == Absolute) {
         if (parameters.find('X')) {
             dx = parameters['X'] - position.x;
@@ -48,17 +96,47 @@ void PrinterController::gcode_G1(const Parameters& parameters) {
     if (position.z + dz < 0)
         dz = 0 - position.z;
 
+    position.x += dx;
+    position.y += dy;
+    position.z += dz;
+    position.e += de;
+
+
     int32_t steps_a, steps_b, steps_z, steps_e;
     uint32_t speed_a, speed_b, speed_z, speed_e;
+    int32_t ra, rb, rz, re;
+
     calc_steps_speed(dx, dy, dz, de, speed_a, speed_b, speed_z, speed_e, steps_a, steps_b, steps_z, steps_e);
 
-    mechanics.move_extrude(steps_a, steps_b, steps_z, steps_e, speed_a, speed_b, speed_z, speed_e);
-    // sleep
-    // TODO: и так далее
+    mechanics.move_extrude(steps_a, steps_b, steps_z, steps_e, speed_a, speed_b, speed_z, speed_e,
+                            ra, rb, rz, re);
+
+    correction(  ra, rb, rz, re,
+                 dx, dy, dz, de);
+
+    position.x -= dx;
+    position.y -= dy;
+    position.z -= dz;
+    position.e -= de;
+    bool xmin, xmax, ymin, ymax, zmin, zmax;
+    mechanics.get_endstops(xmin, xmax, ymin, ymax, zmin, zmax);
+    if (xmin)
+        position.x = 0;
+    if (ymin)
+        position.y = 0;
+    if (zmin)
+        position.z = 0;
 }
 
 void PrinterController::gcode_G4(const Parameters &parameters) {
-
+    if (parameters.find('S')) {
+        sleep(parameters['S']);
+    } else
+    {
+        if (parameters.find('P')) {
+            usleep(parameters['P']);
+        }
+    }
 }
 
 void PrinterController::gcode_G28(const Parameters& parameters) {
