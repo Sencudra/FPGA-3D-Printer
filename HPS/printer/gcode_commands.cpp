@@ -140,7 +140,17 @@ void PrinterController::gcode_G4(const Parameters &parameters) {
 }
 
 void PrinterController::gcode_G28(const Parameters& parameters) {
+    if (parameters.find('F'))
+        position.s = parameters['F'];
 
+    auto_home(parameters.find('X'), parameters.find('Y'), parameters.find('Z'));
+
+    if (parameters.find('X'))
+        position.x = 0;
+    if (parameters.find('Y'))
+        position.y = 0;
+    if (parameters.find('Z'))
+        position.z = 0;
 }
 
 void PrinterController::gcode_G90(const Parameters& parameters) {
