@@ -9,6 +9,8 @@
 #include "types.h"
 #include "gcodeParser.h"
 #include <math.h>
+#include "configuration.h"
+#include "temp_11.h"
 
 using namespace std;
 
