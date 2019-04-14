@@ -173,11 +173,11 @@ void PrinterController::gcode_G92(const Parameters& parameters) {
 }
 
 void PrinterController::gcode_M17(const Parameters& parameters) {
-
+    enable_steppers();
 }
 
 void PrinterController::gcode_M18(const Parameters& parameters) {
-
+    disable_steppers();
 }
 
 void PrinterController::gcode_M82(const Parameters& parameters) {
