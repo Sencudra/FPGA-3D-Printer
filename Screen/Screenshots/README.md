@@ -4,7 +4,7 @@
 
 1. Loading screen
 
-![](Loading screen.png)
+![](Loading_screen.png)
 
 2. Home
 
@@ -16,7 +16,7 @@
 
 4. Print (Inside folder)
 
-![](Print (File choose) - Inside Folder.png)
+![](Print_Inside_Folder.png)
 
 5. Control
 
@@ -28,27 +28,27 @@
 
 7. Printing is done
 
-![](Printing is done.png)
+![](Printing_is_done.png)
 
 8. Print settings
 
-![](Print settings.png)
+![](Print_settings.png)
 
 9. Settings: General
 
-![](Settings General.png)
+![](Settings_General.png)
 
 10. Settings Preprint presets setup
 
-![](Settings Preprint presets setup – OFF – 1.png)
+![](Settings_Preprint_presets_setup.png)
 
 11. Settings: Moving – Speed
 
-![](Settings Moving – Speed.png)
+![](Settings_Moving_Speed.png)
 
 12. Settings: Moving – Steps
 
-![](Settings Moving – Steps.png)
+![](Settings_Moving_Steps.png)
 
 13. Warning
 
