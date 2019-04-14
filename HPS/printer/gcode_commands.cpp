@@ -189,17 +189,19 @@ void PrinterController::gcode_M83(const Parameters& parameters) {
 }
 
 void PrinterController::gcode_M104(const Parameters& parameters) {
-
+    set_hotend_temperature(parameters['S']);
 }
 
 void PrinterController::gcode_M109(const Parameters& parameters) {
-
+    //температура необязательная. Исправить
+    wait_hotend_temperature(parameters['S']);
 }
 
 void PrinterController::gcode_M140(const Parameters& parameters) {
-
+    void set_bed_temperature(parameters['S']);
 }
 
 void PrinterController::gcode_M190(const Parameters& parameters) {
-
+    //температура необязательная. Исправить
+    void wait_bed_temperature(parameters['S']);
 }
