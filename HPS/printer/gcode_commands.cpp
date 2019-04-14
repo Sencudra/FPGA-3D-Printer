@@ -162,7 +162,14 @@ void PrinterController::gcode_G91(const Parameters& parameters){
 }
 
 void PrinterController::gcode_G92(const Parameters& parameters) {
-
+    if (parameters.find('X'))
+        position.x = parameters['X'];
+    if (parameters.find('Y'))
+        position.y = parameters['Y'];
+    if (parameters.find('Z'))
+        position.z = parameters['Z'];
+    if (parameters.find('E'))
+        position.e = parameters['E'];
 }
 
 void PrinterController::gcode_M17(const Parameters& parameters) {
