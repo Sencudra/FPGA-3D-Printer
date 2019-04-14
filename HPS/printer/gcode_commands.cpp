@@ -3,7 +3,52 @@
 void PrinterController::calc_steps_speed(float dx, float dy, float dz, float de,
                       uint32_t& speed_a, uint32_t& speed_b, uint32_t& speed_z, uint32_t& speed_e,
                       int32_t& steps_a, int32_t& steps_b, int32_t& steps_z, int32_t& steps_e) {
-    //TODO: написать функцию
+    float diag; //гипотенуза, относительно которой высчитывается общее время для x и y
+    float da = dx + dy; //расстояние, которое должен обработать двигатель a системы core xy
+    float db = dx - dy; //расстояние, которое должен обработать двигатель b системы core xy
+    diag = sqrt(dx * dx + dy * dy);
+    float dl = dz / h * circlelength; //расстояние, которое должен обработать двигатель на оси z
+
+    //необходимое для движения количество микрошагов = число оборотов * количество микрошагов за оборот
+    steps_a = trunc(da / rotlength * stepsperrot * microsteps);
+    steps_b = trunc(db / rotlength * stepsperrot * microsteps);
+    steps_e = trunc(de / rotlength * stepsperrot * microsteps);
+    steps_z = trunc(dl / rotlength * stepsperrot * microsteps);
+
+
+    //подсчет макс расстояния в микрошагах для опреодоления общего времени
+    //позволяет настроить скорость и время для единовременного завершения работы двигателей
+    float max = abs(steps_z);
+    float speed = min(maxspeed, pos->get_pos_speed());
+    speed = floor(speed/60);
+    float t = abs(dl/speed); //t - общее время при макс скорости в секундах
+    if (abs(steps_a) > max)
+    {   max = abs(steps_a);
+        t = abs(da/speed);}
+    if (abs(steps_b) > max)
+    {   max = abs(steps_b);
+        t = abs(db/speed);}
+    if (abs(steps_e) >= max)
+    {   max = abs(steps_e);
+        t = abs(de/speed);}
+
+    //скорость в микрошагах/с
+    float a_speed = (steps_a)/t;
+    float b_speed = (steps_b)/t;
+    float e_speed = (steps_e)/t;
+    float z_speed = (steps_z)/t;
+
+    //проверка флага инверсии направления двигателей
+    if (X_STEPPER_INVERTING) (steps_a) = - (steps_a);
+    if (Y_STEPPER_INVERTING) (steps_b) = - (steps_b);
+    if (E1_STEPPER_INVERTING) (steps_e) = - (steps_e);
+    if (Z_STEPPER_INVERTING) (steps_z) = - (steps_z);
+
+    //коэффициент коррекции тактовой частоты по модулю, равный количеству необходимых для движения импульсов
+    speed_a = ceil(abs(frequency / a_speed));
+    speed_b = ceil(abs(frequency / b_speed));
+    speed_e = ceil(abs(frequency / e_speed));
+    speed_z = ceil(abs(frequency / z_speed));
 }
 
 void PrinterController::correction(int a_numofmicrosteps, int b_numofmicrosteps, int z_numofmicrosteps,
