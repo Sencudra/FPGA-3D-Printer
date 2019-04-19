@@ -15,6 +15,9 @@ struct Position {
 
     CoordinateSystemType xyz_type = Absolute;
     CoordinateSystemType extruder_type = Absolute;
+
+    int32_t temp_bed = 0;
+    int32_t temp_e0 = 0;
 };
 
 #endif //INC_3D_PRINTER_TYPES_H
