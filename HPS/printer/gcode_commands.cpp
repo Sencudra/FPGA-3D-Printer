@@ -19,7 +19,7 @@ void PrinterController::calc_steps_speed(float dx, float dy, float dz, float de,
     //подсчет макс расстояния в микрошагах для опреодоления общего времени
     //позволяет настроить скорость и время для единовременного завершения работы двигателей
     float max = abs(steps_z);
-    float speed = min(maxspeed, pos->get_pos_speed());
+    float speed = fmin(maxspeed, position.s);
     speed = floor(speed/60);
     float t = abs(dl/speed); //t - общее время при макс скорости в секундах
     if (abs(steps_a) > max)
@@ -38,12 +38,6 @@ void PrinterController::calc_steps_speed(float dx, float dy, float dz, float de,
     float e_speed = (steps_e)/t;
     float z_speed = (steps_z)/t;
 
-    //проверка флага инверсии направления двигателей
-    if (X_STEPPER_INVERTING) (steps_a) = - (steps_a);
-    if (Y_STEPPER_INVERTING) (steps_b) = - (steps_b);
-    if (E1_STEPPER_INVERTING) (steps_e) = - (steps_e);
-    if (Z_STEPPER_INVERTING) (steps_z) = - (steps_z);
-
     //коэффициент коррекции тактовой частоты по модулю, равный количеству необходимых для движения импульсов
     speed_a = ceil(abs(frequency / a_speed));
     speed_b = ceil(abs(frequency / b_speed));
@@ -54,46 +48,13 @@ void PrinterController::calc_steps_speed(float dx, float dy, float dz, float de,
 void PrinterController::correction(int a_numofmicrosteps, int b_numofmicrosteps, int z_numofmicrosteps,
                                    int e_numofmicrosteps, float &dx, float &dy, float &dz, float &de)
 {
-    da = a_numofmicrosteps * rotlength / stepsperrot / microsteps;
-    db = b_numofmicrosteps * rotlength / stepsperrot / microsteps;
+    float da = a_numofmicrosteps * rotlength / stepsperrot / microsteps;
+    float db = b_numofmicrosteps * rotlength / stepsperrot / microsteps;
     dx = (da + db) / 2;
     dy = (da - db) / 2;
     de = e_numofmicrosteps * rotlength / stepsperrot / microsteps;
-    dl = z_numofmicrosteps * rotlength / stepsperrot / microsteps;
+    float dl = z_numofmicrosteps * rotlength / stepsperrot / microsteps;
     dz = dl * h / circlelength;
-}
-
-int32_t PrinterController::voltage_adc(int32_t temp)
-{
-    if (temp >= 0 and temp <= MAX_TEMP)
-    {
-        int i = -1;
-        while (temptable_11[++i][1] > temp);
-        if (temp != temptable_11[i][1])
-        {
-            float k = (float)(temp - temptable_11[i][1])/(temptable_11[i-1][1] - temptable_11[i][1]);
-            return (round((int)temptable_11[i][0] + (int)(temptable_11[i-1][0] - temptable_11[i][0])*k));
-        }
-        else
-            return temptable_11[i][0];
-    }
-    return 3255;
-}
-
-int32_t PrinterController::temperature_adc(int32_t volt)
-{
-    if (volt >= temptable_11[0][0] and volt <= 3255*oversampling_rate)
-    {
-        int i = -1;
-        while (temptable_11[++i][0] < volt);
-        if (volt != temptable_11[i][0])
-        {
-            float k = (float)((int)(volt - temptable_11[i][0]))/(int)((temptable_11[i-1][0] - temptable_11[i][0]));
-            return (round(temptable_11[i][1] + (temptable_11[i-1][1] - temptable_11[i][1])*k));
-        }
-        else return temptable_11[i][1];
-    }
-    return 0;
 }
 
 void PrinterController::gcode_G0(const Parameters& parameters) {
@@ -164,7 +125,7 @@ void PrinterController::gcode_G1(const Parameters& parameters) {
     position.z -= dz;
     position.e -= de;
     bool xmin, xmax, ymin, ymax, zmin, zmax;
-    mechanics.get_endstops(xmin, xmax, ymin, ymax, zmin, zmax);
+    mechanics.endstop_states(xmin, xmax, ymin, ymax, zmin, zmax);
     if (xmin)
         position.x = 0;
     if (ymin)
@@ -188,7 +149,7 @@ void PrinterController::gcode_G28(const Parameters& parameters) {
     if (parameters.find('F'))
         position.s = parameters['F'];
 
-    auto_home(parameters.find('X'), parameters.find('Y'), parameters.find('Z'));
+    mechanics.auto_home(parameters.find('X'), parameters.find('Y'), parameters.find('Z'));
 
     if (parameters.find('X'))
         position.x = 0;
@@ -218,11 +179,11 @@ void PrinterController::gcode_G92(const Parameters& parameters) {
 }
 
 void PrinterController::gcode_M17(const Parameters& parameters) {
-    enable_steppers();
+    mechanics.enable_steppers();
 }
 
 void PrinterController::gcode_M18(const Parameters& parameters) {
-    disable_steppers();
+    mechanics.disable_steppers();
 }
 
 void PrinterController::gcode_M82(const Parameters& parameters) {
@@ -234,19 +195,29 @@ void PrinterController::gcode_M83(const Parameters& parameters) {
 }
 
 void PrinterController::gcode_M104(const Parameters& parameters) {
-    set_hotend_temperature(parameters['S']);
+    if (parameters.find('S')) {
+        position.temp_e0 = parameters['S'];
+        mechanics.set_hotend_temperature(parameters['S']);
+    }
 }
 
 void PrinterController::gcode_M109(const Parameters& parameters) {
-    //температура необязательная. Исправить
-    wait_hotend_temperature(parameters['S']);
+    if (parameters.find('S'))
+        mechanics.wait_hotend_temperature(parameters['S']);
+    else
+        mechanics.wait_hotend_temperature(position.temp_e0);
 }
 
 void PrinterController::gcode_M140(const Parameters& parameters) {
-    void set_bed_temperature(parameters['S']);
+    if (parameters.find('S'))
+        position.temp_bed = parameters['S'];
+        mechanics.set_bed_temperature(parameters['S']);
 }
 
 void PrinterController::gcode_M190(const Parameters& parameters) {
     //температура необязательная. Исправить
-    void wait_bed_temperature(parameters['S']);
+    if (parameters.find('S'))
+        mechanics.wait_bed_temperature(parameters['S']);
+    else
+        mechanics.wait_bed_temperature(position.temp_bed);
 }
