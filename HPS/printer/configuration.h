@@ -1,7 +1,3 @@
-//
-// Created by ISM on 14.04.2019.
-//
-
 #ifndef INC_3D_PRINTER_CONFIGURATION_H
 #define INC_3D_PRINTER_CONFIGURATION_H
 
