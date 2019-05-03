@@ -16,7 +16,8 @@ SOURCES 			:= $(shell find $(SRCDIR) -type f -name *.cpp)
 OBJECTS 			:= $(addprefix $(BUILDDIR)/,$(patsubst %.cpp,%.o,$(notdir $(SOURCES))))
 INCLUDE_SOURCES 	:= 	-I$(SRCDIR) \
 						-I$(SRCDIR)/screen/ \
-						-I$(SRCDIR)/screen/uart
+						-I$(SRCDIR)/screen/uart \
+						-I$(SRCDIR)/screen/pageObjects
 
 # Altera sources
 ARCH 				:= arm
@@ -35,7 +36,7 @@ LDFLAGS 			:= $(CFLAGS) -lstdc++
 vpath %.cpp $(sort $(dir $(SOURCES)))
 
 # Default make
-default: clean info linking
+default: clean info linking done
 
 linking: $(TARGET)
 $(TARGET): $(OBJECTS)
@@ -58,3 +59,6 @@ info:
 clean:
 	@echo ""; echo "<-- CLEANING -->";
 	$(RM) -r $(BUILDDIR) $(TARGET)
+
+done:
+	@echo "<-- DONE -->"
