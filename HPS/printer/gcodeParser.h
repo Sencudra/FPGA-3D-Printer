@@ -1,0 +1,26 @@
+#ifndef INC_3D_PRINTER_GCODEPARSER_H
+#define INC_3D_PRINTER_GCODEPARSER_H
+
+#include <string>
+#include <fstream>
+#include <exception>
+
+#include "dict.h"
+
+using namespace std;
+
+class gcodeParser {
+    string path;
+    fstream f;
+    // TODO: их может быть очень много, на экране лучше указывать проценты
+    unsigned int commands; // количество команд
+    unsigned int current_command;
+public:
+    explicit gcodeParser(const string& path);
+    ~gcodeParser();
+
+    pair<string, Parameters> parse_command();
+    bool is_done();
+};
+
+#endif //INC_3D_PRINTER_GCODEPARSER_H
