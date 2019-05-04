@@ -7,37 +7,32 @@
 
 using namespace std;
 
-ScreenController::ScreenController()
-: uart(UART::getPort())
- {
+ScreenController::ScreenController() : uart(UART::getPort()) {
+  
 	initializeUART();
 
 	cout << "OK - ScreenController::ScreenController()" << endl;
 }
 
 ScreenController::~ScreenController() {
-
 	delete currentPage;
 }
 
 void ScreenController::initializeUART() {
-
 	uart.listen2port();
-
 	currentPage = new HomePage(*this);
-
 	cout << "OK - ScreenController::initializeUART - Initialized" << endl;
 }
 
 void ScreenController::update() {
-
 	if (!uart.taskQueue.empty()) {
 		vector<int> command = uart.taskQueue.front();
 		uart.taskQueue.pop();
 		interpretCommand(command);
 	}
 
-	//cout << "OK - ScreenController::update - Tasks remain: "<< uart.taskQueue.size() << endl;
+//cout << "OK - ScreenController::update - Tasks remain: "<< uart.taskQueue.size() << endl;
+
 }
 
 void ScreenController::interpretCommand(vector<int>& command) {
@@ -90,7 +85,7 @@ void ScreenController::touchEvent(vector<int>& command) {
 	command.erase(command.begin());
 
 	currentPage->touch(command);
-
+  
 	switch(code) {
 		case LOADING:{ break;}
 		case HOME:{ break;}
