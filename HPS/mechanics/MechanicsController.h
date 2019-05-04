@@ -8,11 +8,12 @@
 #define bit_count_uint32 32
 
 #include <inttypes.h>
-#include "temp_11.h"
 #include <math.h>
-#include "../printer/configuration.h"
-#include "hps_0.h"
 #include <fcntl.h>
+
+#include "temp_11.h"
+#include "../printer/configuration.h" 
+#include "hps_0.h"
 #include "sys/mman.h"
 #include "hwlib.h"
 #include "socal/socal.h"
@@ -82,7 +83,6 @@ const uint32_t configuration_1_inversion_stepper_1 = 6;
 const uint32_t configuration_1_inversion_stepper_2 = 7;
 const uint32_t configuration_1_inversion_stepper_3 = 8;
 const uint32_t configuration_1_inversion_stepper_4 = 9;
-
 
 class PrinterController;
 
@@ -160,7 +160,6 @@ class MechanicsController {
     void set_temp_e1_bottom(int32_t temp);
     void set_temp_e1_upper(int32_t temp);
 
-
     //flags_in
     bool get_flags_in_stepper_enabled();
     bool get_flags_in_start_driving_state();
@@ -229,8 +228,6 @@ public:
     void endstop_states(bool& xmin, bool& xmax,
                         bool& ymin, bool& ymax,
                         bool& zmin, bool& zmax);
-
 };
-
 
 #endif //INC_3D_PRINTER_MECHANICSCONTROLLER_H

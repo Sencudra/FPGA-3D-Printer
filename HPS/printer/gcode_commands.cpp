@@ -15,7 +15,6 @@ void PrinterController::calc_steps_speed(float dx, float dy, float dz, float de,
     steps_e = trunc(de / rotlength * stepsperrot * microsteps);
     steps_z = trunc(dl / rotlength * stepsperrot * microsteps);
 
-
     //подсчет макс расстояния в микрошагах для опреодоления общего времени
     //позволяет настроить скорость и время для единовременного завершения работы двигателей
     float max = abs(steps_z);
@@ -62,7 +61,6 @@ void PrinterController::gcode_G0(const Parameters& parameters) {
 }
 
 void PrinterController::gcode_G1(const Parameters& parameters) {
-
     float dx = 0, dy = 0, dz = 0, de = 0;
     if (parameters.find('F'))
         position.s = parameters['F'];
@@ -106,7 +104,6 @@ void PrinterController::gcode_G1(const Parameters& parameters) {
     position.y += dy;
     position.z += dz;
     position.e += de;
-
 
     int32_t steps_a, steps_b, steps_z, steps_e;
     uint32_t speed_a, speed_b, speed_z, speed_e;

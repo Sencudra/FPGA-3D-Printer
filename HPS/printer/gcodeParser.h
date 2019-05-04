@@ -23,5 +23,4 @@ public:
     bool is_done();
 };
 
-
 #endif //INC_3D_PRINTER_GCODEPARSER_H

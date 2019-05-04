@@ -45,7 +45,6 @@ void MechanicsController::move(int32_t da, int32_t db, int32_t dz, uint32_t sa, 
     *addr_stepper_3_steps_in = dz;
     *addr_stepper_4_steps_in = 0;
 
-
     set_flags_in_start_driving_state(true);
     while (get_flags_out_stepper_state());
     set_flags_in_start_driving_state(false);
@@ -70,7 +69,6 @@ void MechanicsController::move(int32_t da, int32_t db, int32_t dz, uint32_t sa, 
 void MechanicsController::move_extrude(int32_t da, int32_t db, int32_t dz, int32_t de, uint32_t sa, uint32_t sb,
                                        uint32_t sz, uint32_t se, int32_t &ra, int32_t &rb, int32_t &rz, int32_t &re)
 {
-
     *addr_stepper_1_speed = sa;
     *addr_stepper_2_speed = sb;
     *addr_stepper_3_speed = sz;

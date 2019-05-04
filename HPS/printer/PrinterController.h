@@ -35,13 +35,12 @@ public:
     string to_slice;
     string to_print;
 
-
     void main_loop();
+
     // методы отвечающие за состояния
     void waiting();
     void slicing();
     void printing();
-
 
     // список необходимых gcode комманд
     // сейчас функции возвращаю void, но потом должны возращать код ошибки
@@ -60,7 +59,6 @@ public:
     void gcode_M109(const Parameters& parameters);
     void gcode_M140(const Parameters& parameters);
     void gcode_M190(const Parameters& parameters);
-
 
     dict<string, void(PrinterController::*)(const Parameters&)> gcode_commands = {
             {"G0", &PrinterController::gcode_G0},

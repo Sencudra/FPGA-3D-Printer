@@ -12,5 +12,4 @@ public:
     ScreenController();
 };
 
-
 #endif //INC_3D_PRINTER_SCREENCONTROLLER_H

@@ -10,6 +10,7 @@ template <typename K, typename V>
 class dict {
     typedef pair<K, V> value_type;
     vector<value_type> values;
+
 public:
     dict()= default;
 
@@ -45,7 +46,6 @@ public:
         });
         return parameter->second;
     }
-
 };
 
 typedef dict<char, float> Parameters;
