@@ -1,4 +1,4 @@
-#include "gcodeParser.h"
+#include "GCodeParser.h"
 
 gcodeParser::gcodeParser(const string& path) {
     this->path = path;
@@ -37,7 +37,7 @@ pair<string, Parameters> gcodeParser::parse_command() {
     }
 
     int space_idx = -1;
-    int i = 0;
+    uint i = 0;
     for (; i < line.size() && line[i] != ';'; ++i) {
         if (line[i] == ' ') {
             if (space_idx == -1) {

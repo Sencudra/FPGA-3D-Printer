@@ -11,15 +11,20 @@
 #include <math.h>
 #include <fcntl.h>
 
-#include "temp_11.h"
-#include "../printer/configuration.h" 
-#include "hps_0.h"
-#include "sys/mman.h"
 #include "hwlib.h"
-#include "socal/socal.h"
-#include "socal/hps.h"
-#include "socal/alt_gpio.h"
 #include "unistd.h"
+
+// sys
+#include "sys/mman.h"
+
+// socal
+#include "socal.h"
+#include "hps.h"
+#include "alt_gpio.h"
+
+#include "HPS_Header.h"
+#include "TemperatureADC.h"
+#include "Configuration.h" 
 
 //Flags
 //=======================================================

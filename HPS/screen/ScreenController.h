@@ -7,12 +7,16 @@
 using namespace std;
 
 class PrinterController;
+class BasePage;
 class UART;
+class Printer;
 
 // Класс взаимодействия с экраном
 class ScreenController {
 
-	/* Private types */
+public:
+
+	/* Types */
 
 	enum CommandType {
 
@@ -56,24 +60,22 @@ class ScreenController {
 		WARNING						= 11
 	};
 
-public:
-
-	/* Properties */
-
-
-	/* Contructors */
-	ScreenController();
-
-
-	/* Methods */
-    void update();
-
-private:
-
 	/* Properties */
 	PrinterController* printer;
 
+	/* Contructors */
+	ScreenController();
+	~ScreenController();
+
+	/* Methods */
+    void update();
+    void setCurrentScreen(Screen name);
+
+    // temp
     UART& uart;
+
+private:
+    BasePage* currentPage;
 
     // Screens
 
@@ -81,9 +83,7 @@ private:
 
 	/* Methods */
 	void initializeUART();
-
 	void interpretCommand(vector<int>& command);
-
 	void touchEvent(vector<int>& command);
 };
 
