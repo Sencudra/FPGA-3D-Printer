@@ -16,7 +16,7 @@ using namespace std;
 class UART {
 
 public:
-	/* Properties */\
+	/* Properties */
 	queue<vector<int>> taskQueue;
 
 	/* Methods */
@@ -35,8 +35,6 @@ private:
 	int port_descriptor;
 
 	thread listening_thread;
-
-
 
 	/* Constructors */
 	UART(const string& name );

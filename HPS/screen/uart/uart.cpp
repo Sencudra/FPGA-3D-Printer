@@ -24,7 +24,9 @@ void UART::write2port(const string& message) const {
 	int msg_len = message.length();
 	char write_buffer[msg_len];
 	memset(write_buffer, 0, msg_len);	
-	strcpy(write_buffer, message.c_str()); 
+	strcpy(write_buffer, message.c_str());
+
+	cout << "port_descriptor: " << port_descriptor << endl;
 
 	int bytes_written = write(port_descriptor, write_buffer, msg_len);
 	
@@ -140,7 +142,6 @@ void UART::setup_port() {
 	}
 
 	tcflush(port_descriptor, TCIFLUSH);
-
 
 	cout << "OK - UART::setup_port - Port setup ended..." << endl;
 }

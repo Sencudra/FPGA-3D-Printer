@@ -3,30 +3,41 @@
 
 #include "ScreenController.h"
 #include "uart.h"
+#include "pages.h"
 
 using namespace std;
 
-ScreenController::ScreenController():uart(UART::getPort()) {
+ScreenController::ScreenController()
+: uart(UART::getPort())
+ {
 	initializeUART();
 
 	cout << "OK - ScreenController::ScreenController()" << endl;
 }
 
+ScreenController::~ScreenController() {
+
+	delete currentPage;
+}
+
 void ScreenController::initializeUART() {
+
 	uart.listen2port();
-	uart.write2port("page HOME\xff\xff\xff");
+
+	currentPage = new HomePage(*this);
 
 	cout << "OK - ScreenController::initializeUART - Initialized" << endl;
 }
 
 void ScreenController::update() {
+
 	if (!uart.taskQueue.empty()) {
 		vector<int> command = uart.taskQueue.front();
 		uart.taskQueue.pop();
 		interpretCommand(command);
 	}
 
-	cout << "OK - ScreenController::update - Tasks remain: "<< uart.taskQueue.size() << endl;
+	//cout << "OK - ScreenController::update - Tasks remain: "<< uart.taskQueue.size() << endl;
 }
 
 void ScreenController::interpretCommand(vector<int>& command) {
@@ -69,6 +80,7 @@ void ScreenController::interpretCommand(vector<int>& command) {
 	for(auto symbol : command) {
 		cout << symbol << " ";
 	}
+
 	cout << endl;
 }
 
@@ -76,6 +88,8 @@ void ScreenController::touchEvent(vector<int>& command) {
 
 	Screen code = static_cast<Screen>(command.front());
 	command.erase(command.begin());
+
+	currentPage->touch(command);
 
 	switch(code) {
 		case LOADING:{ break;}
@@ -92,4 +106,45 @@ void ScreenController::touchEvent(vector<int>& command) {
 		case WARNING:{ break;}
 	}
 
+}
+
+void ScreenController::setCurrentScreen(Screen name) {
+
+	// Clean for new page
+	// TODO : maybe replace for std::shared_ptr
+	delete currentPage;
+
+	switch(name) {
+	case LOADING:{ break;}
+	case HOME:
+	{ 
+		currentPage = new HomePage(*this);
+		break;
+	}
+	case PRINT:
+	{ 
+		currentPage = new PrintPage(*this);
+		break;
+	}
+	case PRINT_SETUP:{ break;}
+	case PRINTING:{ break;}
+	case PRINTING_DONE:{ break;}
+	case CONTROL:
+	{ 
+		currentPage = new ControlPage(*this);	
+		break;
+	}
+	case SETTINGS:
+	{ 
+		currentPage = new SettingsPage(*this);
+		break;
+	}
+	case SETTINGS_P:{ break;}
+	case SETTINGS_M_SPE:{ break;}
+	case SETTINGS_M_STE:{ break;}
+	case WARNING:{ break;}
+	}
+	//currentPage.update();
+
+	cout << "OK - ScreenController::setCurrentScreen - Changing screen for " << name << endl;
 }
