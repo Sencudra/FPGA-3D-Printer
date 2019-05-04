@@ -6,18 +6,13 @@
 
 using namespace std;
 
-
-
-ScreenController::ScreenController():uart(UART::getPort())
- {
-
+ScreenController::ScreenController():uart(UART::getPort()) {
 	initializeUART();
 
 	cout << "OK - ScreenController::ScreenController()" << endl;
 }
 
 void ScreenController::initializeUART() {
-
 	uart.listen2port();
 	uart.write2port("page HOME\xff\xff\xff");
 
@@ -25,7 +20,6 @@ void ScreenController::initializeUART() {
 }
 
 void ScreenController::update() {
-
 	if (!uart.taskQueue.empty()) {
 		vector<int> command = uart.taskQueue.front();
 		uart.taskQueue.pop();
@@ -76,7 +70,6 @@ void ScreenController::interpretCommand(vector<int>& command) {
 		cout << symbol << " ";
 	}
 	cout << endl;
-
 }
 
 void ScreenController::touchEvent(vector<int>& command) {

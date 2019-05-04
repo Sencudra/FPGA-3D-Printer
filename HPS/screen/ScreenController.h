@@ -75,13 +75,9 @@ private:
 
     UART& uart;
 
-    
-
     // Screens
 
-
 	/* Contructors */
-
 
 	/* Methods */
 	void initializeUART();
@@ -89,7 +85,6 @@ private:
 	void interpretCommand(vector<int>& command);
 
 	void touchEvent(vector<int>& command);
-
 };
 
 #endif //INC_3D_PRINTER_SCREENCONTROLLER_H
