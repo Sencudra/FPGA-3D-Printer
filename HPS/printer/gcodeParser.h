@@ -11,7 +11,7 @@ using namespace std;
 
 class gcodeParser {
     string path;
-    ifstream f;
+    fstream f;
     // TODO: их может быть очень много, на экране лучше указывать проценты
     unsigned int commands; // количество команд
     unsigned int current_command;

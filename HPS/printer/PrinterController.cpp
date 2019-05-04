@@ -1,5 +1,7 @@
 #include "PrinterController.h"
 
+#include <tuple>
+
 PrinterController::PrinterController() {
     mechanics.printer = this;
     screen.printer = this;
