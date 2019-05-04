@@ -1,6 +1,6 @@
 #include <iostream>
 
-#include "printer/PrinterController.h"
+#include "PrinterController.h"
 
 using namespace std;
 

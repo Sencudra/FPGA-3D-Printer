@@ -168,3 +168,10 @@ void MechanicsController::wait_bed_temperature(int32_t t) {
     usleep(2);
     while (get_flags_out_heating_bed());
 }
+
+ void MechanicsController::endstop_states(bool& xmin, bool& xmax,
+                        bool& ymin, bool& ymax,
+                        bool& zmin, bool& zmax) 
+{
+    // TODO
+}

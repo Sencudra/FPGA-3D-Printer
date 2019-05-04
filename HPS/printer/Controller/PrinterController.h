@@ -1,16 +1,16 @@
 #ifndef INC_3D_PRINTER_PRINTERCONTROLLER_H
 #define INC_3D_PRINTER_PRINTERCONTROLLER_H
 
-#include <string>
-
-#include "../screen/ScreenController.h"
-#include "../mechanics/MechanicsController.h"
-#include "dict.h"
-#include "types.h"
-#include "gcodeParser.h"
-#include <math.h>
+#include <cstring>
+#include <cmath>
 #include <unistd.h>
-#include "configuration.h"
+
+#include "Dict.h"
+#include "Types.h"
+#include "Configuration.h"
+
+#include "MechanicsController.h"
+#include "ScreenController.h"
 
 using namespace std;
 
@@ -79,6 +79,5 @@ public:
     };
 
 };
-
 
 #endif //INC_3D_PRINTER_PRINTERCONTROLLER_H

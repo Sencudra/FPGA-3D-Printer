@@ -1,6 +1,7 @@
-#include "PrinterController.h"
-
 #include <tuple>
+
+#include "PrinterController.h"
+#include "GCodeParser.h"
 
 PrinterController::PrinterController() {
     mechanics.printer = this;

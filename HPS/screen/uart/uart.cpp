@@ -1,4 +1,3 @@
-
 #include <iostream>
 #include <cstdio>
 
@@ -9,9 +8,9 @@
 #include <fcntl.h>
 #include <unistd.h>
 #include <future>
+#include <vector>
 
 #include "uart.h"
-#include <vector>
 
 /*	Public methods	*/
 

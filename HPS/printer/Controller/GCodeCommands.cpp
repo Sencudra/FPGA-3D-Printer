@@ -1,12 +1,13 @@
 #include "PrinterController.h"
+#include "MechanicsController.h"
 
 void PrinterController::calc_steps_speed(float dx, float dy, float dz, float de,
                       uint32_t& speed_a, uint32_t& speed_b, uint32_t& speed_z, uint32_t& speed_e,
                       int32_t& steps_a, int32_t& steps_b, int32_t& steps_z, int32_t& steps_e) {
-    float diag; //гипотенуза, относительно которой высчитывается общее время для x и y
+    //float diag; //гипотенуза, относительно которой высчитывается общее время для x и y
     float da = dx + dy; //расстояние, которое должен обработать двигатель a системы core xy
     float db = dx - dy; //расстояние, которое должен обработать двигатель b системы core xy
-    diag = sqrt(dx * dx + dy * dy);
+    //diag = sqrt(dx * dx + dy * dy);
     float dl = dz / h * circlelength; //расстояние, которое должен обработать двигатель на оси z
 
     //необходимое для движения количество микрошагов = число оборотов * количество микрошагов за оборот

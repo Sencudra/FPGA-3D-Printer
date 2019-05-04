@@ -59,7 +59,7 @@ class ScreenController {
 public:
 
 	/* Properties */
-
+	PrinterController* printer;
 
 	/* Contructors */
 	ScreenController();
@@ -71,7 +71,7 @@ public:
 private:
 
 	/* Properties */
-	PrinterController* printer;
+	
 
     UART& uart;
 

@@ -1,4 +1,4 @@
-#include "../printer/PrinterController.h"
+#include "PrinterController.h"
 
 // Вспомогательные методы
 
@@ -76,99 +76,99 @@ MechanicsController::MechanicsController() {
 uint32_t MechanicsController::get_leds()
 {
     return zeroing(*addr_leds, bit_count_uint32 - LED_PIO_DATA_WIDTH, 1);
-};
+}
 
 uint32_t MechanicsController::get_btns()
 {
     return zeroing(*addr_btns, bit_count_uint32 - BUTTON_PIO_DATA_WIDTH, 1);
-};
+}
 
 uint32_t MechanicsController::get_fans()
 {
     return zeroing(*addr_fans, bit_count_uint32 - FANS_DATA_WIDTH, 1);
-};
+}
 
 uint32_t MechanicsController::get_endstops()
 {
     return zeroing(*addr_endstops, bit_count_uint32 - ENDSTOPS_DATA_WIDTH, 1);
-};
+}
 
 int32_t MechanicsController::get_temp_bed()
 {
     return zeroing(*addr_temp_bed, bit_count_uint32 - TEMP_BED_DATA_WIDTH, 1);
-};
+}
 
 int32_t MechanicsController::get_temp0()
 {
     return zeroing(*addr_temp0, bit_count_uint32 - TEMP0_DATA_WIDTH, 1);
-};
+}
 
 int32_t MechanicsController::get_temp1()
 {
     return zeroing(*addr_temp1, bit_count_uint32 - TEMP1_DATA_WIDTH, 1);
-};
+}
 
 int32_t MechanicsController::get_temp_bed_bottom()
 {
     return zeroing(*addr_temp_bed_bottom, bit_count_uint32 - TEMP_BED_BOTTOM_DATA_WIDTH, 1);
-};
+}
 
 int32_t MechanicsController::get_temp_bed_upper()
 {
     return zeroing(*addr_temp_bed_upper, bit_count_uint32 - TEMP_BED_UPPER_DATA_WIDTH, 1);
-};
+}
 
 int32_t MechanicsController::get_temp_e1_bottom()
 {
     return zeroing(*addr_temp_e1_bottom, bit_count_uint32 - TEMP_E1_BOTTOM_DATA_WIDTH, 1);
-};
+}
 
 int32_t MechanicsController::get_temp_e1_upper()
 {
     return zeroing(*addr_temp_e1_upper, bit_count_uint32 - TEMP_E1_UPPER_DATA_WIDTH, 1);
-};
+}
 
 void MechanicsController::set_temp_bed_bottom(int32_t temp)
 {
     uint32_t a = zeroing(temp, bit_count_uint32 - (TEMP_BED_BOTTOM_DATA_WIDTH - 1), 1);
     uint32_t b = zeroing(*addr_temp_bed_bottom, TEMP_BED_BOTTOM_DATA_WIDTH - 1, 0);
     *addr_temp_bed_bottom = (b | a);
-};
+}
 
 void MechanicsController::set_temp_bed_upper(int32_t temp)
 {
     uint32_t a = zeroing(temp, bit_count_uint32 - (TEMP_BED_UPPER_DATA_WIDTH - 1), 1);
     uint32_t b = zeroing(*addr_temp_bed_upper, TEMP_BED_UPPER_DATA_WIDTH - 1, 0);
     *addr_temp_bed_upper = (b | a);
-};
+}
 
 void MechanicsController::set_temp_e1_bottom(int32_t temp)
 {
     uint32_t a = zeroing(temp, bit_count_uint32 - (TEMP_E1_BOTTOM_DATA_WIDTH - 1), 1);
     uint32_t b = zeroing(*addr_temp_e1_bottom, TEMP_E1_BOTTOM_DATA_WIDTH - 1, 0);
     *addr_temp_e1_bottom = (b | a);
-};
+}
 
 void MechanicsController::set_temp_e1_upper(int32_t temp)
 {
     uint32_t a = zeroing(temp, bit_count_uint32 - (TEMP_E1_UPPER_DATA_WIDTH - 1), 1);
     uint32_t b = zeroing(*addr_temp_e1_upper, TEMP_E1_UPPER_DATA_WIDTH - 1, 0);
     *addr_temp_e1_upper = (b | a);
-};
+}
 
 void MechanicsController::set_leds(uint32_t ledss)
 {
     uint32_t a = zeroing(ledss, bit_count_uint32 - (LED_PIO_DATA_WIDTH - 1), 1);
     uint32_t b = zeroing(*addr_leds, LED_PIO_DATA_WIDTH - 1, 0);
     *addr_leds = (b | a);
-};
+}
 
 void MechanicsController::set_fans(uint32_t fanss)
 {
     uint32_t a = zeroing(fanss, bit_count_uint32 - FANS_DATA_WIDTH, 1);
     uint32_t b = zeroing(*addr_fans, FANS_DATA_WIDTH, 0);
     *addr_fans = (b | a);
-};
+}
 
 void MechanicsController::set_configuration_1()
 {
@@ -186,7 +186,7 @@ void MechanicsController::set_configuration_1()
     a += E1_STEPPER_INVERTING       << configuration_1_inversion_stepper_4;
 
     *addr_configuration_1 = a;
-};
+}
 
 bool MechanicsController::get_flags_in_stepper_enabled()
 {
@@ -194,7 +194,7 @@ bool MechanicsController::get_flags_in_stepper_enabled()
     flags_in = flags_in << (bit_count_uint32 - flags_in_stepper_enabled - 1);
     flags_in = flags_in >> (bit_count_uint32 - 1);
     return (flags_in == 1);
-};
+}
 
 bool MechanicsController::get_flags_in_start_driving_state()
 {
@@ -202,7 +202,7 @@ bool MechanicsController::get_flags_in_start_driving_state()
     flags_in = flags_in << (bit_count_uint32 - flags_in_start_driving_state - 1);
     flags_in = flags_in >> (bit_count_uint32 - 1);
     return (flags_in == 1);
-};
+}
 
 bool MechanicsController::get_flags_in_homex()
 {
@@ -210,7 +210,7 @@ bool MechanicsController::get_flags_in_homex()
     flags_in = flags_in << (bit_count_uint32 - flags_in_home_x - 1);
     flags_in = flags_in >> (bit_count_uint32 - 1);
     return (flags_in == 1);
-};
+}
 
 bool MechanicsController::get_flags_in_homey()
 {
@@ -218,7 +218,7 @@ bool MechanicsController::get_flags_in_homey()
     flags_in = flags_in << (bit_count_uint32 - flags_in_home_y - 1);
     flags_in = flags_in >> (bit_count_uint32 - 1);
     return (flags_in == 1);
-};
+}
 
 bool MechanicsController::get_flags_in_homez()
 {
@@ -226,7 +226,7 @@ bool MechanicsController::get_flags_in_homez()
     flags_in = flags_in << (bit_count_uint32 - flags_in_home_z - 1);
     flags_in = flags_in >> (bit_count_uint32 - 1);
     return (flags_in == 1);
-};
+}
 
 
 bool MechanicsController::get_flags_in_start_homing_state()
@@ -235,7 +235,7 @@ bool MechanicsController::get_flags_in_start_homing_state()
     flags_in = flags_in << (bit_count_uint32 - flags_in_start_homing_state - 1);
     flags_in = flags_in >> (bit_count_uint32 - 1);
     return (flags_in == 1);
-};
+}
 
 bool MechanicsController::get_flags_in_heat_bed()
 {
@@ -243,7 +243,7 @@ bool MechanicsController::get_flags_in_heat_bed()
     flags_in = flags_in << (bit_count_uint32 - flags_in_heat_bed - 1);
     flags_in = flags_in >> (bit_count_uint32 - 1);
     return (flags_in == 1);
-};
+}
 
 bool MechanicsController::get_flags_in_heat_bed_hold()
 {
@@ -251,7 +251,7 @@ bool MechanicsController::get_flags_in_heat_bed_hold()
     flags_in = flags_in << (bit_count_uint32 - flags_in_heat_bed_hold - 1);
     flags_in = flags_in >> (bit_count_uint32 - 1);
     return (flags_in == 1);
-};
+}
 
 bool MechanicsController::get_flags_in_heat_extruder()
 {
@@ -259,7 +259,7 @@ bool MechanicsController::get_flags_in_heat_extruder()
     flags_in = flags_in << (bit_count_uint32 - flags_in_heat_extruder - 1);
     flags_in = flags_in >> (bit_count_uint32 - 1);
     return (flags_in == 1);
-};
+}
 
 bool MechanicsController::get_flags_in_heat_extruder_hold()
 {
@@ -267,7 +267,7 @@ bool MechanicsController::get_flags_in_heat_extruder_hold()
     flags_in = flags_in << (bit_count_uint32 - flags_in_heat_extruder_hold - 1);
     flags_in = flags_in >> (bit_count_uint32 - 1);
     return (flags_in == 1);
-};
+}
 
 
 
@@ -279,7 +279,7 @@ void MechanicsController::set_flags_in_stepper_enabled(bool state)
         *addr_flags_in = (a | flags_in);
     else
         *addr_flags_in = (a & flags_in);
-};
+}
 
 void MechanicsController::set_flags_in_start_driving_state(bool state)
 {
@@ -289,7 +289,7 @@ void MechanicsController::set_flags_in_start_driving_state(bool state)
         *addr_flags_in = (a | flags_in);
     else
         *addr_flags_in = (a & flags_in);
-};
+}
 
 void MechanicsController::set_flags_in_homex(bool state)
 {
@@ -299,7 +299,7 @@ void MechanicsController::set_flags_in_homex(bool state)
         *addr_flags_in = (a | flags_in);
     else
         *addr_flags_in = (a & flags_in);
-};
+}
 
 void MechanicsController::set_flags_in_homey(bool state)
 {
@@ -309,7 +309,7 @@ void MechanicsController::set_flags_in_homey(bool state)
         *addr_flags_in = (a | flags_in);
     else
         *addr_flags_in = (a & flags_in);
-};
+}
 
 void MechanicsController::set_flags_in_homez(bool state)
 {
@@ -319,7 +319,7 @@ void MechanicsController::set_flags_in_homez(bool state)
         *addr_flags_in = (a | flags_in);
     else
         *addr_flags_in = (a & flags_in);
-};
+}
 
 
 void MechanicsController::set_flags_in_start_homing_state(bool state)
@@ -330,7 +330,7 @@ void MechanicsController::set_flags_in_start_homing_state(bool state)
         *addr_flags_in = (a | flags_in);
     else
         *addr_flags_in = (a & flags_in);
-};
+}
 
 void MechanicsController::set_flags_in_heat_bed(bool state)
 {
@@ -340,7 +340,7 @@ void MechanicsController::set_flags_in_heat_bed(bool state)
         *addr_flags_in = (a | flags_in);
     else
         *addr_flags_in = (a & flags_in);
-};
+}
 
 void MechanicsController::set_flags_in_heat_bed_hold(bool state)
 {
@@ -350,7 +350,7 @@ void MechanicsController::set_flags_in_heat_bed_hold(bool state)
         *addr_flags_in = (a | flags_in);
     else
         *addr_flags_in = (a & flags_in);
-};
+}
 
 void MechanicsController::set_flags_in_heat_extruder(bool state)
 {
@@ -360,7 +360,7 @@ void MechanicsController::set_flags_in_heat_extruder(bool state)
         *addr_flags_in = (a | flags_in);
     else
         *addr_flags_in = (a & flags_in);
-};
+}
 
 void MechanicsController::set_flags_in_heat_extruder_hold(bool state)
 {
@@ -370,7 +370,7 @@ void MechanicsController::set_flags_in_heat_extruder_hold(bool state)
         *addr_flags_in = (a | flags_in);
     else
         *addr_flags_in = (a & flags_in);
-};
+}
 
 bool MechanicsController::get_flags_out_stepper_state()
 {
@@ -378,7 +378,7 @@ bool MechanicsController::get_flags_out_stepper_state()
     flags_out = flags_out << (bit_count_uint32 - flags_out_stepper_state - 1);
     flags_out = flags_out >> (bit_count_uint32 - 1);
     return (flags_out == 1);
-};
+}
 
 bool MechanicsController::get_flags_out_heating_bed()
 {
@@ -386,7 +386,7 @@ bool MechanicsController::get_flags_out_heating_bed()
     flags_out = flags_out << (bit_count_uint32 - flags_out_heating_bed - 1);
     flags_out = flags_out >> (bit_count_uint32 - 1);
     return (flags_out == 1);
-};
+}
 
 bool MechanicsController::get_flags_out_heating_extruder()
 {
@@ -394,7 +394,7 @@ bool MechanicsController::get_flags_out_heating_extruder()
     flags_out = flags_out << (bit_count_uint32 - flags_out_heating_extruder - 1);
     flags_out = flags_out >> (bit_count_uint32 - 1);
     return (flags_out == 1);
-};
+}
 
 bool MechanicsController::get_fan(int number)
 {
@@ -405,7 +405,7 @@ bool MechanicsController::get_fan(int number)
         return (fans == 1);
     }
     return false;
-};
+}
 
 void MechanicsController::set_fan(int number, bool state)
 {
@@ -417,7 +417,7 @@ void MechanicsController::set_fan(int number, bool state)
         else
             *addr_fans = (a & fans);
     }
-};
+}
 
 bool MechanicsController::get_led(int number)
 {
@@ -428,7 +428,7 @@ bool MechanicsController::get_led(int number)
         return (leds == 1);
     }
     return false;
-};
+}
 
 void MechanicsController::set_led(int number, bool state)
 {
@@ -440,7 +440,7 @@ void MechanicsController::set_led(int number, bool state)
         else
             *addr_leds = (a & leds);
     }
-};
+}
 
 bool MechanicsController::get_btn(int number)
 {
@@ -448,7 +448,7 @@ bool MechanicsController::get_btn(int number)
     btns = btns << (bit_count_uint32 - number - 1);
     btns = btns >> (bit_count_uint32 - 1);
     return (btns == 1);
-};
+}
 
 
 bool MechanicsController::get_endstop_xmin()
@@ -457,7 +457,7 @@ bool MechanicsController::get_endstop_xmin()
     endstops = endstops << (bit_count_uint32 - 0 - 1);
     endstops = endstops >> (bit_count_uint32 - 1);
     return (endstops == 1);
-};
+}
 
 bool MechanicsController::get_endstop_xmax()
 {
@@ -465,7 +465,7 @@ bool MechanicsController::get_endstop_xmax()
     endstops = endstops << (bit_count_uint32 - 1 - 1);
     endstops = endstops >> (bit_count_uint32 - 1);
     return (endstops == 1);
-};
+}
 
 bool MechanicsController::get_endstop_ymin()
 {
@@ -473,7 +473,7 @@ bool MechanicsController::get_endstop_ymin()
     endstops = endstops << (bit_count_uint32 - 2 - 1);
     endstops = endstops >> (bit_count_uint32 - 1);
     return (endstops == 1);
-};
+}
 
 bool MechanicsController::get_endstop_ymax()
 {
@@ -481,7 +481,7 @@ bool MechanicsController::get_endstop_ymax()
     endstops = endstops << (bit_count_uint32 - 3 - 1);
     endstops = endstops >> (bit_count_uint32 - 1);
     return (endstops == 1);
-};
+}
 
 bool MechanicsController::get_endstop_zmin()
 {
@@ -489,7 +489,7 @@ bool MechanicsController::get_endstop_zmin()
     endstops = endstops << (bit_count_uint32 - 4 - 1);
     endstops = endstops >> (bit_count_uint32 - 1);
     return (endstops == 1);
-};
+}
 
 bool MechanicsController::get_endstop_zmax()
 {
@@ -497,4 +497,4 @@ bool MechanicsController::get_endstop_zmax()
     endstops = endstops << (bit_count_uint32 - 5 - 1);
     endstops = endstops >> (bit_count_uint32 - 1);
     return (endstops == 1);
-};
+}

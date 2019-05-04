@@ -1,9 +1,10 @@
-//
-// Created by ISM on 14.04.2019.
-//
-
 #ifndef INC_3D_PRINTER_TEMP_11_H
 #define INC_3D_PRINTER_TEMP_11_H
+
+//
+// Analog to digit converter.
+// From thermistor 100K : temp_11
+//
 
 #define oversampling_rate 1
 
