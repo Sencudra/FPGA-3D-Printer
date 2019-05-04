@@ -30,7 +30,7 @@ INCLUDE_ALTERA 		:=	-I$(HWLIBS_ROOT)/include/$(ALT_DEVICE_FAMILY) \
 # Include
 INC 				:= -D$(ALT_DEVICE_FAMILY) $(INCLUDE_ALTERA) $(INCLUDE_SOURCES)
 
-CFLAGS 				:= -g -Wall -std=c++11 -pthread
+CFLAGS 				:= -g -Wall -std=c++11 -pthread -lm
 LDFLAGS 			:= $(CFLAGS) -lstdc++
 
 vpath %.cpp $(sort $(dir $(SOURCES)))
