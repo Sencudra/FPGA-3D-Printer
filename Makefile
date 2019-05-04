@@ -35,6 +35,9 @@ LDFLAGS 			:= $(CFLAGS) -lstdc++
 
 vpath %.cpp $(sort $(dir $(SOURCES)))
 
+# Fast
+fast: info linking done
+
 # Default make
 default: clean info linking done
 
