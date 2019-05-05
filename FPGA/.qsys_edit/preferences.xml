@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<preferences>
+ <debug showDebugMenu="0" />
+ <systemtable filter="All Interfaces">
+  <columns>
+   <connections preferredWidth="143" />
+   <irq preferredWidth="63" />
+  </columns>
+ </systemtable>
+ <library
+   expandedCategories="Library/Basic Functions,Library,Project,Library/University Program,Library/Basic Functions/On Chip Memory,Library/University Program/Generic IO,Library/Processors and Peripherals,Library/Memory Interfaces and Controllers,Library/Memory Interfaces and Controllers/Flash,Library/Interface Protocols,Library/Processors and Peripherals/Peripherals,Library/Interface Protocols/Serial" />
+ <window width="1936" height="1096" x="-8" y="-8" />
+ <generation block_symbol_file="0" />
+ <hdlexample language="VERILOG" />
+</preferences>

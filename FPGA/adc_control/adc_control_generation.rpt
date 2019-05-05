@@ -1,0 +1,17 @@
+Info: Starting: Create HDL design files for synthesis
+Info: qsys-generate D:\GitHub\3d_printer\hps+fpga_marlin\quartus\adc_control.qsys --synthesis=VERILOG --output-directory=D:\GitHub\3d_printer\hps+fpga_marlin\quartus\adc_control\synthesis --family="Cyclone V" --part=5CSEBA6U23I7
+Progress: Loading quartus/adc_control.qsys
+Progress: Reading input file
+Progress: Adding adc_mega_0 [altera_up_avalon_adc_mega 18.0]
+Progress: Parameterizing module adc_mega_0
+Progress: Building connections
+Progress: Parameterizing connections
+Progress: Validating
+Progress: Done reading input file
+Info: adc_control: Generating adc_control "adc_control" for QUARTUS_SYNTH
+Info: adc_mega_0: Starting Generation of ADC Controller for DE-series Board
+Info: adc_mega_0: D:/programms/intelfpga_lite/18.1/ip/altera/university_program/input_output/altera_up_avalon_adc/hdl/altera_up_avalon_adv_adc.v C:/Users/ISM/AppData/Local/Temp/alt7929_4479100505502470955.dir/0002_sopcgen/adc_control_adc_mega_0.v
+Info: adc_mega_0: "adc_control" instantiated altera_up_avalon_adc_mega "adc_mega_0"
+Info: adc_control: Done "adc_control" with 2 modules, 3 files
+Info: qsys-generate succeeded.
+Info: Finished: Create HDL design files for synthesis

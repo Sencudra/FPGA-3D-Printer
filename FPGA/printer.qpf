@@ -1,0 +1,6 @@
+DATE = "21:30:03 December 25, 2018"
+QUARTUS_VERSION = "16.0.2"
+
+# Revisions
+
+PROJECT_REVISION = "printer"

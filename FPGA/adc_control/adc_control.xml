@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<deploy
+ date="2019.02.02.19:20:15"
+ outputDirectory="D:/GitHub/3d_printer/hps+fpga_marlin/quartus/adc_control/">
+ <perimeter>
+  <parameter
+     name="AUTO_GENERATION_ID"
+     type="Integer"
+     defaultValue="0"
+     onHdl="0"
+     affectsHdl="1" />
+  <parameter
+     name="AUTO_UNIQUE_ID"
+     type="String"
+     defaultValue=""
+     onHdl="0"
+     affectsHdl="1" />
+  <parameter
+     name="AUTO_DEVICE_FAMILY"
+     type="String"
+     defaultValue="Cyclone V"
+     onHdl="0"
+     affectsHdl="1" />
+  <parameter
+     name="AUTO_DEVICE"
+     type="String"
+     defaultValue="5CSEBA6U23I7"
+     onHdl="0"
+     affectsHdl="1" />
+  <parameter
+     name="AUTO_DEVICE_SPEEDGRADE"
+     type="String"
+     defaultValue="7"
+     onHdl="0"
+     affectsHdl="1" />
+  <parameter
+     name="AUTO_CLK_CLOCK_RATE"
+     type="Long"
+     defaultValue="-1"
+     onHdl="0"
+     affectsHdl="1" />
+  <parameter
+     name="AUTO_CLK_CLOCK_DOMAIN"
+     type="Integer"
+     defaultValue="-1"
+     onHdl="0"
+     affectsHdl="1" />
+  <parameter
+     name="AUTO_CLK_RESET_DOMAIN"
+     type="Integer"
+     defaultValue="-1"
+     onHdl="0"
+     affectsHdl="1" />
+  <interface name="clk" kind="clock" start="0">
+   <property name="clockRate" value="0" />
+   <property name="externallyDriven" value="false" />
+   <property name="ptfSchematicName" value="" />
+   <port name="CLOCK" direction="input" role="clk" width="1" />
+  </interface>
+  <interface name="external_interface" kind="conduit" start="0">
+   <property name="associatedClock" value="" />
+   <property name="associatedReset" value="" />
+   <port name="ADC_SCLK" direction="output" role="SCLK" width="1" />
+   <port name="ADC_CS_N" direction="output" role="CS_N" width="1" />
+   <port name="ADC_DOUT" direction="input" role="DOUT" width="1" />
+   <port name="ADC_DIN" direction="output" role="DIN" width="1" />
+  </interface>
+  <interface name="readings" kind="conduit" start="0">
+   <property name="associatedClock" value="" />
+   <property name="associatedReset" value="" />
+   <port name="CH0" direction="output" role="CH0" width="12" />
+   <port name="CH1" direction="output" role="CH1" width="12" />
+   <port name="CH2" direction="output" role="CH2" width="12" />
+   <port name="CH3" direction="output" role="CH3" width="12" />
+   <port name="CH4" direction="output" role="CH4" width="12" />
+   <port name="CH5" direction="output" role="CH5" width="12" />
+   <port name="CH6" direction="output" role="CH6" width="12" />
+   <port name="CH7" direction="output" role="CH7" width="12" />
+  </interface>
+  <interface name="reset" kind="reset" start="0">
+   <property name="associatedClock" value="clk" />
+   <property name="synchronousEdges" value="DEASSERT" />
+   <port name="RESET" direction="input" role="reset" width="1" />
+  </interface>
+ </perimeter>
+ <entity
+   path=""
+   parameterizationKey="adc_control:1.0:AUTO_CLK_CLOCK_DOMAIN=-1,AUTO_CLK_CLOCK_RATE=-1,AUTO_CLK_RESET_DOMAIN=-1,AUTO_DEVICE=5CSEBA6U23I7,AUTO_DEVICE_FAMILY=Cyclone V,AUTO_DEVICE_SPEEDGRADE=7,AUTO_GENERATION_ID=1549124366,AUTO_UNIQUE_ID=(altera_up_avalon_adc_mega:18.0:AUTO_CLK_CLOCK_RATE=0,AUTO_DEVICE_FAMILY=Cyclone V,board=DE10-Nano,board_rev=Autodetect,max10plldivby=1,max10pllmultby=1,numch=7,numch_=8,sclk_freq=12.5,sys_clk_freq=50,tsclk=4)"
+   instancePathKey="adc_control"
+   kind="adc_control"
+   version="1.0"
+   name="adc_control">
+  <parameter name="AUTO_CLK_CLOCK_RATE" value="-1" />
+  <parameter name="AUTO_GENERATION_ID" value="1549124366" />
+  <parameter name="AUTO_DEVICE" value="5CSEBA6U23I7" />
+  <parameter name="AUTO_DEVICE_FAMILY" value="Cyclone V" />
+  <parameter name="AUTO_CLK_RESET_DOMAIN" value="-1" />
+  <parameter name="AUTO_CLK_CLOCK_DOMAIN" value="-1" />
+  <parameter name="AUTO_UNIQUE_ID" value="" />
+  <parameter name="AUTO_DEVICE_SPEEDGRADE" value="7" />
+  <generatedFiles>
+   <file
+       path="D:/GitHub/3d_printer/hps+fpga_marlin/quartus/adc_control/synthesis/adc_control.v"
+       type="VERILOG" />
+  </generatedFiles>
+  <childGeneratedFiles>
+   <file
+       path="D:/GitHub/3d_printer/hps+fpga_marlin/quartus/adc_control/synthesis/submodules/altera_up_avalon_adv_adc.v"
+       type="VERILOG" />
+   <file
+       path="D:/GitHub/3d_printer/hps+fpga_marlin/quartus/adc_control/synthesis/submodules/adc_control_adc_mega_0.v"
+       type="VERILOG" />
+  </childGeneratedFiles>
+  <sourceFiles>
+   <file path="D:/GitHub/3d_printer/hps+fpga_marlin/quartus/adc_control.qsys" />
+  </sourceFiles>
+  <childSourceFiles>
+   <file
+       path="D:/programms/intelfpga_lite/18.1/ip/altera/university_program/input_output/altera_up_avalon_adc/altera_up_avalon_adc_mega_hw.tcl" />
+   <file
+       path="D:/programms/intelfpga_lite/18.1/ip/altera/university_program/input_output/altera_up_avalon_adc/hdl/altera_up_avalon_adv_adc.v" />
+  </childSourceFiles>
+  <messages>
+   <message level="Debug" culprit="adc_control">queue size: 0 starting:adc_control "adc_control"</message>
+   <message level="Progress" culprit="min"></message>
+   <message level="Progress" culprit="max"></message>
+   <message level="Progress" culprit="current"></message>
+   <message level="Debug">Transform: CustomInstructionTransform</message>
+   <message level="Debug">No custom instruction connections, skipping transform </message>
+   <message level="Debug" culprit="merlin_custom_instruction_transform"><![CDATA[After transform: <b>1</b> modules, <b>0</b> connections]]></message>
+   <message level="Debug">Transform: MMTransform</message>
+   <message level="Debug">Transform: InterruptMapperTransform</message>
+   <message level="Debug">Transform: InterruptSyncTransform</message>
+   <message level="Debug">Transform: InterruptFanoutTransform</message>
+   <message level="Debug">Transform: AvalonStreamingTransform</message>
+   <message level="Debug">Transform: ResetAdaptation</message>
+   <message level="Debug" culprit="adc_control"><![CDATA["<b>adc_control</b>" reuses <b>altera_up_avalon_adc_mega</b> "<b>submodules/adc_control_adc_mega_0</b>"]]></message>
+   <message level="Debug" culprit="adc_control">queue size: 0 starting:altera_up_avalon_adc_mega "submodules/adc_control_adc_mega_0"</message>
+   <message level="Info" culprit="adc_mega_0">Starting Generation of ADC Controller for DE-series Board</message>
+   <message level="Info" culprit="adc_mega_0">D:/programms/intelfpga_lite/18.1/ip/altera/university_program/input_output/altera_up_avalon_adc/hdl/altera_up_avalon_adv_adc.v C:/Users/ISM/AppData/Local/Temp/alt7929_4479100505502470955.dir/0002_sopcgen/adc_control_adc_mega_0.v</message>
+   <message level="Debug">set ALTERA_HW_TCL_KEEP_TEMP_FILES=1 to retain temp files</message>
+   <message level="Debug">Command: D:/programms/intelfpga_lite/18.1/quartus\bin64/quartus_map.exe not_a_project --generate_hdl_interface=C:/Users/ISM/AppData/Local/Temp/alt7929_4479100505502470955.dir/0002_sopcgen/adc_control_adc_mega_0.v --source=D:/programms/intelfpga_lite/18.1/ip/altera/university_program/input_output/altera_up_avalon_adc/hdl/altera_up_avalon_adv_adc.v --source=C:/Users/ISM/AppData/Local/Temp/alt7929_4479100505502470955.dir/0002_sopcgen/adc_control_adc_mega_0.v --set=HDL_INTERFACE_OUTPUT_PATH=C:/Users/ISM/AppData/Local/Temp/alt7929_4479100505502470955.dir/0003_sopcqmap/ --ini=disable_check_quartus_compatibility_qsys_only=on</message>
+   <message level="Debug">Command took 42.475s</message>
+   <message level="Debug">set ALTERA_HW_TCL_KEEP_TEMP_FILES=1 to retain temp files</message>
+   <message level="Debug">Command: D:/programms/intelfpga_lite/18.1/quartus\bin64/quartus_map.exe not_a_project --generate_hdl_interface=C:\Users\ISM\AppData\Local\Temp\alt7929_4479100505502470955.dir\0002_sopcgen\adc_control_adc_mega_0.v --source=D:/programms/intelfpga_lite/18.1/ip/altera/university_program/input_output/altera_up_avalon_adc/hdl/altera_up_avalon_adv_adc.v --source=C:/Users/ISM/AppData/Local/Temp/alt7929_4479100505502470955.dir/0002_sopcgen/adc_control_adc_mega_0.v --set=HDL_INTERFACE_OUTPUT_PATH=C:/Users/ISM/AppData/Local/Temp/alt7929_4479100505502470955.dir/0004_sopcqmap/ --set=HDL_INTERFACE_INSTANCE_NAME=inst --set=HDL_INTERFACE_INSTANCE_ENTITY=adc_control_adc_mega_0 "--set=HDL_INTERFACE_INSTANCE_PARAMETERS=board=S\"DE10-Nano\";board_rev=S\"Autodetect\";tsclk=D\"4\";numch=D\"7\";max10pllmultby=D\"1\";max10plldivby=D\"1\";" --ini=disable_check_quartus_compatibility_qsys_only=on</message>
+   <message level="Debug">Command took 3.307s</message>
+   <message level="Info" culprit="adc_mega_0"><![CDATA["<b>adc_control</b>" instantiated <b>altera_up_avalon_adc_mega</b> "<b>adc_mega_0</b>"]]></message>
+  </messages>
+ </entity>
+ <entity
+   path="submodules/"
+   parameterizationKey="altera_up_avalon_adc_mega:18.0:AUTO_CLK_CLOCK_RATE=0,AUTO_DEVICE_FAMILY=Cyclone V,board=DE10-Nano,board_rev=Autodetect,max10plldivby=1,max10pllmultby=1,numch=7,numch_=8,sclk_freq=12.5,sys_clk_freq=50,tsclk=4"
+   instancePathKey="adc_control:.:adc_mega_0"
+   kind="altera_up_avalon_adc_mega"
+   version="18.0"
+   name="adc_control_adc_mega_0">
+  <parameter name="AUTO_CLK_CLOCK_RATE" value="0" />
+  <parameter name="AUTO_DEVICE_FAMILY" value="Cyclone V" />
+  <parameter name="max10plldivby" value="1" />
+  <parameter name="sys_clk_freq" value="50" />
+  <parameter name="tsclk" value="4" />
+  <parameter name="sclk_freq" value="12.5" />
+  <parameter name="numch_" value="8" />
+  <parameter name="board_rev" value="Autodetect" />
+  <parameter name="max10pllmultby" value="1" />
+  <parameter name="board" value="DE10-Nano" />
+  <parameter name="numch" value="7" />
+  <generatedFiles>
+   <file
+       path="D:/GitHub/3d_printer/hps+fpga_marlin/quartus/adc_control/synthesis/submodules/altera_up_avalon_adv_adc.v"
+       type="VERILOG" />
+   <file
+       path="D:/GitHub/3d_printer/hps+fpga_marlin/quartus/adc_control/synthesis/submodules/adc_control_adc_mega_0.v"
+       type="VERILOG" />
+  </generatedFiles>
+  <childGeneratedFiles/>
+  <sourceFiles>
+   <file
+       path="D:/programms/intelfpga_lite/18.1/ip/altera/university_program/input_output/altera_up_avalon_adc/altera_up_avalon_adc_mega_hw.tcl" />
+   <file
+       path="D:/programms/intelfpga_lite/18.1/ip/altera/university_program/input_output/altera_up_avalon_adc/hdl/altera_up_avalon_adv_adc.v" />
+  </sourceFiles>
+  <childSourceFiles/>
+  <instantiator instantiator="adc_control" as="adc_mega_0" />
+  <messages>
+   <message level="Debug" culprit="adc_control">queue size: 0 starting:altera_up_avalon_adc_mega "submodules/adc_control_adc_mega_0"</message>
+   <message level="Info" culprit="adc_mega_0">Starting Generation of ADC Controller for DE-series Board</message>
+   <message level="Info" culprit="adc_mega_0">D:/programms/intelfpga_lite/18.1/ip/altera/university_program/input_output/altera_up_avalon_adc/hdl/altera_up_avalon_adv_adc.v C:/Users/ISM/AppData/Local/Temp/alt7929_4479100505502470955.dir/0002_sopcgen/adc_control_adc_mega_0.v</message>
+   <message level="Debug">set ALTERA_HW_TCL_KEEP_TEMP_FILES=1 to retain temp files</message>
+   <message level="Debug">Command: D:/programms/intelfpga_lite/18.1/quartus\bin64/quartus_map.exe not_a_project --generate_hdl_interface=C:/Users/ISM/AppData/Local/Temp/alt7929_4479100505502470955.dir/0002_sopcgen/adc_control_adc_mega_0.v --source=D:/programms/intelfpga_lite/18.1/ip/altera/university_program/input_output/altera_up_avalon_adc/hdl/altera_up_avalon_adv_adc.v --source=C:/Users/ISM/AppData/Local/Temp/alt7929_4479100505502470955.dir/0002_sopcgen/adc_control_adc_mega_0.v --set=HDL_INTERFACE_OUTPUT_PATH=C:/Users/ISM/AppData/Local/Temp/alt7929_4479100505502470955.dir/0003_sopcqmap/ --ini=disable_check_quartus_compatibility_qsys_only=on</message>
+   <message level="Debug">Command took 42.475s</message>
+   <message level="Debug">set ALTERA_HW_TCL_KEEP_TEMP_FILES=1 to retain temp files</message>
+   <message level="Debug">Command: D:/programms/intelfpga_lite/18.1/quartus\bin64/quartus_map.exe not_a_project --generate_hdl_interface=C:\Users\ISM\AppData\Local\Temp\alt7929_4479100505502470955.dir\0002_sopcgen\adc_control_adc_mega_0.v --source=D:/programms/intelfpga_lite/18.1/ip/altera/university_program/input_output/altera_up_avalon_adc/hdl/altera_up_avalon_adv_adc.v --source=C:/Users/ISM/AppData/Local/Temp/alt7929_4479100505502470955.dir/0002_sopcgen/adc_control_adc_mega_0.v --set=HDL_INTERFACE_OUTPUT_PATH=C:/Users/ISM/AppData/Local/Temp/alt7929_4479100505502470955.dir/0004_sopcqmap/ --set=HDL_INTERFACE_INSTANCE_NAME=inst --set=HDL_INTERFACE_INSTANCE_ENTITY=adc_control_adc_mega_0 "--set=HDL_INTERFACE_INSTANCE_PARAMETERS=board=S\"DE10-Nano\";board_rev=S\"Autodetect\";tsclk=D\"4\";numch=D\"7\";max10pllmultby=D\"1\";max10plldivby=D\"1\";" --ini=disable_check_quartus_compatibility_qsys_only=on</message>
+   <message level="Debug">Command took 3.307s</message>
+   <message level="Info" culprit="adc_mega_0"><![CDATA["<b>adc_control</b>" instantiated <b>altera_up_avalon_adc_mega</b> "<b>adc_mega_0</b>"]]></message>
+  </messages>
+ </entity>
+</deploy>
