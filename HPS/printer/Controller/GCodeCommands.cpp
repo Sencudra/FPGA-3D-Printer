@@ -1,27 +1,25 @@
 #include "PrinterController.h"
-#include "MechanicsController.h"
 
 void PrinterController::calc_steps_speed(float dx, float dy, float dz, float de,
                       uint32_t& speed_a, uint32_t& speed_b, uint32_t& speed_z, uint32_t& speed_e,
                       int32_t& steps_a, int32_t& steps_b, int32_t& steps_z, int32_t& steps_e) {
-    //float diag; //гипотенуза, относительно которой высчитывается общее время для x и y
+
     float da = dx + dy; //расстояние, которое должен обработать двигатель a системы core xy
     float db = dx - dy; //расстояние, которое должен обработать двигатель b системы core xy
-    //diag = sqrt(dx * dx + dy * dy);
+    float diag = sqrt(dx * dx + dy * dy); //гипотенуза, относительно которой высчитывается общее время для x и y
     float dl = dz / h * circlelength; //расстояние, которое должен обработать двигатель на оси z
 
     //необходимое для движения количество микрошагов = число оборотов * количество микрошагов за оборот
-    steps_a = trunc(da / rotlength * stepsperrot * microsteps);
-    steps_b = trunc(db / rotlength * stepsperrot * microsteps);
-    steps_e = trunc(de / rotlength * stepsperrot * microsteps);
-    steps_z = trunc(dl / rotlength * stepsperrot * microsteps);
+    steps_a = int32_t(da / rotlength * stepsperrot * microsteps);
+    steps_b = int32_t(db / rotlength * stepsperrot * microsteps);
+    steps_e = int32_t(de / rotlength * stepsperrot * microsteps);
+    steps_z = int32_t(dl / rotlength * stepsperrot * microsteps);
 
     //подсчет макс расстояния в микрошагах для опреодоления общего времени
     //позволяет настроить скорость и время для единовременного завершения работы двигателей
     float max = abs(steps_z);
     float speed = fmin(maxspeed, position.s);
-    speed = floor(speed/60);
-    float t = abs(dl/speed); //t - общее время при макс скорости в секундах
+    float t = abs(dl/(int(speed/60))); //t - общее время при макс скорости в секундах
     if (abs(steps_a) > max)
     {   max = abs(steps_a);
         t = abs(da/speed);}
@@ -39,10 +37,10 @@ void PrinterController::calc_steps_speed(float dx, float dy, float dz, float de,
     float z_speed = (steps_z)/t;
 
     //коэффициент коррекции тактовой частоты по модулю, равный количеству необходимых для движения импульсов
-    speed_a = ceil(abs(frequency / a_speed));
-    speed_b = ceil(abs(frequency / b_speed));
-    speed_e = ceil(abs(frequency / e_speed));
-    speed_z = ceil(abs(frequency / z_speed));
+    speed_a = uint32_t(abs(frequency / a_speed));
+    speed_b = uint32_t(abs(frequency / b_speed));
+    speed_e = uint32_t(abs(frequency / e_speed));
+    speed_z = uint32_t(abs(frequency / z_speed));
 }
 
 void PrinterController::correction(int a_numofmicrosteps, int b_numofmicrosteps, int z_numofmicrosteps,
@@ -112,7 +110,8 @@ void PrinterController::gcode_G1(const Parameters& parameters) {
 
     calc_steps_speed(dx, dy, dz, de, speed_a, speed_b, speed_z, speed_e, steps_a, steps_b, steps_z, steps_e);
 
-    mechanics.move_extrude(steps_a, steps_b, steps_z, steps_e, speed_a, speed_b, speed_z, speed_e,
+    mechanics.move_extrude( steps_a, steps_b, steps_z, steps_e,
+                            speed_a, speed_b, speed_z, speed_e,
                             ra, rb, rz, re);
 
     correction(  ra, rb, rz, re,
