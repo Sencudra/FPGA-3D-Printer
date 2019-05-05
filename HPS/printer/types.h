@@ -1,6 +1,7 @@
 #ifndef INC_3D_PRINTER_TYPES_H
 #define INC_3D_PRINTER_TYPES_H
 
+
 enum StateType {Waiting, Slicing, Printing, Pause_Printing, Stop_Printing, ShuttingDown};
 
 enum CoordinateSystemType {Relative, Absolute};
@@ -21,84 +22,106 @@ struct Position {
     int32_t temp_e0 = 0;
 };
 
-struct s_settings_preprint_setup_preset{
-    int32_t nozzle_temp = 0;
-    int32_t pad_temp = 0;
-    int32_t cooler = 0;
-};
+struct PrinterVariables {
 
-struct s_settings_preprint_setup{
-    s_settings_preprint_setup_preset ABS;
-    s_settings_preprint_setup_preset PLA;
-    s_settings_preprint_setup_preset PVA;
-    s_settings_preprint_setup_preset Preset1;
-    s_settings_preprint_setup_preset Preset2;
-    s_settings_preprint_setup_preset Preset3;
-};
+    /* Types */
 
-struct s_settings_general{
-    int32_t nozzle_temp_max = 0;
-    int32_t pad_temp_max = 0;
-    int32_t cooler = 0;
+    struct Status {
+        // Errors / Для индикаторов ошибок
+        bool isPadHot           = false; // Статус температуры стола
+        bool isRodEmpty         = false; // Пруток закончился 
+        bool isExtruderDirty    = false; // 
+        bool isRodBroken        = false; // Обрыв прутка
+    };
 
-    float PID_P = 0.0f;
-    float PID_I = 0.0f;
-    float PID_D = 0.0f;
-};
+    struct Common {
 
-struct s_settings_movement_speed{
-    float speed_x = 100.0f;
-    float speed_y = 100.0f;
-    float speed_z = 100.0f;
-    float speed_e = 100.0f;
-};
+        /* Types */
 
-struct s_settings_movement_steps{
-    float steps_x = 250;
-    float steps_y = 250;
-    float steps_z = 250;
-};
+        enum Preset { PLA, ABS, PVA, PRESET1, PRESET2, PRESET3 };
+        enum InfoLine { IDLE, PAUSED, BLOCKED_SCREEN, ERROR }; // СЮДА НУЖНО ДОБАВИТЬ ВСЕ СТАТУСЫ
+        enum Precision { P100, P10, P1, P01, P001};
 
-struct s_settings_movement{
-    s_settings_movement_speed speed;
-    s_settings_movement_steps steps;
-};
+        struct Element {
+            bool isEnabled;
+            int current;
+            int set;
+            int max;
+        };
 
-struct s_settings{
-    s_settings_general general;
-    s_settings_preprint_setup preprint_setup;
-    s_settings_movement movement;
-};
+        /* Properties */
 
-struct s_stl_settings{
-    float layer_width = 0.25f;
-    float base_thicknes = 0.1f;
-    float filling_density = 10; //в процентах
-};
+        Preset current; // Текущий выбранный пресет
+        Precision precision; // 100 10 1 0.1 0.01
 
-struct s_print{
-    s_stl_settings stl_settings;
-    string file_path;
-};
+        InfoLine info   = IDLE;     // Информационная стока
+        bool isThinking = false;    // Для вращающейся фигни
+        int processBar  = 0;        
 
-struct s_contol{
-    float x = 0.0f;
-    float y = 0.0f;
-    float z = 0.0f;
-    float e = 0.0f;
-};
+        Element nozzle  = {false, 0, 0, 300}; 
+        Element pad     = {false, 0, 0, 300};
+        Element cooller = {false, 0, 0, 100};
 
-struct s_home{
-    int32_t nozzle_temp = 0;
-    int32_t pad_temp = 0;
-    int32_t cooler = 0;
-};
+        float PID_P = 0.0f;
+        float PID_I = 0.0f;
+        float PID_D = 0.0f;
 
-struct s_screen{
-    s_print print;
-    s_settings settings;
-    s_contol control;
-    s_home home;
+        bool isTemperatureAuto = false; // ?
+    };
+
+    // Slicer settings
+    struct Slicer {
+        float layerWidth       = 0.25f;
+        float baseThicknes     = 0.1f;
+        float fillingDensity   = 10; //в процентах
+    };
+
+    // Presets settings
+    struct Presets {
+    
+        struct Set {
+            int nozzle  = 0;
+            int pad     = 0;
+            int coller  = 0;
+        };
+
+        Set PLA;
+        Set ABS;
+        Set PVA;
+        Set Preset1;
+        Set Preset2;
+        Set Preset3;
+    };
+
+    // Movement settings
+    struct Movement {
+
+        struct Speed {
+            float speedX = 100.0f;
+            float speedY = 100.0f;
+            float speedZ = 100.0f;
+            float speedE = 100.0f;
+        };
+
+        struct Steps{
+            float steps_x = 250.0f;
+            float steps_y = 250.0f;
+            float steps_z = 250.0f;
+        };
+
+        Speed speed;
+        Steps steps;
+    };
+
+    /* Properties */
+
+    Status status;
+    Common common;
+    Position position;
+
+    Presets presets;
+    Slicer slicer;
+    Movement movement;
 };
 
 #endif //INC_3D_PRINTER_TYPES_H
