@@ -39,6 +39,7 @@ FPGA/*/testbench/
 FPGA/*/*_sim/
 FPGA/incremental_db/
 FPGA/db/
+FPGA/simulation/
 FPGA/_output_files/
 FPGA/PLLJ_PLLSPE_INFO.txt
 
