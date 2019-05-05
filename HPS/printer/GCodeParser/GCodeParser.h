@@ -5,7 +5,7 @@
 #include <fstream>
 #include <exception>
 
-#include "Dict.h"
+#include "dict.h"
 
 using namespace std;
 

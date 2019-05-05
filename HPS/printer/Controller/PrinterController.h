@@ -5,9 +5,9 @@
 #include <cmath>
 #include <unistd.h>
 
-#include "Dict.h"
-#include "Types.h"
-#include "Configuration.h"
+#include "dict.h"
+#include "types.h"
+#include "configuration.h"
 
 #include "MechanicsController.h"
 #include "ScreenController.h"
