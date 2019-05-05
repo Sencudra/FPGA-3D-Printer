@@ -500,3 +500,15 @@ bool MechanicsController::get_endstop_zmax()
     endstops = endstops >> (bit_count_uint32 - 1);
     return (endstops == 1);
 }
+
+void MechanicsController::endstop_states(bool& xmin, bool& xmax,
+                                         bool& ymin, bool& ymax,
+                                         bool& zmin, bool& zmax)
+{
+    xmin = get_endstop_xmin();
+    xmax = get_endstop_xmax();
+    ymin = get_endstop_ymin();
+    ymax = get_endstop_ymax();
+    zmin = get_endstop_zmin();
+    zmax = get_endstop_zmax();
+}
