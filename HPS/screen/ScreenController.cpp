@@ -7,7 +7,8 @@
 
 using namespace std;
 
-ScreenController::ScreenController() : uart(UART::getPort()) {
+ScreenController::ScreenController()
+:uart(UART::getPort()) {
   
 	initializeUART();
 
@@ -30,7 +31,7 @@ void ScreenController::update() {
 		uart.taskQueue.pop();
 		interpretCommand(command);
 	}
-
+	currentPage->update();
 //cout << "OK - ScreenController::update - Tasks remain: "<< uart.taskQueue.size() << endl;
 
 }

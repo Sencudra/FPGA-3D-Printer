@@ -3,14 +3,12 @@
 #include "pages.h"
 #include "ScreenController.h"
 #include "uart.h"
+#include "types.h"
 
 SettingsPage::SettingsPage(ScreenController& controller) :
 BasePage(controller) {
 
-	// take data from structures
-	cout << "OK - Error ?" << endl;
-	controller.uart.write2port("page SETTINGS");
-	controller.uart.write2port("\xff\xff\xff");
+	controller.uart.openScreen(UART::Screen::SETTINGS);
 
 	cout << "OK - SettingsPage::SettingsPage" << endl;
 }

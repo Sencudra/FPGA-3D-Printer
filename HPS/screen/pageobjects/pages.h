@@ -2,6 +2,7 @@
 #define INC_3D_PRINTER_PAGEOBJECT_H
 
 #include <vector>
+#include <cstring>
 
 
 class ScreenController;
@@ -87,6 +88,24 @@ class HomePage: public BasePage {
 		b_hotspot_3 	= 31
 	};
 
+	enum Indicator {
+		i_ind_1,
+		i_ind_2,
+		i_ind_3,
+		i_ind_4,
+		bi_nozzle_ind,
+		bi_nozzle_set,
+		bi_nozzle_curr,
+		bi_pad_ind,
+		bi_pad_set,
+		bi_pad_curr,
+		bi_fan_ind,
+		bi_fan_set,
+		bi_fan_curr,
+		i_gif_loading,
+		i_info_text,
+	};
+
 public:
 	/* Properties */
 
@@ -105,6 +124,9 @@ private:
 	/* Constructors */
 
 	/* Methods*/
+	void updateStatusIndicators();
+	void updateDisplayIndicators();
+	std::string indicator2string(const Indicator& code) const;
 
 
 };

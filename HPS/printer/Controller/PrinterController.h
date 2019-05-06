@@ -30,6 +30,7 @@ public:
 
     StateType state;
     Position position;
+    PrinterVariables settings;
 
     // пути к файлам для слайсинга/печати
     string to_slice;
