@@ -12,7 +12,7 @@ module analog_filter #(parameter samples = 5)(
 	always @(posedge clk)
 	begin
 		history[num] = signal_in;
-		if (num < samples)
+		if (num < samples - 1)
 			num = num + 1;
 		else
 			num = 0;

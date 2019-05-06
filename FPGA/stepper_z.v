@@ -45,7 +45,7 @@
 		end
 		else
 		begin		
-			if (n != 0 & ((~zmin & ~zmax) | (zmin & (direction == 0)) | (zmax & (direction == 1))))
+			if (n != 0 & ((~zmin & ~zmax) | (zmin & (direction == 1)) | (zmax & (direction == 0))))
 			begin
 				if (m != 0)
 					m = m - 1;
