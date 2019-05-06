@@ -33,10 +33,11 @@ INCLUDE_SOURCES 	:= 	-I$(SRCDIR) \
 						-I$(SRCDIR)/Printer/Controller \
 						-I$(SRCDIR)/Printer/GCodeParser \
 						-I$(SRCDIR)/Printer/STL2GCode/ \
-						-I$(SRCDIR)/screen/ \
-						-I$(SRCDIR)/screen/uart \
-						-I$(SRCDIR)/screen/pageObjects \
-						-I$(SRCDIR)/printer
+						-I$(SRCDIR)/Screen/ \
+						-I$(SRCDIR)/Screen/UART \
+						-I$(SRCDIR)/Screen/PageObjects \
+						-I$(SRCDIR)/Screen/Controller \
+						-I$(SRCDIR)/Printer
 
 # Altera sources
 ARCH 				:= arm
