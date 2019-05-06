@@ -9,7 +9,7 @@ BasePage(controller) {
 
 	// take data from structures
 
-	controller.uart.write2port("page PRINT\xff\xff\xff");
+	controller.uart.openScreen(UART::Screen::PRINT);
 
 	cout << "OK - PrintPage::PrintPage" << endl;
 }
