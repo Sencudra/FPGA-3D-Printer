@@ -6,29 +6,28 @@ void PrinterController::calc_steps_speed(float dx, float dy, float dz, float de,
 
     float da = dx + dy; //расстояние, которое должен обработать двигатель a системы core xy
     float db = dx - dy; //расстояние, которое должен обработать двигатель b системы core xy
-    float diag = sqrt(dx * dx + dy * dy); //гипотенуза, относительно которой высчитывается общее время для x и y
-    float dl = dz / h * circlelength; //расстояние, которое должен обработать двигатель на оси z
 
     //необходимое для движения количество микрошагов = число оборотов * количество микрошагов за оборот
-    steps_a = int32_t(da / rotlength * stepsperrot * microsteps);
-    steps_b = int32_t(db / rotlength * stepsperrot * microsteps);
-    steps_e = int32_t(de / rotlength * stepsperrot * microsteps);
-    steps_z = int32_t(dl / rotlength * stepsperrot * microsteps);
+    steps_a = int32_t(da * DEFAULT_AXIS_STEPS_PER_UNIT[0]);
+    steps_b = int32_t(db * DEFAULT_AXIS_STEPS_PER_UNIT[1]);
+    steps_e = int32_t(de * DEFAULT_AXIS_STEPS_PER_UNIT[3]);
+    steps_z = int32_t(dz * DEFAULT_AXIS_STEPS_PER_UNIT[2]);
 
     //подсчет макс расстояния в микрошагах для опреодоления общего времени
     //позволяет настроить скорость и время для единовременного завершения работы двигателей
     float max = abs(steps_z);
     float speed = fmin(maxspeed, position.s);
-    float t = abs(dl/(int(speed/60))); //t - общее время при макс скорости в секундах
+    int32_t n_speed = int(speed/60);
+    float t = abs(dz/n_speed); //t - общее время при макс скорости в секундах
     if (abs(steps_a) > max)
     {   max = abs(steps_a);
-        t = abs(da/speed);}
+        t = abs(da/n_speed);}
     if (abs(steps_b) > max)
     {   max = abs(steps_b);
-        t = abs(db/speed);}
+        t = abs(db/n_speed);}
     if (abs(steps_e) >= max)
     {   max = abs(steps_e);
-        t = abs(de/speed);}
+        t = abs(de/n_speed);}
 
     //скорость в микрошагах/с
     float a_speed = (steps_a)/t;

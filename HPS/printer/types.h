@@ -1,6 +1,8 @@
 #ifndef INC_3D_PRINTER_TYPES_H
 #define INC_3D_PRINTER_TYPES_H
 
+#include "configuration.h"
+
 
 enum StateType {Waiting, Slicing, Printing, Pause_Printing, Stop_Printing, ShuttingDown};
 
@@ -12,8 +14,7 @@ struct Position {
     float z = 0.0f;
     float e = 0.0f;
 
-    float s = 0.0f;
-    //добавить отдельно для оси Z?
+    float s = default_speed;
 
     CoordinateSystemType xyz_type = Absolute;
     CoordinateSystemType extruder_type = Absolute;

@@ -71,6 +71,8 @@ MechanicsController::MechanicsController() {
     addr_stepper_3_steps_in     = (int32_t *) (virtual_base + ((unsigned long)(ALT_LWFPGASLVS_OFST + STEPPER_3_STEPS_OUT_BASE)   & (unsigned long)(HW_REGS_MASK)));
     addr_stepper_4_steps_in     = (int32_t *) (virtual_base + ((unsigned long)(ALT_LWFPGASLVS_OFST + STEPPER_4_STEPS_OUT_BASE)   & (unsigned long)(HW_REGS_MASK)));
 
+    *addr_flags_in = uint32_t(1);
+
     set_configuration_1();
 }
 

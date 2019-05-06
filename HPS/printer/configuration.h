@@ -24,6 +24,7 @@ static const int stepsperrot =  200; // количество шагов на о�
 static const int microsteps = 16; // количество микрошагов на шаг
 static const float maxspeed = 8000; // максимальная скорость 8000 mm/min
 static const int frequency = 1000000; //тактовая частота двигателя
+static const float default_speed = 5000; //скорость по умолчанию
 
 static const int circlelength = 8; //длина одного оборота винта оси Z
 static const float h = 2; //расстояние между соседними витками винта оси Z
@@ -33,13 +34,13 @@ static const float h = 2; //расстояние между соседними �
 * Override with M92
 * X, Y, Z, E0 [, E1[, E2[, E3[, E4]]]]
 */
-static const float DEFAULT_AXIS_STEPS_PER_UNIT[4] = {(200*16)/(2.0*20), (200*16)/(2.0*20), 200*8/2.0, 15};
+static const float DEFAULT_AXIS_STEPS_PER_UNIT[4] = {(200*16)/(2.0*20), (200*16)/(2.0*20), 200*8/2.0, 92.0}; //микрошагов/мм
 
 // X and Y axis travel speed (mm/m) between probes
 static const float XY_PROBE_SPEED = 8000;
 
-static const float TEMP_DELTA = 2;
-static const float MAX_TEMP = 300;
+static const int32_t TEMP_DELTA = 2;
+static const int32_t MAX_TEMP = 300;
 
 // Homing speeds (mm/m)
 static const float HOMING_FEEDRATE_XY = (50*60);
