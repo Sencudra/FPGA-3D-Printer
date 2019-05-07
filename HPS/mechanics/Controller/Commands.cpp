@@ -109,8 +109,8 @@ void MechanicsController::auto_home(bool x, bool y, bool z) {
 
     //надо подправить, т.к. нет скорости
     *addr_stepper_1_speed = uint32_t(abs(frequency / (((fmin(maxspeed, HOMING_FEEDRATE_XY))*DEFAULT_AXIS_STEPS_PER_UNIT[0])/60)));
-    *addr_stepper_2_speed = uint32_t(abs(frequency / (((fmin(maxspeed, HOMING_FEEDRATE_XY))*DEFAULT_AXIS_STEPS_PER_UNIT[1])/60)));
-    *addr_stepper_3_speed = uint32_t(abs(frequency / (((fmin(maxspeed, HOMING_FEEDRATE_Z))*DEFAULT_AXIS_STEPS_PER_UNIT[2])/60)));
+    *addr_stepper_2_speed = uint32_t(abs(frequency / (((fmin(maxspeed, HOMING_FEEDRATE_XY))*DEFAULT_AXIS_STEPS_PER_UNIT[0])/60)));
+    *addr_stepper_3_speed = uint32_t(abs(frequency / (((fmin(maxspeed, HOMING_FEEDRATE_Z))*DEFAULT_AXIS_STEPS_PER_UNIT[0])/60)));
 
     set_flags_in_start_homing_state(true);
 

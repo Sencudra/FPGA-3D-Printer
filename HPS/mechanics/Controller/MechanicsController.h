@@ -24,7 +24,9 @@
 
 #include "HPS_Header.h"
 #include "TemperatureADC.h"
-#include "Configuration.h" 
+#include "Configuration.h"
+
+using namespace std;
 
 //Flags
 //=======================================================
