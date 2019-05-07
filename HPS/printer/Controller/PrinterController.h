@@ -11,6 +11,7 @@
 
 #include "MechanicsController.h"
 #include "ScreenController.h"
+#include "stl2gcode_parameters.h"
 
 using namespace std;
 
@@ -31,6 +32,7 @@ public:
     StateType state;
     Position position;
     PrinterVariables settings;
+    stl2gcode_parameters stl2GcodeParameters;
 
     // пути к файлам для слайсинга/печати
     string to_slice;

@@ -155,7 +155,7 @@ void HomePage::updateDisplayIndicators() {
 
 	const auto nozzle 		= controller.printer->settings.common.nozzle;
 	const auto pad 			= controller.printer->settings.common.pad;
-	const auto cooler 		= controller.printer->settings.common.cooler;
+	const auto cooler 		= controller.printer->settings.common.cooller;
 
 	int nozzlePicNotActive 	= minNotActive + (nozzle.current / nozzle.max) * rangeNotActive;
 	int nozzlePicActive 	= minActive + (nozzle.current / nozzle.max) * rangeActive;

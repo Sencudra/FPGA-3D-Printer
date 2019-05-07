@@ -2,6 +2,7 @@
 
 #include "PrinterController.h"
 #include "GCodeParser.h"
+#include "stl2gcode.h"
 
 PrinterController::PrinterController() {
     mechanics.printer = this;
@@ -31,6 +32,12 @@ void PrinterController::waiting() {
 
 void PrinterController::slicing() {
     // state == Slicing
+    // to_slice - путь к stl файлу
+    stl2gcode stl2Gcode(to_slice, stl2GcodeParameters);
+    // TODO: указать путь для gcode файла
+    to_print = "";
+    stl2Gcode.convert(to_print);
+    state = Printing;
 }
 
 void PrinterController::printing() {
