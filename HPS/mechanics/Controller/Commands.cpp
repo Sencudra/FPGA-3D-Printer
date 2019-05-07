@@ -146,7 +146,7 @@ void MechanicsController::wait_hotend_temperature(int32_t t) {
     set_flags_in_heat_extruder(false);
     set_flags_in_heat_extruder_hold(false);
     set_temp_e1_bottom(voltage_adc(t - TEMP_DELTA));
-    set_temp_e1_upper(voltage_adc(t + TEMP_DELTA));
+    set_temp_e1_upper(voltage_adc(t));
     set_flags_in_heat_extruder_hold(true);
     usleep(2);
     while (get_flags_out_heating_extruder());
@@ -163,7 +163,7 @@ void MechanicsController::wait_bed_temperature(int32_t t) {
     set_flags_in_heat_bed(false);
     set_flags_in_heat_bed_hold(false);
     set_temp_bed_bottom(voltage_adc(t - TEMP_DELTA));
-    set_temp_bed_upper(voltage_adc(t + TEMP_DELTA));
+    set_temp_bed_upper(voltage_adc(t));
     set_flags_in_heat_bed_hold(true);
     usleep(2);
     while (get_flags_out_heating_bed());

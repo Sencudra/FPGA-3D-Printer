@@ -134,36 +134,36 @@ int32_t MechanicsController::get_temp_e1_upper()
 
 void MechanicsController::set_temp_bed_bottom(int32_t temp)
 {
-    uint32_t a = zeroing(temp, bit_count_uint32 - (TEMP_BED_BOTTOM_DATA_WIDTH - 1), 1);
-    uint32_t b = zeroing(*addr_temp_bed_bottom, TEMP_BED_BOTTOM_DATA_WIDTH - 1, 0);
+    uint32_t a = zeroing(temp, bit_count_uint32 - (TEMP_BED_BOTTOM_DATA_WIDTH), 1);
+    uint32_t b = zeroing(*addr_temp_bed_bottom, TEMP_BED_BOTTOM_DATA_WIDTH, 0);
     *addr_temp_bed_bottom = (b | a);
 }
 
 void MechanicsController::set_temp_bed_upper(int32_t temp)
 {
-    uint32_t a = zeroing(temp, bit_count_uint32 - (TEMP_BED_UPPER_DATA_WIDTH - 1), 1);
-    uint32_t b = zeroing(*addr_temp_bed_upper, TEMP_BED_UPPER_DATA_WIDTH - 1, 0);
+    uint32_t a = zeroing(temp, bit_count_uint32 - (TEMP_BED_UPPER_DATA_WIDTH), 1);
+    uint32_t b = zeroing(*addr_temp_bed_upper, TEMP_BED_UPPER_DATA_WIDTH, 0);
     *addr_temp_bed_upper = (b | a);
 }
 
 void MechanicsController::set_temp_e1_bottom(int32_t temp)
 {
-    uint32_t a = zeroing(temp, bit_count_uint32 - (TEMP_E1_BOTTOM_DATA_WIDTH - 1), 1);
-    uint32_t b = zeroing(*addr_temp_e1_bottom, TEMP_E1_BOTTOM_DATA_WIDTH - 1, 0);
+    uint32_t a = zeroing(temp, bit_count_uint32 - (TEMP_E1_BOTTOM_DATA_WIDTH+1), 1);
+    uint32_t b = zeroing(*addr_temp_e1_bottom, TEMP_E1_BOTTOM_DATA_WIDTH, 0);
     *addr_temp_e1_bottom = (b | a);
 }
 
 void MechanicsController::set_temp_e1_upper(int32_t temp)
 {
-    uint32_t a = zeroing(temp, bit_count_uint32 - (TEMP_E1_UPPER_DATA_WIDTH - 1), 1);
-    uint32_t b = zeroing(*addr_temp_e1_upper, TEMP_E1_UPPER_DATA_WIDTH - 1, 0);
+    uint32_t a = zeroing(temp, bit_count_uint32 - (TEMP_E1_UPPER_DATA_WIDTH), 1);
+    uint32_t b = zeroing(*addr_temp_e1_upper, TEMP_E1_UPPER_DATA_WIDTH, 0);
     *addr_temp_e1_upper = (b | a);
 }
 
 void MechanicsController::set_leds(uint32_t ledss)
 {
-    uint32_t a = zeroing(ledss, bit_count_uint32 - (LED_PIO_DATA_WIDTH - 1), 1);
-    uint32_t b = zeroing(*addr_leds, LED_PIO_DATA_WIDTH - 1, 0);
+    uint32_t a = zeroing(ledss, bit_count_uint32 - (LED_PIO_DATA_WIDTH), 1);
+    uint32_t b = zeroing(*addr_leds, LED_PIO_DATA_WIDTH, 0);
     *addr_leds = (b | a);
 }
 

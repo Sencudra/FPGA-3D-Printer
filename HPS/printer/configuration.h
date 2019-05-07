@@ -39,7 +39,7 @@ static const float DEFAULT_AXIS_STEPS_PER_UNIT[4] = {(200*16)/(2.0*20), (200*16)
 // X and Y axis travel speed (mm/m) between probes
 static const float XY_PROBE_SPEED = 8000;
 
-static const int32_t TEMP_DELTA = 2;
+static const int32_t TEMP_DELTA = 4;
 static const int32_t MAX_TEMP = 300;
 
 // Homing speeds (mm/m)
