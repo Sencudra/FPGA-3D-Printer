@@ -8,7 +8,7 @@
 #define bit_count_uint32 32
 
 #include <inttypes.h>
-#include <math.h>
+#include <cmath>
 #include <fcntl.h>
 
 #include "hwlib.h"
