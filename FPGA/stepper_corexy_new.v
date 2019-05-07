@@ -69,7 +69,7 @@
 	
 	always @(posedge clk)
 	begin	
-		if (~stepper_driving_reg_1 & ~stepper_driving_reg_2 & ~f)
+		if (~stepper_driving_reg_1 & ~stepper_driving_reg_2 & (f == 0))
 		begin
 			if (start_driving == 1'b1)
 				if ((stepper_step_in_1[30:0] != 0) | (stepper_step_in_2[30:0] != 0))
@@ -165,7 +165,7 @@
 		end
 		else
 		begin	
-			if (((xmin & (x != 1)) | (xmax & (x != 2)) | (!xmin & !xmax)) & ((ymin & (y != 1)) | (ymax & (ymax != 2)) | (!ymin & !ymax)))
+			if (((xmin & (x != 1)) | (xmax & (x != 2)) | (!xmin & !xmax)) & ((ymin & (y != 1)) | (ymax & (y != 2)) | (!ymin & !ymax)))
 			begin
 				if (stepper_driving_reg_1)
 				begin
@@ -252,7 +252,14 @@
 			end
 		end	
 		if (start_driving == 0)
+		begin
 			f = 0;
+			stepper_driving_reg_1 = 1'b0;
+			stepper_driving_reg_2 = 1'b0;
+			
+			signal_1 = 1'b0;	
+			signal_2 = 1'b0;
+		end
 	end
 	
 	

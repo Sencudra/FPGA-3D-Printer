@@ -6,7 +6,7 @@ JedecChain;
 	P ActionCode(Ign)
 		Device PartName(SOCVHPS) MfrSpec(OpMask(0));
 	P ActionCode(Cfg)
-		Device PartName(5CSEBA6U23) Path("C:/Users/reconnect/Documents/GitHub/3d_printer_old/hps+fpga_marlin/quartus/Файлы для платы/") File("2019.04.09-2.sof") MfrSpec(OpMask(1));
+		Device PartName(5CSEBA6U23) Path("C:/Users/reconnect/Documents/GitHub/3d_printer/FPGA/Файлы для платы/") File("2019.05.06.sof") MfrSpec(OpMask(1));
 
 ChainEnd;
 

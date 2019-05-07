@@ -28,10 +28,10 @@
 	
 	always @(posedge clk)
 	begin		
-		if (~stepper_driving_reg & ~f)
+		if (~stepper_driving_reg & (f == 0))
 		begin
 			if (start_driving == 1'b1)
-				if (stepper_step_in[30:0] != 0 & ~zmin & ~zmax)
+				if (stepper_step_in[30:0] != 0 & ((~zmin & ~zmax) | (zmin & (direction == 0)) | (zmax & (direction == 1))))
 				begin
 					stepper_step = stepper_step_in;
 					stepper_driving_reg = 1'b1;
@@ -45,21 +45,21 @@
 		end
 		else
 		begin		
-			if (n != 0 & ((~zmin & ~zmax) | (zmin & (direction == 1)) | (zmax & (direction == 0))))
+			if (n != 0 & ((~zmin & ~zmax) | (zmin & (direction == 0)) | (zmax & (direction == 1))))
 			begin
 				if (m != 0)
 					m = m - 1;
 				else
-					begin
-						signal = ~signal;
-						m = stepper_speed - 1;
-						if (signal == 0)
-							n = n - 1;
-						if (stepper_step[31] == 1'b0)
-							stepper_step = {stepper_step[31], n};
-						else
-							stepper_step = {stepper_step[31], ~n + 1};
-					end				
+				begin
+					signal = ~signal;
+					m = stepper_speed - 1;
+					if (signal == 0)
+						n = n - 1;
+					if (stepper_step[31] == 1'b0)
+						stepper_step = {stepper_step[31], n};
+					else
+						stepper_step = {stepper_step[31], ~n + 1};
+				end				
 			end
 			else
 			begin
@@ -74,7 +74,11 @@
 			end
 		end
 		if (start_driving == 0)
+		begin
 			f = 0;
+			stepper_driving_reg = 1'b0;
+			signal = 1'b0;
+		end
 	end
 	
 	
