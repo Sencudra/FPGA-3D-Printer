@@ -116,10 +116,19 @@ void PrinterController::gcode_G1(const Parameters& parameters) {
     correction(  ra, rb, rz, re,
                  dx, dy, dz, de);
 
-    position.x -= dx;
-    position.y -= dy;
-    position.z -= dz;
-    position.e -= de;
+    if (parameters.find('X')) {
+        position.x -= dx;
+    }
+    if (parameters.find('Y')) {
+        position.y -= dy;
+    }
+    if (parameters.find('Z')) {
+        position.z -= dz;
+    }
+    if (parameters.find('E')) {
+        position.e -= de;
+    }
+
     bool xmin, xmax, ymin, ymax, zmin, zmax;
     mechanics.endstop_states(xmin, xmax, ymin, ymax, zmin, zmax);
     if (xmin)

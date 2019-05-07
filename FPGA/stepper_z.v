@@ -2,7 +2,6 @@
 						input 	wire 				clk, 
 						input		wire	[31:0]	stepper_step_in,						
 						input		wire	[31:0]	stepper_speed,
-						input		wire				stepper_enable,
 						input		wire				zmin,
 						input		wire				zmax,
 						input		wire 				start_driving,
@@ -28,20 +27,21 @@
 	
 	always @(posedge clk)
 	begin		
-		if (~stepper_driving_reg & (f == 0))
+		if (~stepper_driving_reg)
 		begin
-			if (start_driving == 1'b1)
-				if (stepper_step_in[30:0] != 0 & ((~zmin & ~zmax) | (zmin & (direction == 0)) | (zmax & (direction == 1))))
-				begin
-					stepper_step = stepper_step_in;
-					stepper_driving_reg = 1'b1;
-					signal = 1'b1;					
-					n = stepper_step[30:0];
-					if (stepper_step[31] == 1'b1)
-						n = ~n + 1;
-					m = stepper_speed - 1;
-					f = 1;
-				end
+			if (f == 0)
+				if (start_driving == 1'b1)
+					if (stepper_step_in[30:0] != 0 & ((~zmin & ~zmax) | (zmin & (direction == 0)) | (zmax & (direction == 1))))
+					begin
+						stepper_step = stepper_step_in;
+						stepper_driving_reg = 1'b1;
+						signal = 1'b1;					
+						n = stepper_step[30:0];
+						if (stepper_step[31] == 1'b1)
+							n = ~n + 1;
+						m = stepper_speed - 1;
+						f = 1;
+					end
 		end
 		else
 		begin		

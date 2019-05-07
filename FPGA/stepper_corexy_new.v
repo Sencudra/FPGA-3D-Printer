@@ -4,7 +4,6 @@
 						input		wire	[31:0]	stepper_speed_1,
 						input		wire	[31:0]	stepper_step_in_2,						
 						input		wire	[31:0]	stepper_speed_2,
-						input		wire				stepper_enable,
 						input		wire				xmin,
 						input		wire				xmax,
 						input		wire				ymin,
@@ -69,99 +68,100 @@
 	
 	always @(posedge clk)
 	begin	
-		if (~stepper_driving_reg_1 & ~stepper_driving_reg_2 & (f == 0))
+		if (~stepper_driving_reg_1 & ~stepper_driving_reg_2)
 		begin
-			if (start_driving == 1'b1)
-				if ((stepper_step_in_1[30:0] != 0) | (stepper_step_in_2[30:0] != 0))
-				begin
-					stepper_step_1 = stepper_step_in_1;
-					stepper_step_2 = stepper_step_in_2;
-					
-					stepper_speed_reg_1 = stepper_speed_1;
-					stepper_speed_reg_2 = stepper_speed_2;
-					
-					stepper_driving_reg_1 = 1'b1;
-					stepper_driving_reg_2 = 1'b1;
-					
-					signal_1 = 1'b1;	
-					signal_2 = 1'b1;	
-					
-					n_1 = stepper_step_1[30:0];
-					n_2 = stepper_step_2[30:0];
-					
-					direction_1 = stepper_step_1[31];
-					direction_2 = stepper_step_2[31];
-					
-					if (stepper_step_1[31])
-						n_1 = ~n_1 + 1;
-					m_1 = stepper_speed_reg_1 - 1;
-					
-					if (stepper_step_2[31])
-						n_2 = ~n_2 + 1;
-					m_2 = stepper_speed_reg_2 - 1;
-					
-					step_changed = 0;	
-		
-					f = 1;					
-					
-					//Вычисление направления движения по осям x и y
-					if ((direction_1 == 0) & (direction_2 == 0))
+			if (f == 0)
+				if (start_driving == 1'b1)
+					if ((stepper_step_in_1[30:0] != 0) | (stepper_step_in_2[30:0] != 0))
 					begin
-						x = 2;
-						if (n_1 > n_2)
-							y = 2;
-						else 
+						stepper_step_1 = stepper_step_in_1;
+						stepper_step_2 = stepper_step_in_2;
+						
+						stepper_speed_reg_1 = stepper_speed_1;
+						stepper_speed_reg_2 = stepper_speed_2;
+						
+						stepper_driving_reg_1 = 1'b1;
+						stepper_driving_reg_2 = 1'b1;
+						
+						signal_1 = 1'b1;	
+						signal_2 = 1'b1;	
+						
+						n_1 = stepper_step_1[30:0];
+						n_2 = stepper_step_2[30:0];
+						
+						direction_1 = stepper_step_1[31];
+						direction_2 = stepper_step_2[31];
+						
+						if (stepper_step_1[31])
+							n_1 = ~n_1 + 1;
+						m_1 = stepper_speed_reg_1 - 1;
+						
+						if (stepper_step_2[31])
+							n_2 = ~n_2 + 1;
+						m_2 = stepper_speed_reg_2 - 1;
+						
+						step_changed = 0;	
+			
+						f = 1;					
+						
+						//Вычисление направления движения по осям x и y
+						if ((direction_1 == 0) & (direction_2 == 0))
 						begin
-							if (n_1 == n_2)
-								y = 0;
-							else
-								y = 1;
-						end
-					end
-					
-					if ((direction_1 == 0) & (direction_2 == 1))
-					begin
-						y = 2;
-						if (n_1 > n_2)
 							x = 2;
-						else 
-						begin
-							if (n_1 == n_2)
-								x = 0;
-							else
-								x = 1;
+							if (n_1 > n_2)
+								y = 2;
+							else 
+							begin
+								if (n_1 == n_2)
+									y = 0;
+								else
+									y = 1;
+							end
 						end
-					end
-					
-					if ((direction_1 == 1) & (direction_2 == 0))
-					begin
-						y = 1;
-						if (n_2 > n_1)
-							x = 2;
-						else 
+						
+						if ((direction_1 == 0) & (direction_2 == 1))
 						begin
-							if (n_1 == n_2)
-								x = 0;
-							else
-								x = 1;
-						end
-					end
-					
-					if ((direction_1 == 1) & (direction_2 == 1))
-					begin
-						x = 1;
-						if (n_2 > n_1)
 							y = 2;
-						else 
-						begin
-							if (n_1 == n_2)
-								y = 0;
-							else
-								y = 1;
+							if (n_1 > n_2)
+								x = 2;
+							else 
+							begin
+								if (n_1 == n_2)
+									x = 0;
+								else
+									x = 1;
+							end
 						end
+						
+						if ((direction_1 == 1) & (direction_2 == 0))
+						begin
+							y = 1;
+							if (n_2 > n_1)
+								x = 2;
+							else 
+							begin
+								if (n_1 == n_2)
+									x = 0;
+								else
+									x = 1;
+							end
+						end
+						
+						if ((direction_1 == 1) & (direction_2 == 1))
+						begin
+							x = 1;
+							if (n_2 > n_1)
+								y = 2;
+							else 
+							begin
+								if (n_1 == n_2)
+									y = 0;
+								else
+									y = 1;
+							end
+						end
+						
 					end
-					
-				end
 		end
 		else
 		begin	

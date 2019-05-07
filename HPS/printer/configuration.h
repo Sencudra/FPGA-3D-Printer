@@ -43,7 +43,7 @@ static const int32_t TEMP_DELTA = 4;
 static const int32_t MAX_TEMP = 300;
 
 // Homing speeds (mm/m)
-static const float HOMING_FEEDRATE_XY = (10*60);//(50*60);
+static const float HOMING_FEEDRATE_XY = (30*60);//(50*60);
 static const float HOMING_FEEDRATE_Z = (4*60);
 
 #endif //INC_3D_PRINTER_CONFIGURATION_H
