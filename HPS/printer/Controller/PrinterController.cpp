@@ -36,7 +36,7 @@ void PrinterController::slicing() {
 void PrinterController::printing() {
     // state == Printing
     gcodeParser parser(to_print);
-    while (!parser.is_done() && state != Stop_Printing) {
+    while ((!parser.is_done()) && (state != Stop_Printing)) {
         string command;
         Parameters parameters;
         tie(command, parameters) = parser.parse_command();
@@ -57,6 +57,7 @@ void PrinterController::printing() {
         }
     }
 
+    state = Waiting;
     // если parser.is_done то все хорошо
     // иначе печать завершилась аварийно
 }

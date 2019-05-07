@@ -11,8 +11,8 @@ static const bool Y_MAX_ENDSTOP_INVERTING = true; // set to true to invert the l
 static const bool Z_MAX_ENDSTOP_INVERTING = true; // set to true to invert the logic of the endstop.
 
 
-static const bool X_STEPPER_INVERTING = true; // set to true to invert the logic of the stepper.
-static const bool Y_STEPPER_INVERTING = true; // set to true to invert the logic of the stepper.
+static const bool X_STEPPER_INVERTING = false; // set to true to invert the logic of the stepper.
+static const bool Y_STEPPER_INVERTING = false; // set to true to invert the logic of the stepper.
 static const bool Z_STEPPER_INVERTING = true; // set to true to invert the logic of the stepper.
 static const bool E1_STEPPER_INVERTING = true; // set to true to invert the logic of the stepper.
 
@@ -43,7 +43,7 @@ static const int32_t TEMP_DELTA = 2;
 static const int32_t MAX_TEMP = 300;
 
 // Homing speeds (mm/m)
-static const float HOMING_FEEDRATE_XY = (50*60);
+static const float HOMING_FEEDRATE_XY = (10*60);//(50*60);
 static const float HOMING_FEEDRATE_Z = (4*60);
 
 #endif //INC_3D_PRINTER_CONFIGURATION_H
