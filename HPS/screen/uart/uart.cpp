@@ -26,37 +26,61 @@ void UART::openScreen(Screen screen) {
 }
 
 void UART::updateIndicator(string name, Attribute attribute, bool value) {
-	//cout << "UART::updateIndicator" << endl;
 	string valueString = to_string(value);
 	string attributeString = attribute2string(attribute);
+
+	if (attribute == Attribute::TXT) {
+		valueString = "\"" + valueString + "\"";
+	}
+
 	sendCommand(name + "." + attributeString + "=" + valueString);
 }
 
 void UART::updateIndicator(string name, Attribute attribute, int value) {
-	//cout << "UART::updateIndicator" << endl;
 	string attributeString = attribute2string(attribute);
 	string valueString = to_string(value);
+
+	if (attribute == Attribute::TXT) {
+		valueString = "\"" + valueString + "\"";
+	}
+
 	sendCommand(name + "." + attributeString + "=" + valueString);
 }
 
 void UART::updateIndicator(string name, Attribute attribute, string value) {
-	//cout << "UART::updateIndicator" << endl;
 	string attributeString = attribute2string(attribute);
+		string valueString = value;
+
+	if (attribute == Attribute::TXT) {
+		valueString = "\"" + valueString + "\"";
+	}
+
 	sendCommand(name + "." + attributeString + "=" + value);
 }
 
 void UART::sendCommand(const string& message) const {
 
-
 	// looks like max length is 15 bytes at one time
-	int msg_len = message.length();
-	//cout << "UART::sendCommand" << msg_len << endl;
-	if(msg_len > 15) {
-		cout << "ERROR - UART::sendCommand - Message is too long: " << msg_len << endl;
-	} else {
-		write2port(message); 
-		write2port("\xff\xff\xff");
+	const int maxLen = 15;
+	
+	string substrMessage = message;
+	int msgLen = substrMessage.length();
+
+	cout << "Command: " << message << endl; 
+
+	while (msgLen > 0) {
+		string toSend;
+		if (msgLen > maxLen) {
+			toSend = substrMessage.substr(0, maxLen);
+			substrMessage = substrMessage.substr(maxLen);
+		} else {
+			toSend = substrMessage.substr(0, msgLen);
+			substrMessage.erase();
+		}
+		write2port(toSend);
+		msgLen = substrMessage.length();
 	}
+	write2port("\xff\xff\xff");
 }
 
 void UART::listen2port() {
@@ -84,7 +108,16 @@ void UART::start_listening() {
 		for(int i = 0; i < bytes_read - 3; ++i) {
 			command.push_back(int(buffer[i]));
 		}
-		addTask(command);
+
+ 		if (int(buffer[0]) == 101) {
+			addTask(command);
+		}
+
+		cout << "COMMAND: ";
+		for(auto symbol : command) {
+			cout << symbol << " ";
+		}
+		cout << endl;
 
 		cout << "OK - UART::start_listening - bytes read: " << bytes_read << endl;
  	}
@@ -195,10 +228,10 @@ string UART::attribute2string(const Attribute& code) const {
 	switch(code) {
 		case PICC:
 			return "picc";
-		case PICC0:
-			return "picc0";
-		case PICC1:
-			return "picc1";
+		case PIC0:
+			return "pic0";
+		case PIC1:
+			return "pic1";
 		case VAL:
 			return "val";
 		case TXT:

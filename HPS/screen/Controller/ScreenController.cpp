@@ -26,13 +26,14 @@ void ScreenController::initializeUART() {
 }
 
 void ScreenController::update() {
-	if (!uart.taskQueue.empty()) {
+
+	while (!uart.taskQueue.empty()) {
 		vector<int> command = uart.taskQueue.front();
 		uart.taskQueue.pop();
 		interpretCommand(command);
 	}
 	currentPage->update();
-//cout << "OK - ScreenController::update - Tasks remain: "<< uart.taskQueue.size() << endl;
+	//cout << "OK - ScreenController::update - Tasks remain: "<< uart.taskQueue.size() << endl;
 
 }
 
