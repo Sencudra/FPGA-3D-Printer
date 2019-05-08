@@ -34,7 +34,7 @@
 						stepper_step = stepper_step_in;
 						stepper_driving_reg = 1'b1;
 						signal = 1'b1;					
-						n = stepper_step[30:0];
+						n = stepper_step[30:0]; //Неправильное значение на выходе
 						if (stepper_step[31] == 1'b1)
 							n = ~n + 1;
 						m = stepper_speed - 1;
@@ -53,6 +53,11 @@
 						m = stepper_speed - 1;
 						if (signal == 0)
 							n = n - 1;
+							
+						if (stepper_step[31] == 1'b0)
+							stepper_step = {stepper_step[31], n};
+						else
+							stepper_step = {stepper_step[31], ~n + 1};
 					end
 			end
 			else
