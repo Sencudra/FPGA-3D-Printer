@@ -71,6 +71,25 @@ MechanicsController::MechanicsController() {
     addr_stepper_3_steps_in     = (int32_t *) (virtual_base + ((unsigned long)(ALT_LWFPGASLVS_OFST + STEPPER_3_STEPS_OUT_BASE)   & (unsigned long)(HW_REGS_MASK)));
     addr_stepper_4_steps_in     = (int32_t *) (virtual_base + ((unsigned long)(ALT_LWFPGASLVS_OFST + STEPPER_4_STEPS_OUT_BASE)   & (unsigned long)(HW_REGS_MASK)));
 
+
+    *addr_leds                  = uint32_t(0);
+    *addr_fans                  = uint32_t(0);
+
+    *addr_temp_bed_bottom       = int32_t(0);
+    *addr_temp_bed_upper        = int32_t(0);
+    *addr_temp_e1_bottom        = int32_t(0);
+    *addr_temp_e1_upper         = int32_t(0);
+
+    *addr_stepper_1_speed       = uint32_t(0);
+    *addr_stepper_2_speed       = uint32_t(0);
+    *addr_stepper_3_speed       = uint32_t(0);
+    *addr_stepper_4_speed       = uint32_t(0);
+
+    *addr_stepper_1_steps_in    = int32_t(0);
+    *addr_stepper_2_steps_in    = int32_t(0);
+    *addr_stepper_3_steps_in    = int32_t(0);
+    *addr_stepper_4_steps_in    = int32_t(0);
+
     *addr_flags_in = uint32_t(1);
 
     set_configuration_1();
