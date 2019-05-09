@@ -12,6 +12,7 @@
 
 #include "uart.h"
 
+
 /*	Public methods	*/
 
 UART& UART::getPort(const string& name /* default: "/dev/ttyS1" */) {
@@ -19,18 +20,43 @@ UART& UART::getPort(const string& name /* default: "/dev/ttyS1" */) {
     return port;
 }
 
-void UART::write2port(const string& message) const {
+void UART::openScreen(Screen screen) {
+	string screenName = screen2string(screen);
+	sendCommand("page " + screenName);
+}
 
+void UART::updateIndicator(string name, Attribute attribute, bool value) {
+	//cout << "UART::updateIndicator" << endl;
+	string valueString = to_string(value);
+	string attributeString = attribute2string(attribute);
+	sendCommand(name + "." + attributeString + "=" + valueString);
+}
+
+void UART::updateIndicator(string name, Attribute attribute, int value) {
+	//cout << "UART::updateIndicator" << endl;
+	string attributeString = attribute2string(attribute);
+	string valueString = to_string(value);
+	sendCommand(name + "." + attributeString + "=" + valueString);
+}
+
+void UART::updateIndicator(string name, Attribute attribute, string value) {
+	//cout << "UART::updateIndicator" << endl;
+	string attributeString = attribute2string(attribute);
+	sendCommand(name + "." + attributeString + "=" + value);
+}
+
+void UART::sendCommand(const string& message) const {
+
+
+	// looks like max length is 15 bytes at one time
 	int msg_len = message.length();
-	char write_buffer[msg_len];
-	memset(write_buffer, 0, msg_len);	
-	strcpy(write_buffer, message.c_str());
-
-	cout << "port_descriptor: " << port_descriptor << endl;
-
-	int bytes_written = write(port_descriptor, write_buffer, msg_len);
-	
-	cout << "OK - UART::write - Word: |" << message << "| , Bytes written: " << bytes_written << " / " << msg_len << endl;
+	//cout << "UART::sendCommand" << msg_len << endl;
+	if(msg_len > 15) {
+		cout << "ERROR - UART::sendCommand - Message is too long: " << msg_len << endl;
+	} else {
+		write2port(message); 
+		write2port("\xff\xff\xff");
+	}
 }
 
 void UART::listen2port() {
@@ -82,6 +108,18 @@ UART::UART(const string& name) {
 	show_port_settings();
 
 	cout << "OK - UART::UART(name =\"" << name << "\") - port initialised." << endl;
+}
+
+void UART::write2port(const string& message) const {
+
+	int msg_len = message.length();
+	char write_buffer[msg_len];
+	memset(write_buffer, 0, msg_len);	
+	strcpy(write_buffer, message.c_str());
+
+	int bytes_written = write(port_descriptor, write_buffer, msg_len);
+	
+	//cout << "OK - UART::write - Word: |" << message << "| , Bytes written: " << bytes_written << " / " << msg_len << endl;
 }
 
 int UART::open_port() {
@@ -146,10 +184,59 @@ void UART::setup_port() {
 	cout << "OK - UART::setup_port - Port setup ended..." << endl;
 }
 
-
 void UART::addTask(const vector<int>& task) {
 
 	taskQueue.push(task);
 
 	cout << "OK - UART::addTask - Command addded..." << endl;
+}
+
+string UART::attribute2string(const Attribute& code) const {
+	switch(code) {
+		case PICC:
+			return "picc";
+		case PICC0:
+			return "picc0";
+		case PICC1:
+			return "picc1";
+		case VAL:
+			return "val";
+		case TXT:
+			return "txt";
+		default:
+			cout << "ERROR - UART::attributes2string - wrong code:" << code << endl;
+			return "";		
+	}
+}
+
+string UART::screen2string(const Screen& code) const {
+	switch(code) {
+		case LOADING:
+			return "LOADING";
+		case HOME:
+			return "HOME";
+		case PRINT:
+			return "PRINT";
+		case PRINT_SETUP:
+			return "PRINT_SETUP";
+		case PRINTING:
+			return "PRINTING";
+		case PRINTING_DONE:
+			return "PRINTING_DONE";
+		case CONTROL:
+			return "CONTROL";
+		case SETTINGS:
+			return "SETTINGS";
+		case SETTINGS_P:
+			return "SETTINGS_P";
+		case SETTINGS_M_SPE:
+			return "SETTINGS_M_SPE";
+		case SETTINGS_M_STE:
+			return "SETTINGS_M_STE";
+		case WARNING:
+			return "WARNING";
+		default:
+			cout << "ERROR - UART::UART::screen2string - wrong code:" << code << endl;
+			return "";		
+	}
 }

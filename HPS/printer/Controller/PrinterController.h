@@ -5,11 +5,13 @@
 #include <cmath>
 #include <unistd.h>
 
-#include "dict.h"
-#include "types.h"
+#include "Dict.h"
+#include "Types.h"
+#include "Configuration.h"
 
 #include "MechanicsController.h"
 #include "ScreenController.h"
+#include "stl2gcode_parameters.h"
 
 #include <iostream>
 #include <fstream>
@@ -33,6 +35,7 @@ public:
     StateType state;
     Position position;
     PrinterVariables settings;
+    stl2gcode_parameters stl2GcodeParameters;
 
     // пути к файлам для слайсинга/печати
     string to_slice;
