@@ -7,6 +7,13 @@
 PrinterController::PrinterController() {
     mechanics.printer = this;
     screen.printer = this;
+
+    //Считывание настроек экрана из файла
+    restore_default_general_settings();
+    restore_default_preset_settings();
+    restore_default_movement_speed();
+    restore_default_movement_steps();
+
     state = Waiting;
     waiting();
 }
