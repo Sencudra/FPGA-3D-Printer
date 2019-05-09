@@ -53,7 +53,7 @@ INCLUDE_ALTERA 		:=	-I$(HWLIBS_ROOT)/include/$(ALT_DEVICE_FAMILY) \
 INC 				:= -D$(ALT_DEVICE_FAMILY) $(INCLUDE_ALTERA) $(INCLUDE_SOURCES)
 
 WARNINGS 			:= -Wall # -pedantic
-HIDE_WARNINGS		:= -Wno-pointer-arith
+HIDE_WARNINGS		:= -Wno-pointer-arith -Wsign-compare
 CFLAGS 				:= -g -std=c++11 -pthread -lm $(WARNINGS) $(HIDE_WARNINGS)
 LDFLAGS 			:= $(CFLAGS) -lstdc++
 
