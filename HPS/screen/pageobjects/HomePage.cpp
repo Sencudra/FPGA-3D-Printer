@@ -92,6 +92,7 @@ void HomePage::touch(vector<int>& command) {
 		default: {
 			cout << "ERROR - HomePage::touch - Unknown code: " << command.front() << endl;
 		}
+		
 	}
 	cout << "OK - HomePage::touch - touch event proceded." << endl;
 }
@@ -345,7 +346,7 @@ void HomePage::updatePresetBar() {
 				presetSixActive);
 		}
 
-	} 
+	}
 
 }
 
