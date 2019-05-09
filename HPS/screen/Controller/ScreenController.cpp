@@ -2,16 +2,20 @@
 #include <cstring>
 
 #include "ScreenController.h"
+#include "PrinterController.h"
 #include "uart.h"
 #include "pages.h"
 
 using namespace std;
 
+//* Public Constructors and Destructors *//
+
 ScreenController::ScreenController()
 :uart(UART::getPort()) {
-  
-	initializeUART();
 
+	// Initialising screen home page
+	initializeScreen();
+  	
 	cout << "OK - ScreenController::ScreenController()" << endl;
 }
 
@@ -19,22 +23,94 @@ ScreenController::~ScreenController() {
 	delete currentPage;
 }
 
-void ScreenController::initializeUART() {
-	uart.listen2port();
-	currentPage = new HomePage(*this);
-	cout << "OK - ScreenController::initializeUART - Initialized" << endl;
+//* Public Methods *//
+
+void ScreenController::initialise() {
+
+	// Copying struct from Printer source
+	copiedSettings = printer->settings;
+
+	// to measure time between update calls.
+	sekundomer = clock();
+
+	// update current screen
+	currentPage->update();
 }
 
 void ScreenController::update() {
 
-	while (!uart.taskQueue.empty()) {
-		vector<int> command = uart.taskQueue.front();
-		uart.taskQueue.pop();
-		interpretCommand(command);
-	}
-	currentPage->update();
-	//cout << "OK - ScreenController::update - Tasks remain: "<< uart.taskQueue.size() << endl;
+	// Evaluate time
+	clock_t timeElapsedSinceLastUpdateCall = clock();
+  	double elapsed_secs = double(timeElapsedSinceLastUpdateCall - sekundomer) / CLOCKS_PER_SEC;
 
+  	// Update process
+  	if (elapsed_secs >= 0.1) {
+
+  		while (!uart.taskQueue.empty()) {
+			vector<int> command = uart.taskQueue.front();
+			uart.taskQueue.pop();
+			interpretCommand(command);
+		}
+		currentPage->update();
+
+		sekundomer = clock();
+
+		// update copied settings with fresh data
+		copiedSettings = printer->settings;
+	}
+
+}
+
+void ScreenController::setCurrentScreen(Screen name) {
+	/*
+		Sets current sceren page
+	*/
+
+	delete currentPage;
+
+	switch(name) {
+	case LOADING:{ break;}
+	case HOME:
+	{ 
+		currentPage = new HomePage(*this);
+		break;
+	}
+	case PRINT:
+	{ 
+		currentPage = new PrintPage(*this);
+		break;
+	}
+	case PRINT_SETUP:{ break;}
+	case PRINTING:{ break;}
+	case PRINTING_DONE:{ break;}
+	case CONTROL:
+	{ 
+		currentPage = new ControlPage(*this);	
+		break;
+	}
+	case SETTINGS:
+	{ 
+		currentPage = new SettingsPage(*this);
+		break;
+	}
+	case SETTINGS_P:{ break;}
+	case SETTINGS_M_SPE:{ break;}
+	case SETTINGS_M_STE:{ break;}
+	case WARNING:{ break;}
+	}
+
+	// update current page with actial data
+	currentPage->update();
+
+	cout << "OK - ScreenController::setCurrentScreen - Changing screen for " << name << endl;
+}
+
+//* Private methods *//
+
+void ScreenController::initializeScreen() {
+	uart.listen2port();
+	currentPage = new HomePage(*this);
+	cout << "OK - ScreenController::initializeUART - Initialized" << endl;
 }
 
 void ScreenController::interpretCommand(vector<int>& command) {
@@ -103,45 +179,4 @@ void ScreenController::touchEvent(vector<int>& command) {
 		case WARNING:{ break;}
 	}
 
-}
-
-void ScreenController::setCurrentScreen(Screen name) {
-
-	// Clean for new page
-	// TODO : maybe replace for std::shared_ptr
-	delete currentPage;
-
-	switch(name) {
-	case LOADING:{ break;}
-	case HOME:
-	{ 
-		currentPage = new HomePage(*this);
-		break;
-	}
-	case PRINT:
-	{ 
-		currentPage = new PrintPage(*this);
-		break;
-	}
-	case PRINT_SETUP:{ break;}
-	case PRINTING:{ break;}
-	case PRINTING_DONE:{ break;}
-	case CONTROL:
-	{ 
-		currentPage = new ControlPage(*this);	
-		break;
-	}
-	case SETTINGS:
-	{ 
-		currentPage = new SettingsPage(*this);
-		break;
-	}
-	case SETTINGS_P:{ break;}
-	case SETTINGS_M_SPE:{ break;}
-	case SETTINGS_M_STE:{ break;}
-	case WARNING:{ break;}
-	}
-	//currentPage.update();
-
-	cout << "OK - ScreenController::setCurrentScreen - Changing screen for " << name << endl;
 }

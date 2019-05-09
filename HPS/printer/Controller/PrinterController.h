@@ -79,6 +79,11 @@ public:
             {"M190", &PrinterController::gcode_M190},
     };
 
+    // Screen oriented public methods
+
+    void setNewPresetValue(PrinterVariables::Common::Preset preset);
+    
+
 };
 
 #endif //INC_3D_PRINTER_PRINTERCONTROLLER_H

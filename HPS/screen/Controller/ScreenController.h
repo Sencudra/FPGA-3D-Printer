@@ -3,6 +3,9 @@
 
 #include <cstring>
 #include <vector>
+#include <ctime>
+
+#include "types.h"
 
 using namespace std;
 
@@ -11,7 +14,8 @@ class BasePage;
 class UART;
 class Printer;
 
-// Класс взаимодействия с экраном
+
+// Class to work with Nextion Screen
 class ScreenController {
 
 public:
@@ -20,7 +24,7 @@ public:
 
 	enum CommandType {
 
-		// Notification of success/failure
+		// Notification on success/failure
 		// To enable: bkcmd = 1
 
 		INVALID_INSTRUCTION 		= 0, 	// Invalid instruction
@@ -68,21 +72,30 @@ public:
 	~ScreenController();
 
 	/* Methods */
+	void initialise();
     void update();
     void setCurrentScreen(Screen name);
 
     // temp
     UART& uart;
 
+    // Struct is used compare changes appeared
+    // shoulld be private 
+    PrinterVariables copiedSettings;
+
 private:
     BasePage* currentPage;
+
+    // to measure time elapsed since last update method call
+    clock_t sekundomer;
 
     // Screens
 
 	/* Contructors */
 
 	/* Methods */
-	void initializeUART();
+
+	void initializeScreen();
 	void interpretCommand(vector<int>& command);
 	void touchEvent(vector<int>& command);
 };

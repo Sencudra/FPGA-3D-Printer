@@ -9,6 +9,7 @@
 #include <unistd.h>
 #include <future>
 #include <vector>
+#include <ctime>
 
 #include "uart.h"
 
@@ -23,6 +24,10 @@ UART& UART::getPort(const string& name /* default: "/dev/ttyS1" */) {
 void UART::openScreen(Screen screen) {
 	string screenName = screen2string(screen);
 	sendCommand("page " + screenName);
+}
+
+void UART::refreshIndicator(string name) {
+	sendCommand("ref " + name);
 }
 
 void UART::updateIndicator(string name, Attribute attribute, bool value) {
@@ -58,7 +63,16 @@ void UART::updateIndicator(string name, Attribute attribute, string value) {
 	sendCommand(name + "." + attributeString + "=" + value);
 }
 
-void UART::sendCommand(const string& message) const {
+void UART::updateTimer(int value) {
+	string attributeString = attribute2string(Attribute::EN);
+	string valueString = to_string(value);
+	sendCommand("timer." + attributeString + "=" + valueString);
+}
+
+void UART::sendCommand(const string& message) {
+
+	// some magic/postpone for nextion screen
+	//while (double(clock() - timer)/CLOCKS_PER_SEC <= 0.05) {}
 
 	// looks like max length is 15 bytes at one time
 	const int maxLen = 15;
@@ -81,6 +95,8 @@ void UART::sendCommand(const string& message) const {
 		msgLen = substrMessage.length();
 	}
 	write2port("\xff\xff\xff");
+
+	timer = clock();
 }
 
 void UART::listen2port() {
@@ -236,6 +252,8 @@ string UART::attribute2string(const Attribute& code) const {
 			return "val";
 		case TXT:
 			return "txt";
+		case EN:
+			return "en";
 		default:
 			cout << "ERROR - UART::attributes2string - wrong code:" << code << endl;
 			return "";		
