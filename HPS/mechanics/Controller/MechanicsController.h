@@ -153,10 +153,6 @@ class MechanicsController {
     void set_leds(uint32_t ledss);
     void set_fans(uint32_t fanss);
 
-    int32_t get_temp_bed();
-    int32_t get_temp0();
-    int32_t get_temp1();
-
     int32_t get_temp_bed_bottom();
     int32_t get_temp_bed_upper();
     int32_t get_temp_e1_bottom();
@@ -192,8 +188,7 @@ class MechanicsController {
 
     //flags_out
     bool get_flags_out_stepper_state();
-    bool get_flags_out_heating_bed();
-    bool get_flags_out_heating_extruder();
+
 
     void set_configuration_1();
 
@@ -235,6 +230,13 @@ public:
     void endstop_states(bool& xmin, bool& xmax,
                         bool& ymin, bool& ymax,
                         bool& zmin, bool& zmax);
+
+    int32_t get_temp_bed();
+    int32_t get_temp0();
+    int32_t get_temp1();
+
+    bool get_flags_out_heating_bed();
+    bool get_flags_out_heating_extruder();
 };
 
 #endif //INC_3D_PRINTER_MECHANICSCONTROLLER_H
