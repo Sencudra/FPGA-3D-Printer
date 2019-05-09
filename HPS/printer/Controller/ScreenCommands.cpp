@@ -13,8 +13,6 @@ void PrinterController::update_parameters()
     settings.common.cooler.current    = 0;
     settings.common.cooler.set        = position.cooler;
     settings.common.cooler.isEnabled  = false;
-
-    screen.update();
 }
 
 void PrinterController::set_max_xyz(float max_x, float max_y, float max_z) {
@@ -288,8 +286,14 @@ void PrinterController::get_speed(float& x, float& y, float& z, float& e) {
 
 void PrinterController::change_preset_start(PrinterVariables::Common::Preset preset)
 {
+    Parameters a;
     settings.common.currentPreset = preset;
     get_preset(preset, position.temp_e0, position.temp_bed, position.cooler);
+    a = {{'S', position.temp_e0}};
+    gcode_M104(a);
+    a = {{'S', position.temp_bed}};
+    gcode_M140(a);
+    screen.update();
 }
 
 void PrinterController::setNewPresetValue(PrinterVariables::Common::Preset preset)
@@ -347,6 +351,7 @@ void PrinterController::control(DrivingControl d)
         default:
             break;
     }
+    screen.update();
     gcode_G1(a);
 }
 
@@ -354,17 +359,20 @@ void PrinterController::pause_printing()
 {
     state = Pause_Printing;
     settings.common.infoLine = PrinterVariables::Common::PAUSED;
+    screen.update();
 }
 
 void PrinterController::block_screen()
 {
     settings.common.infoLine = PrinterVariables::Common::BLOCKED_SCREEN;
+    screen.update();
 }
 
 void PrinterController::abort_printing()
 {
     state = Stop_Printing;
     settings.common.infoLine = PrinterVariables::Common::IDLE;
+    screen.update();
 }
 
 void PrinterController::start_slicing(string path)
@@ -404,6 +412,7 @@ void PrinterController::print_settings(SlicingParameters sp)
         default:
             break;
     }
+    screen.update();
 }
 
 void PrinterController::change_general_settings(int sg)
@@ -451,6 +460,7 @@ void PrinterController::change_general_settings(int sg)
         default:
             break;
     }
+    screen.update();
 }
 
 void PrinterController::save_general_settings()
@@ -461,6 +471,7 @@ void PrinterController::save_general_settings()
 void PrinterController::restore_default_general_settings()
 {
     get_pid(settings.common.PID_P, settings.common.PID_I, settings.common.PID_D);
+    screen.update();
 }
 
 void PrinterController::change_preset_settings(PreprintSetup ps)
@@ -579,6 +590,7 @@ void PrinterController::change_preset_settings(PreprintSetup ps)
         default:
             break;
     }
+    screen.update();
 }
 
 void PrinterController::save_preset_settings()
@@ -605,7 +617,7 @@ void PrinterController::save_preset_settings()
             break;
         default:
             break;
-    }    
+    }
 }
 
 void PrinterController::restore_default_preset_settings()
@@ -633,6 +645,7 @@ void PrinterController::restore_default_preset_settings()
         default:
             break;
     }
+    screen.update();
 }
 
 void PrinterController::change_movement_speed(SpeedSettings ps)
@@ -666,6 +679,7 @@ void PrinterController::change_movement_speed(SpeedSettings ps)
         default:
             break;
     }
+    screen.update();
 }
 
 void PrinterController::save_movement_speed()
@@ -676,6 +690,7 @@ void PrinterController::save_movement_speed()
 void PrinterController::restore_default_movement_speed()
 {
     get_speed(settings.movement.speed.speedX, settings.movement.speed.speedY, settings.movement.speed.speedZ, settings.movement.speed.speedE);
+    screen.update();
 }
 
 void PrinterController::change_movement_steps(StepsSettings ps)
@@ -703,6 +718,7 @@ void PrinterController::change_movement_steps(StepsSettings ps)
         default:
             break;
     }
+    screen.update();
 }
 
 void PrinterController::save_movement_steps()
@@ -713,4 +729,5 @@ void PrinterController::save_movement_steps()
 void PrinterController::restore_default_movement_steps()
 {
     get_max_xyz(settings.movement.steps.steps_x, settings.movement.steps.steps_y, settings.movement.steps.steps_z);
+    screen.update();
 }

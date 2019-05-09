@@ -23,7 +23,6 @@ class UART;
 // 12. SettingsMovStepsPage
 // 13. WarningPage
 
-
 class BasePage {
 
 public:
@@ -73,7 +72,7 @@ private:
 
 class HomePage: public BasePage {
 
-	enum Button {
+	enum class Button {
 		b_nav_print 	= 7,
 		b_nav_control   = 8,
 		b_nav_settings  = 9,
@@ -88,7 +87,7 @@ class HomePage: public BasePage {
 		b_hotspot_3 	= 31
 	};
 
-	enum Indicator {
+	enum class Indicator {
 		i_ind_1,
 		i_ind_2,
 		i_ind_3,
@@ -104,6 +103,12 @@ class HomePage: public BasePage {
 		bi_fan_curr,
 		i_gif_loading,
 		i_info_text,
+		b_preset_1,
+		b_preset_2,
+		b_preset_3,
+		b_preset_4,
+		b_preset_5,
+		b_preset_6
 	};
 
 public:
@@ -117,17 +122,25 @@ public:
 	virtual void update();
 	virtual void touch(std::vector<int>& command);
 
-
 private:
 	/* Properties */
+	bool isUpdateFirstTime;
 
+	const int minNotActive = 67;
+    const int maxNotActive = 179;
+    const int rangeNotActive = maxNotActive - minNotActive;
+
+    const int minActive = 180;
+	const int maxActive = 290;
+	const int rangeActive = maxActive - minActive;
 	/* Constructors */
 
 	/* Methods*/
 	void updateStatusIndicators();
 	void updateDisplayIndicators();
+	void updatePresetBar();
+	void updateInfo();
 	std::string indicator2string(const Indicator& code) const;
-
 
 };
 

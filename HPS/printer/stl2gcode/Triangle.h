@@ -1,6 +1,8 @@
 #ifndef STL2GCODE_TRIANGLE_H
 #define STL2GCODE_TRIANGLE_H
 
+#include <vector>
+
 #include "Vertex.h"
 
 class Triangle {

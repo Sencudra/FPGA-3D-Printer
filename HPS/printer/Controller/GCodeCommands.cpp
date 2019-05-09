@@ -103,6 +103,8 @@ void PrinterController::gcode_G1(const Parameters& parameters) {
     position.z += dz;
     position.e += de;
 
+    screen.update();
+
     int32_t steps_a, steps_b, steps_z, steps_e;
     uint32_t speed_a, speed_b, speed_z, speed_e;
     int32_t ra, rb, rz, re;
@@ -162,6 +164,7 @@ void PrinterController::gcode_G28(const Parameters& parameters) {
         position.y = 0;
     if (parameters.find('Z'))
         position.z = 0;
+    screen.update();
 }
 
 void PrinterController::gcode_G90(const Parameters& parameters) {
@@ -181,6 +184,7 @@ void PrinterController::gcode_G92(const Parameters& parameters) {
         position.z = parameters['Z'];
     if (parameters.find('E'))
         position.e = parameters['E'];
+    screen.update();
 }
 
 void PrinterController::gcode_M17(const Parameters& parameters) {
@@ -204,6 +208,7 @@ void PrinterController::gcode_M104(const Parameters& parameters) {
         position.temp_e0 = parameters['S'];
         mechanics.set_hotend_temperature(parameters['S']);
     }
+    screen.update();
 }
 
 void PrinterController::gcode_M109(const Parameters& parameters) {
@@ -211,12 +216,15 @@ void PrinterController::gcode_M109(const Parameters& parameters) {
         mechanics.wait_hotend_temperature(parameters['S']);
     else
         mechanics.wait_hotend_temperature(position.temp_e0);
+    screen.update();
 }
 
 void PrinterController::gcode_M140(const Parameters& parameters) {
-    if (parameters.find('S'))
+    if (parameters.find('S')) {
         position.temp_bed = parameters['S'];
         mechanics.set_bed_temperature(parameters['S']);
+    }
+    screen.update();
 }
 
 void PrinterController::gcode_M190(const Parameters& parameters) {
@@ -224,4 +232,5 @@ void PrinterController::gcode_M190(const Parameters& parameters) {
         mechanics.wait_bed_temperature(parameters['S']);
     else
         mechanics.wait_bed_temperature(position.temp_bed);
+    screen.update();
 }

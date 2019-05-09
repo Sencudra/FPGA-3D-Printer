@@ -40,9 +40,9 @@ struct PrinterVariables {
 
     struct Status {
         // Errors / Для индикаторов ошибок
-        bool isPadHot           = false; // Статус температуры стола
+        bool isPadHot           = true; // Статус температуры стола
         bool isRodEmpty         = false; // Пруток закончился 
-        bool isExtruderDirty    = false; // 
+        bool isExtruderDirty    = true; //
         bool isRodBroken        = false; // Обрыв прутка
     };
 
@@ -59,16 +59,24 @@ struct PrinterVariables {
             int current;
             int set;
             int max;
+
+            bool operator==(const Element& rhs) {
+                bool compare =  isEnabled == rhs.isEnabled ||
+                                current == rhs.current ||
+                                set == rhs.set ||
+                                max == rhs.max;
+                return compare;
+            }
         };
 
         /* Properties */
 
-        Preset currentPreset; // Текущий выбранный пресет
-        Precision currentPrecision; // 100 10 1 0.1 0.01
+        Preset currentPreset      = PLA;  // Текущий выбранный пресет
+        Precision currentPrecision = P100; // 100 10 1 0.1 0.01
 
         InfoLine infoLine   = IDLE;     // Информационная стока
-        bool isThinking = false;    // Для вращающейся фигни
-        int processBar  = 0;        
+        bool isThinking = false;        // Для вращающейся фигни
+        int processBar  = 0;
 
         Element nozzle  = {false, 0, 0, MAX_TEMP};
         Element pad     = {false, 0, 0, MAX_TEMP};
@@ -135,5 +143,15 @@ struct PrinterVariables {
     Slicer slicer;
     Movement movement;
 };
+
+/* Helper function */
+
+template<class T>
+bool isValueChanged(T firstArg, T secondArg) {
+    /*
+        Checks is values changed. Use carefully.
+    */
+    return firstArg != secondArg;
+}
 
 #endif //INC_3D_PRINTER_TYPES_H
