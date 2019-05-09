@@ -10,6 +10,7 @@
 #include <chrono>
 #include <thread>
 #include <queue>
+#include <ctime>
 
 using namespace std; 
 
@@ -19,10 +20,11 @@ public:
 
 	enum Attribute { 
 		PICC, 
-		PICC0, 
-		PICC1, 
+		PIC0, 
+		PIC1, 
 		VAL,
-		TXT
+		TXT,
+		EN
 	};
 
 	enum Screen { 
@@ -48,9 +50,12 @@ public:
 
     void openScreen(Screen screen);
 
+
+	void refreshIndicator(string name);
     void updateIndicator(string name, Attribute attribute, bool value);
     void updateIndicator(string name, Attribute attribute, int value);
     void updateIndicator(string name, Attribute attribute, string value);
+    void updateTimer(int value);
 
 	void listen2port();
 	
@@ -66,6 +71,8 @@ private:
 
 	thread listening_thread;
 
+	clock_t timer;
+
 	/* Constructors */
 	UART(const string& name );
 	UART(const UART&) = delete;
@@ -76,7 +83,7 @@ private:
 	void setup_port();
 	void start_listening();
 
-	void sendCommand(const string& message) const;
+	void sendCommand(const string& message);
 	void write2port(const string& message) const;
 	void addTask(const vector<int>& task);
 
