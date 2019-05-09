@@ -60,7 +60,7 @@ module home_g28(
 	begin		
 		if (start_driving == 1)
 		begin
-			dir3 = 0;
+			dir3 = 1;
 			if (!zmin & homez)
 			begin
 				if (m3 == 0)
@@ -90,7 +90,7 @@ module home_g28(
 	always @(posedge clk)
 	begin
 		if (start_driving == 1)
-			begin
+		begin
 			if (!xmin & !ymin & homex & homey)
 			begin
 				if (f != 0)

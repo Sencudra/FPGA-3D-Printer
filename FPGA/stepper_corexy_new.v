@@ -44,8 +44,6 @@
 	reg [31:0]	stepper_speed_reg_1		= 0;
 	reg [31:0]	stepper_speed_reg_2		= 0;
 	
-	reg 			step_changed	 			= 0;
-	
 	reg [31:0]	recount						= 0;
 	
 	reg			f								= 0;
@@ -99,8 +97,6 @@
 						if (stepper_step_2[31])
 							n_2 = ~n_2 + 1;
 						m_2 = stepper_speed_reg_2 - 1;
-						
-						step_changed = 0;	
 			
 						f = 1;					
 						

@@ -42,6 +42,7 @@ FPGA/db/
 FPGA/simulation/
 FPGA/_output_files/
 FPGA/PLLJ_PLLSPE_INFO.txt
+FPGA/testing
 
 # Compiled source #
 ###################

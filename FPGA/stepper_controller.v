@@ -74,23 +74,23 @@ module stepper_controller(
 	
 	assign steppers_driv_d = steppers_driv_xy | steppers_driv_z | steppers_driv_e;
 	
-	assign step_signal_1 		= (start_driving ^ start_homing) & ((start_driving & step_signal_1_d) 	| (start_homing & step_signal_1_h));
+	assign step_signal_1 		= (start_driving ^ start_homing) & ((start_driving & step_signal_1_d) | (start_homing & step_signal_1_h));
 	assign enable_1 				= ~stepper_enable;
-	assign dir_1 					= (start_driving ^ start_homing) & ((start_driving & dir_1_d) 				| (start_homing & dir_1_h));
+	assign dir_1 					= (start_driving ^ start_homing) & ((start_driving & dir_1_d) 			 | (start_homing & dir_1_h));
 	
-	assign step_signal_2 		= (start_driving ^ start_homing) & ((start_driving & step_signal_2_d) 	| (start_homing & step_signal_2_h));
+	assign step_signal_2 		= (start_driving ^ start_homing) & ((start_driving & step_signal_2_d) | (start_homing & step_signal_2_h));
 	assign enable_2 				= ~stepper_enable;
-	assign dir_2 					= (start_driving ^ start_homing) & ((start_driving & dir_2_d) 				| (start_homing & dir_2_h));
+	assign dir_2 					= (start_driving ^ start_homing) & ((start_driving & dir_2_d) 			 | (start_homing & dir_2_h));
 	
-	assign step_signal_3 		= (start_driving ^ start_homing) & ((start_driving & step_signal_3_d) 	| (start_homing & step_signal_3_h));
+	assign step_signal_3 		= (start_driving ^ start_homing) & ((start_driving & step_signal_3_d) | (start_homing & step_signal_3_h));
 	assign enable_3 				= ~stepper_enable;
-	assign dir_3 					= (start_driving ^ start_homing) & ((start_driving & dir_3_d) 				| (start_homing & dir_3_h));
+	assign dir_3 					= (start_driving ^ start_homing) & ((start_driving & dir_3_d) 			 | (start_homing & dir_3_h));
 	
 	assign step_signal_4 		= (start_driving ^ start_homing) & (start_driving & step_signal_4_d);
 	assign enable_4 				= ~stepper_enable;
 	assign dir_4 					= (start_driving ^ start_homing) & (start_driving & dir_4_d);
 	
-	assign steppers_driving 	= (start_driving ^ start_homing) & ((start_driving & steppers_driv_d) 	| (start_homing & steppers_driv_h));
+	assign steppers_driving 	= (start_driving ^ start_homing) & ((start_driving & steppers_driv_d) | (start_homing & steppers_driv_h));
 	
 	
 	home_g28 home( .clk(clk), 					
