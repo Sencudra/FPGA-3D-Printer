@@ -1,6 +1,7 @@
 #ifndef INC_3D_PRINTER_CONFIGURATION_H
 #define INC_3D_PRINTER_CONFIGURATION_H
 
+#include <cstdint>
 
 //Убрал public, так как компилятор на него ругался
 static const bool X_MIN_ENDSTOP_INVERTING = true; // set to true to invert the logic of the endstop.

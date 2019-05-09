@@ -7,7 +7,6 @@
 
 #include "dict.h"
 #include "types.h"
-#include "configuration.h"
 
 #include "MechanicsController.h"
 #include "ScreenController.h"
@@ -30,6 +29,7 @@ public:
 
     StateType state;
     Position position;
+    PrinterVariables settings;
 
     // пути к файлам для слайсинга/печати
     string to_slice;

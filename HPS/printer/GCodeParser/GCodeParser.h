@@ -18,6 +18,7 @@ class gcodeParser {
 public:
     explicit gcodeParser(const string& path);
     ~gcodeParser();
+    int get_command_percentage();
 
     pair<string, Parameters> parse_command();
     bool is_done();

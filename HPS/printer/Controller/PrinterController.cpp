@@ -49,7 +49,8 @@ void PrinterController::printing() {
             // передать на экран ошибку
         }
 
-        // передать на экран кол-во пройденных комманд
+        variables.common.processBar = parser.get_command_percentage();// передать на экран кол-во пройденных комманд
+        //обновить экран
         // обратобать события экрана
 
         while (state == Pause_Printing) {
@@ -58,6 +59,10 @@ void PrinterController::printing() {
     }
 
     state = Waiting;
+    if (parser.is_done())
+        variables.common.infoLine = PrinterVariables::Common::IDLE;
+    else
+        variables.common.infoLine = PrinterVariables::Common::ERROR;
     // если parser.is_done то все хорошо
     // иначе печать завершилась аварийно
 }

@@ -46,7 +46,17 @@ void MechanicsController::move(int32_t da, int32_t db, int32_t dz, uint32_t sa, 
     *addr_stepper_4_steps_in = 0;
 
     set_flags_in_start_driving_state(true);
-    while (get_flags_out_stepper_state());
+    usleep(100);
+
+    int k = 0;
+    while (get_flags_out_stepper_state() || (k!=1000))
+    {
+        if (!get_flags_out_stepper_state())
+            k = k + 1;
+        else
+            k = 0;
+        usleep(1000);
+    }
     set_flags_in_start_driving_state(false);
 
     usleep(2);
@@ -80,7 +90,17 @@ void MechanicsController::move_extrude(int32_t da, int32_t db, int32_t dz, int32
     *addr_stepper_4_steps_in = de;
 
     set_flags_in_start_driving_state(true);
-    while (get_flags_out_stepper_state());
+    usleep(100);
+
+    int k = 0;
+    while (get_flags_out_stepper_state() || (k!=1000))
+    {
+        if (!get_flags_out_stepper_state())
+            k = k + 1;
+        else
+            k = 0;
+        usleep(1000);
+    }
 
     set_flags_in_start_driving_state(false);
 
@@ -108,19 +128,27 @@ void MechanicsController::auto_home(bool x, bool y, bool z) {
     set_flags_in_homez(z);
 
     //надо подправить, т.к. нет скорости
-    *addr_stepper_1_speed = uint32_t(abs(frequency / (((fmin(maxspeed, HOMING_FEEDRATE_XY))*DEFAULT_AXIS_STEPS_PER_UNIT[0])/60)));
-    *addr_stepper_2_speed = uint32_t(abs(frequency / (((fmin(maxspeed, HOMING_FEEDRATE_XY))*DEFAULT_AXIS_STEPS_PER_UNIT[0])/60)));
-    *addr_stepper_3_speed = uint32_t(abs(frequency / (((fmin(maxspeed, HOMING_FEEDRATE_Z))*DEFAULT_AXIS_STEPS_PER_UNIT[0])/60)));
+    *addr_stepper_1_speed = uint32_t(abs(frequency / (((fmin(maxspeed, HOMING_FEEDRATE_XY))*DEFAULT_AXIS_STEPS_PER_UNIT[0]) / 60)));
+    *addr_stepper_2_speed = uint32_t(abs(frequency / (((fmin(maxspeed, HOMING_FEEDRATE_XY))*DEFAULT_AXIS_STEPS_PER_UNIT[1]) / 60)));
+    *addr_stepper_3_speed = uint32_t(abs(frequency / (((fmin(maxspeed, HOMING_FEEDRATE_Z))*DEFAULT_AXIS_STEPS_PER_UNIT[2]) / 60)));
 
     set_flags_in_start_homing_state(true);
 
-    usleep(2);
+    usleep(100);
 
-    while (get_flags_out_stepper_state());
+    int k = 0;
+    while (get_flags_out_stepper_state() || (k!=1000))
+    {
+        if (!get_flags_out_stepper_state())
+            k = k + 1;
+        else
+            k = 0;
+        usleep(1000);
+    }
 
     set_flags_in_start_homing_state(false);
 
-    usleep(2);
+    usleep(20);
 
     *addr_stepper_1_speed = 0;
     *addr_stepper_2_speed = 0;

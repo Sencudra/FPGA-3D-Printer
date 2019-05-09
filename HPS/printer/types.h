@@ -21,6 +21,7 @@ struct Position {
 
     int32_t temp_bed = 0;
     int32_t temp_e0 = 0;
+    int32_t cooler = 0;
 };
 
 struct PrinterVariables {
@@ -41,7 +42,7 @@ struct PrinterVariables {
 
         enum Preset { PLA, ABS, PVA, PRESET1, PRESET2, PRESET3 };
         enum InfoLine { IDLE, PAUSED, BLOCKED_SCREEN, ERROR }; // СЮДА НУЖНО ДОБАВИТЬ ВСЕ СТАТУСЫ
-        enum Precision { P100, P10, P1, P01, P001};
+        enum Precision { P100 = 10000, P10 = 1000, P1 = 100, P01 = 10, P001 = 1};
 
         struct Element {
             bool isEnabled;
@@ -52,16 +53,16 @@ struct PrinterVariables {
 
         /* Properties */
 
-        Preset current; // Текущий выбранный пресет
-        Precision precision; // 100 10 1 0.1 0.01
+        Preset currentPreset; // Текущий выбранный пресет
+        Precision currentPrecision; // 100 10 1 0.1 0.01
 
-        InfoLine info   = IDLE;     // Информационная стока
+        InfoLine infoLine   = IDLE;     // Информационная стока
         bool isThinking = false;    // Для вращающейся фигни
         int processBar  = 0;        
 
-        Element nozzle  = {false, 0, 0, 300}; 
-        Element pad     = {false, 0, 0, 300};
-        Element cooller = {false, 0, 0, 100};
+        Element nozzle  = {false, 0, 0, MAX_TEMP};
+        Element pad     = {false, 0, 0, MAX_TEMP};
+        Element cooler = {false, 0, 0, 100};
 
         float PID_P = 0.0f;
         float PID_I = 0.0f;
@@ -83,7 +84,7 @@ struct PrinterVariables {
         struct Set {
             int nozzle  = 0;
             int pad     = 0;
-            int coller  = 0;
+            int cooler  = 0;
         };
 
         Set PLA;
