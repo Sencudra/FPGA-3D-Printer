@@ -64,7 +64,7 @@ vpath %.cpp $(sort $(dir $(SOURCES)))
 #
 
 # Fast make
-fast: info linking done
+fast: linking done
 
 # Default make
 full: clean info linking done

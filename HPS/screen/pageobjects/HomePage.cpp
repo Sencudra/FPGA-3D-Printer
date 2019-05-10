@@ -73,6 +73,7 @@ void HomePage::touch(vector<int>& command) {
 					controller.uart.updateIndicator(indicator2string(Indicator::b_preset_1), 
 					UART::Attribute::VAL, 1);
 			}
+			controller.printer->change_preset_start(PrinterVariables::Common::Preset::PLA);
 			break;
 		}	
 		case Button::b_preset_2:{
@@ -82,6 +83,7 @@ void HomePage::touch(vector<int>& command) {
 					controller.uart.updateIndicator(indicator2string(Indicator::b_preset_2), 
 					UART::Attribute::VAL, 1);
 			}
+			controller.printer->change_preset_start(PrinterVariables::Common::Preset::ABS);
 			break;
 		}
 		case Button::b_preset_3:{
@@ -91,6 +93,7 @@ void HomePage::touch(vector<int>& command) {
 					controller.uart.updateIndicator(indicator2string(Indicator::b_preset_3), 
 					UART::Attribute::VAL, 1);
 			}
+			controller.printer->change_preset_start(PrinterVariables::Common::Preset::PVA);
 			break;
 		}
 		case Button::b_preset_4:{
@@ -100,6 +103,7 @@ void HomePage::touch(vector<int>& command) {
 					controller.uart.updateIndicator(indicator2string(Indicator::b_preset_4), 
 					UART::Attribute::VAL, 1);
 			}
+			controller.printer->change_preset_start(PrinterVariables::Common::Preset::PRESET1);
 			break;
 		}
 		case Button::b_preset_5:{
@@ -109,6 +113,7 @@ void HomePage::touch(vector<int>& command) {
 					controller.uart.updateIndicator(indicator2string(Indicator::b_preset_5), 
 					UART::Attribute::VAL, 1);
 			}
+			controller.printer->change_preset_start(PrinterVariables::Common::Preset::PRESET2);
 			break;
 		}
 		case Button::b_preset_6: {
@@ -118,6 +123,7 @@ void HomePage::touch(vector<int>& command) {
 					controller.uart.updateIndicator(indicator2string(Indicator::b_preset_6), 
 					UART::Attribute::VAL, 1);
 			}
+			controller.printer->change_preset_start(PrinterVariables::Common::Preset::PRESET3);
 			break;
 		}
 		default: {
