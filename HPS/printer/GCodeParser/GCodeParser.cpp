@@ -62,5 +62,5 @@ bool gcodeParser::is_done() {
 }
 
 int gcodeParser::get_command_percentage(){
-    return int(current_command / commands);
+    return (int) 100 * (float) current_command / commands);
 }
