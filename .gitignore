@@ -27,6 +27,7 @@ FPGA/*.txt # Explicitly add any text files used
 FPGA/*~
 FPGA/*example*
 FPGA/*sopc_*
+FPGA/project
 
 # Don't track content of these folders
 /cmake-build-debug
