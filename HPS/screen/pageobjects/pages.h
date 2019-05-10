@@ -76,15 +76,15 @@ class HomePage: public BasePage {
 		b_nav_print 	= 7,
 		b_nav_control   = 8,
 		b_nav_settings  = 9,
-		b_preset_1 		= 11,
-		b_preset_2 		= 12,
-		b_preset_3 		= 13,
-		b_preset_4 		= 14,
-		b_preset_5 		= 15,
-		b_preset_6 		= 16,
-		b_hotspot_1 	= 29,
-		b_hotspot_2 	= 30,
-		b_hotspot_3 	= 31
+		b_preset_1 		= 10,
+		b_preset_2 		= 11,
+		b_preset_3 		= 12,
+		b_preset_4 		= 13,
+		b_preset_5 		= 14,
+		b_preset_6 		= 15,
+		b_hotspot_1 	= 28,
+		b_hotspot_2 	= 29,
+		b_hotspot_3 	= 30
 	};
 
 	enum class Indicator {

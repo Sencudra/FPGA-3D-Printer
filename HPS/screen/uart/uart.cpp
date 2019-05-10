@@ -166,8 +166,8 @@ void UART::write2port(const string& message) const {
 	memset(write_buffer, 0, msg_len);	
 	strcpy(write_buffer, message.c_str());
 
-	int bytes_written = write(port_descriptor, write_buffer, msg_len);
-	
+	//int bytes_written = 
+	write(port_descriptor, write_buffer, msg_len);
 	//cout << "OK - UART::write - Word: |" << message << "| , Bytes written: " << bytes_written << " / " << msg_len << endl;
 }
 
