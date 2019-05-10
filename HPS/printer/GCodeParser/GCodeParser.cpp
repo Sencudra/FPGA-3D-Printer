@@ -37,7 +37,7 @@ pair<string, Parameters> gcodeParser::parse_command() {
     }
 
     int space_idx = -1;
-    uint i = 0;
+    int i = 0;
     for (; i < line.size() && line[i] != ';'; ++i) {
         if (line[i] == ' ') {
             if (space_idx == -1) {
@@ -59,4 +59,8 @@ pair<string, Parameters> gcodeParser::parse_command() {
 
 bool gcodeParser::is_done() {
     return commands == current_command;
+}
+
+int gcodeParser::get_command_percentage(){
+    return (int) 100 * (float) current_command / commands);
 }

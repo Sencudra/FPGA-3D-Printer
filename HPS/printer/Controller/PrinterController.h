@@ -13,6 +13,9 @@
 #include "ScreenController.h"
 #include "stl2gcode_parameters.h"
 
+#include <iostream>
+#include <fstream>
+
 using namespace std;
 
 class PrinterController {
@@ -37,6 +40,9 @@ public:
     // пути к файлам для слайсинга/печати
     string to_slice;
     string to_print;
+    // пути к файлам с настройками/вспомагательным
+    const string to_settings = "settings.txt";
+    const string extra_set = "temp.txt";
 
     void main_loop();
 
@@ -81,10 +87,50 @@ public:
             {"M190", &PrinterController::gcode_M190},
     };
 
-    // Screen oriented public methods
+    //Методы для вызова с экрана
+    void update_parameters(); //Обновить изменяющиеся параметры (температура, статус, др)
+    void change_preset_start(PrinterVariables::Common::Preset preset); //Изменить пресет и запустить его
+    void setNewPresetValue(PrinterVariables::Common::Preset preset); //Изменить пресет
+    void setNewPrecisionValue(PrinterVariables::Common::Precision precision); //Изменить шкалу шага
+    void home(); //Выполнить команду home(G28 X0 Y0 Z0)
+    void control(DrivingControl d); //Изменить положение каретки
+    void pause_printing();
+    void block_screen();
+    void abort_printing();
+    void start_slicing(string path);
+    void print_settings(SlicingParameters sp);
 
-    void setNewPresetValue(PrinterVariables::Common::Preset preset);
-    
-};
+    //Settings.General
+    void change_general_settings(int sg); //PreprintSetup and SettingsPID
+    void save_general_settings();
+    void restore_default_general_settings();
+
+    //Settings.preprint
+    void change_preset_settings(PreprintSetup ps);
+    void save_preset_settings();
+    void restore_default_preset_settings();
+
+    //Settings.Movement.Speed
+    void change_movement_speed(SpeedSettings ps);
+    void save_movement_speed();
+    void restore_default_movement_speed();
+
+    //Settings.Movement.Steps
+    void change_movement_steps(StepsSettings ps);
+    void save_movement_steps();
+    void restore_default_movement_steps();
+
+    //Работа с файлом настроек
+    void set_pid(float pid_p, float pid_i, float pid_d);
+    void set_preset(PrinterVariables::Common::Preset preset, int temp_nozzle, int temp_pad, int cooler);
+    void set_speed(float x, float y, float z, float e);
+    void set_max_xyz(float max_x, float max_y, float max_z);
+
+    void get_pid(float& pid_p, float& pid_i, float& pid_d);
+    void get_preset(PrinterVariables::Common::Preset preset, int& temp_nozzle, int& temp_pad, int& cooler);
+    void get_speed(float& x, float& y, float& z, float& e);
+    void get_max_xyz(float& max_x, float& max_y, float& max_z);
+
+    };
 
 #endif //INC_3D_PRINTER_PRINTERCONTROLLER_H

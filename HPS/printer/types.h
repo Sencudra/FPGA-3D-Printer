@@ -1,10 +1,22 @@
 #ifndef INC_3D_PRINTER_TYPES_H
 #define INC_3D_PRINTER_TYPES_H
 
+#include "configuration.h"
+
 
 enum StateType {Waiting, Slicing, Printing, Pause_Printing, Stop_Printing, ShuttingDown};
 
 enum CoordinateSystemType {Relative, Absolute};
+
+enum DrivingControl {X_Minus, X_Plus, Y_Minus, Y_Plus, Z_Minus, Z_Plus, E_Minus, E_Plus};
+enum SlicingParameters {Layer_Width_Minus, Layer_Width_Plus, Base_Thicknes_Minus, Base_Thicknes_Plus, Filling_Density_Minus, Filling_Density_Plus};
+enum SettingsPID {PID_P_Minus=6, PID_P_Plus, PID_I_Minus, PID_I_Plus, PID_D_Minus, PID_D_Plus};
+enum PreprintSetup {Nozzle_Plus, Nozzle_Minus, Pad_Plus, Pad_Minus, Cooler_Minus, Cooler_Plus};
+enum SpeedSettings {Speed_X_Plus, Speed_X_Minus, Speed_Y_Plus, Speed_Y_Minus, Speed_Z_Plus, Speed_Z_Minus, Speed_E_Plus, Speed_E_Minus};
+enum StepsSettings {Steps_X_Plus, Steps_X_Minus, Steps_Y_Plus, Steps_Y_Minus, Steps_Z_Plus, Steps_Z_Minus};
+
+
+
 
 struct Position {
     float x = 0.0f;
@@ -12,14 +24,14 @@ struct Position {
     float z = 0.0f;
     float e = 0.0f;
 
-    float s = 0.0f;
-    //добавить отдельно для оси Z?
+    float s = default_speed;
 
     CoordinateSystemType xyz_type = Absolute;
     CoordinateSystemType extruder_type = Absolute;
 
     int32_t temp_bed = 0;
     int32_t temp_e0 = 0;
+    int32_t cooler = 0;
 };
 
 struct PrinterVariables {
@@ -30,7 +42,7 @@ struct PrinterVariables {
         // Errors / Для индикаторов ошибок
         bool isPadHot           = true; // Статус температуры стола
         bool isRodEmpty         = false; // Пруток закончился 
-        bool isExtruderDirty    = true; // 
+        bool isExtruderDirty    = true; //
         bool isRodBroken        = false; // Обрыв прутка
     };
 
@@ -40,7 +52,7 @@ struct PrinterVariables {
 
         enum Preset { PLA, ABS, PVA, PRESET1, PRESET2, PRESET3 };
         enum InfoLine { IDLE, PAUSED, BLOCKED_SCREEN, ERROR }; // СЮДА НУЖНО ДОБАВИТЬ ВСЕ СТАТУСЫ
-        enum Precision { P100, P10, P1, P01, P001};
+        enum Precision { P100 = 10000, P10 = 1000, P1 = 100, P01 = 10, P001 = 1};
 
         struct Element {
             bool isEnabled;
@@ -49,7 +61,7 @@ struct PrinterVariables {
             int max;
 
             bool operator==(const Element& rhs) {
-                bool compare =  isEnabled == rhs.isEnabled || 
+                bool compare =  isEnabled == rhs.isEnabled ||
                                 current == rhs.current ||
                                 set == rhs.set ||
                                 max == rhs.max;
@@ -64,18 +76,17 @@ struct PrinterVariables {
 
         InfoLine infoLine   = IDLE;     // Информационная стока
         bool isThinking = false;        // Для вращающейся фигни
-        int processBar  = 0;     
+        int processBar  = 0;
 
-        Element nozzle  = {true, 0, 0, 300}; 
-        Element pad     = {true, 0, 0, 300};
-        Element cooler = {true, 0, 0, 100};
+        Element nozzle  = {false, 0, 0, MAX_TEMP};
+        Element pad     = {false, 0, 0, MAX_TEMP};
+        Element cooler = {false, 0, 0, 100};
 
         float PID_P = 0.0f;
         float PID_I = 0.0f;
         float PID_D = 0.0f;
 
         bool isTemperatureAuto = false; // ?
-
     };
 
     // Slicer settings
@@ -120,7 +131,6 @@ struct PrinterVariables {
 
         Speed speed;
         Steps steps;
-
     };
 
     /* Properties */
@@ -132,7 +142,6 @@ struct PrinterVariables {
     Presets presets;
     Slicer slicer;
     Movement movement;
-
 };
 
 /* Helper function */

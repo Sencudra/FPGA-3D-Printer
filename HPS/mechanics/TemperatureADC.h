@@ -69,7 +69,7 @@ const int32_t temptable_11[][2] = {
         {  3205*oversampling_rate ,  15 },
         {  3225*oversampling_rate ,  10 },
         {  3242*oversampling_rate ,  5 },
-        {  3255*oversampling_rate ,  0 },
+        {  3255*oversampling_rate ,  0 }
 };
 
 #endif //INC_3D_PRINTER_TEMP_11_H

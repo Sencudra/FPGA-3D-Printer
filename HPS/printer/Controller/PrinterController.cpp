@@ -7,6 +7,13 @@
 PrinterController::PrinterController() {
     mechanics.printer = this;
     screen.printer = this;
+
+    //Считывание настроек экрана из файла
+    restore_default_general_settings();
+    restore_default_preset_settings();
+    restore_default_movement_speed();
+    restore_default_movement_steps();
+
     state = Waiting;
     waiting();
 }
@@ -43,7 +50,7 @@ void PrinterController::slicing() {
 void PrinterController::printing() {
     // state == Printing
     gcodeParser parser(to_print);
-    while (!parser.is_done() && state != Stop_Printing) {
+    while ((!parser.is_done()) && (state != Stop_Printing)) {
         string command;
         Parameters parameters;
         tie(command, parameters) = parser.parse_command();
@@ -56,7 +63,8 @@ void PrinterController::printing() {
             // передать на экран ошибку
         }
 
-        // передать на экран кол-во пройденных комманд
+        settings.common.processBar = parser.get_command_percentage();// передать на экран кол-во пройденных комманд
+        screen.update();
         // обратобать события экрана
 
         while (state == Pause_Printing) {
@@ -64,6 +72,11 @@ void PrinterController::printing() {
         }
     }
 
+    state = Waiting;
+    if (parser.is_done())
+        settings.common.infoLine = PrinterVariables::Common::IDLE;
+    else
+        settings.common.infoLine = PrinterVariables::Common::ERROR;
     // если parser.is_done то все хорошо
     // иначе печать завершилась аварийно
 }
