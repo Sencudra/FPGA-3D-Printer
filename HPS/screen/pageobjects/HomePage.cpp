@@ -68,62 +68,56 @@ void HomePage::touch(vector<int>& command) {
 		
 		case Button::b_preset_1:{
 			cout << "Button PLA" << endl;
-			controller.printer->setNewPresetValue(PrinterVariables::Common::Preset::PLA);
+			controller.printer->change_preset_start(PrinterVariables::Common::Preset::PLA);
 			if (cpPreset == PrinterVariables::Common::Preset::PLA) {
 					controller.uart.updateIndicator(indicator2string(Indicator::b_preset_1), 
 					UART::Attribute::VAL, 1);
 			}
-			controller.printer->change_preset_start(PrinterVariables::Common::Preset::PLA);
 			break;
 		}	
 		case Button::b_preset_2:{
 			cout << "Button ABS" << endl;
-			controller.printer->setNewPresetValue(PrinterVariables::Common::Preset::ABS);
+			controller.printer->change_preset_start(PrinterVariables::Common::Preset::ABS);
 			if (cpPreset == PrinterVariables::Common::Preset::ABS) {
 					controller.uart.updateIndicator(indicator2string(Indicator::b_preset_2), 
 					UART::Attribute::VAL, 1);
 			}
-			controller.printer->change_preset_start(PrinterVariables::Common::Preset::ABS);
 			break;
 		}
 		case Button::b_preset_3:{
 			cout << "Button PVA" << endl;
-			controller.printer->setNewPresetValue(PrinterVariables::Common::Preset::PVA);
+			controller.printer->change_preset_start(PrinterVariables::Common::Preset::PVA);
 			if (cpPreset == PrinterVariables::Common::Preset::PVA) {
 					controller.uart.updateIndicator(indicator2string(Indicator::b_preset_3), 
 					UART::Attribute::VAL, 1);
 			}
-			controller.printer->change_preset_start(PrinterVariables::Common::Preset::PVA);
 			break;
 		}
 		case Button::b_preset_4:{
 			cout << "Button PRESET1" << endl;
-			controller.printer->setNewPresetValue(PrinterVariables::Common::Preset::PRESET1);
+			controller.printer->change_preset_start(PrinterVariables::Common::Preset::PRESET1);
 			if (cpPreset == PrinterVariables::Common::Preset::PRESET1) {
 					controller.uart.updateIndicator(indicator2string(Indicator::b_preset_4), 
 					UART::Attribute::VAL, 1);
 			}
-			controller.printer->change_preset_start(PrinterVariables::Common::Preset::PRESET1);
 			break;
 		}
 		case Button::b_preset_5:{
 			cout << "Button PRESET2" << endl;
-			controller.printer->setNewPresetValue(PrinterVariables::Common::Preset::PRESET2);
+			controller.printer->change_preset_start(PrinterVariables::Common::Preset::PRESET2);
 			if (cpPreset == PrinterVariables::Common::Preset::PRESET2) {
 					controller.uart.updateIndicator(indicator2string(Indicator::b_preset_5), 
 					UART::Attribute::VAL, 1);
 			}
-			controller.printer->change_preset_start(PrinterVariables::Common::Preset::PRESET2);
 			break;
 		}
 		case Button::b_preset_6: {
 			cout << "Button PRESET3" << endl;
-			controller.printer->setNewPresetValue(PrinterVariables::Common::Preset::PRESET3);
+			controller.printer->change_preset_start(PrinterVariables::Common::Preset::PRESET3);
 			if (cpPreset == PrinterVariables::Common::Preset::PRESET3) {
 					controller.uart.updateIndicator(indicator2string(Indicator::b_preset_6), 
 					UART::Attribute::VAL, 1);
 			}
-			controller.printer->change_preset_start(PrinterVariables::Common::Preset::PRESET3);
 			break;
 		}
 		default: {
