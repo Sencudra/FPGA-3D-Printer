@@ -1,4 +1,5 @@
 #include "MechanicsController.h"
+#include "PrinterController.h"
 
 // Вспомогательные методы
 
