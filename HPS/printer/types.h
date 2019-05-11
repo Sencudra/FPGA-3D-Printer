@@ -81,7 +81,7 @@ struct PrinterVariables {
 
         Element nozzle  = {false, 0, 0, MAX_TEMP};
         Element pad     = {false, 0, 0, MAX_TEMP};
-        Element cooler = {false, 0, 0, 100};
+        Element cooler  = {false, 0, 0, 100};
 
         float PID_P = 0.0f;
         float PID_I = 0.0f;

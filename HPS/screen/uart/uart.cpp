@@ -60,7 +60,7 @@ void UART::updateIndicator(string name, Attribute attribute, string value) {
 		valueString = "\"" + valueString + "\"";
 	}
 
-	sendCommand(name + "." + attributeString + "=" + value);
+	sendCommand(name + "." + attributeString + "=" + valueString);
 }
 
 void UART::updateTimer(int value) {
@@ -242,8 +242,12 @@ void UART::addTask(const vector<int>& task) {
 
 string UART::attribute2string(const Attribute& code) const {
 	switch(code) {
+		case PIC:
+			return "pic";
 		case PICC:
 			return "picc";
+		case PICC2: 
+			return "picc2";
 		case PIC0:
 			return "pic0";
 		case PIC1:

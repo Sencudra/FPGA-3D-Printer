@@ -16,10 +16,20 @@ FileManager::FileManager() {
 }
 
 FileManager::~FileManager() {
-	disconnectUSB();
+
 }
 
 /* Public methods */
+
+bool FileManager::isUSBConnected() {
+	if (usbName == "") {
+		return false;
+	} else if (usbName == findUSB()){
+		return true;
+	} else {
+		return false;
+	}
+}
 
 bool FileManager::connectUSB() {
 
@@ -64,6 +74,12 @@ void FileManager::showCurrentDirectory() {
 
 }
 
+bool FileManager::isHome() {
+	cout << "IS HOME ";
+	cout << deviceDeafultPath << currentPosition << endl;
+	return deviceDeafultPath == currentPosition;
+}
+
 vector<pair<string, FileManager::FileType>> FileManager::getCurrentDirectoryObjectsList() {
 	return readDirectory(currentPosition);
 }
@@ -76,6 +92,7 @@ bool FileManager::openDirectory(const string& name) {
 	bool isFound = false;
 	for (const auto& pair : fileList) {
 		if (pair.first == name && pair.second == FileManager::FileType::DIRECTORY) {
+			cout << "DIRECTORY FOUND: " << pair.first << endl;
 			isFound = true;
 			break;
 		}
@@ -93,7 +110,7 @@ bool FileManager::openDirectory(const string& name) {
 }
 
 bool FileManager::closeDirectory() {
-	if (deviceDeafultPath != CMD("pwd")) {
+	if (!isHome()) {
 
 		auto found = currentPosition.find_last_of("/\\");
 		currentPosition = currentPosition.substr(0,found);
@@ -115,11 +132,13 @@ vector<pair<string, FileManager::FileType>> FileManager::readDirectory(const std
     while ((dp = readdir(dirp)) != NULL) {
 
     	// pass . and ..
-    	if (strcmp(dp->d_name, ".") == 0 || strcmp(dp->d_name, "..") == 0) {
+    	if (strcmp(dp->d_name, ".") == 0 ||
+    		strcmp(dp->d_name, "..") == 0 ||
+    		strcmp(dp->d_name, "System Volume Information") == 0) {
     		continue;
     	}
 
-    	if (dp->d_type == DT_REG) {
+    	if (dp->d_type == DT_REG && isValidExtension(dp->d_name)) {
     		fileList.push_back(make_pair(dp->d_name, FileManager::FileType::FILE));
     	} else if (dp->d_type == DT_DIR) {
     		fileList.push_back(make_pair(dp->d_name, FileManager::FileType::DIRECTORY));
@@ -127,6 +146,18 @@ vector<pair<string, FileManager::FileType>> FileManager::readDirectory(const std
     }
     closedir(dirp);
     return fileList;
+}
+
+bool FileManager::isValidExtension(const string& fileName) {
+
+	auto found = fileName.find_last_of(".");
+	string ext = fileName.substr(found+1);
+
+	if (ext == "g" || ext == "stl" || ext == "gcode") {
+		return true;
+	} else {
+		return false;
+	}
 }
 
 string FileManager::CMD(const string& cmd) const {
@@ -157,7 +188,7 @@ string FileManager::findUSB() const {
     
     if (found != string::npos) {
         port_name = blkid_output.substr(found, pattern.length() + 2);
-        cout << "OK - FileManager::findUSB - USB device found: " << port_name << endl;
+        //cout << "OK - FileManager::findUSB - USB device found: " << port_name << endl;
         return port_name;
     } else {
         return "";

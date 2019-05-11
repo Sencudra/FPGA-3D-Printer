@@ -4,6 +4,7 @@
 #include <vector>
 #include <cstring>
 
+#include "FileManager.h"
 
 class ScreenController;
 class UART;
@@ -112,8 +113,6 @@ class HomePage: public BasePage {
 	};
 
 public:
-	/* Properties */
-
 	/* Constructors */
 	HomePage(ScreenController& controller);
 	virtual ~HomePage() { }
@@ -133,7 +132,6 @@ private:
     const int minActive = 180;
 	const int maxActive = 290;
 	const int rangeActive = maxActive - minActive;
-	/* Constructors */
 
 	/* Methods*/
 	void updateStatusIndicators();
@@ -141,19 +139,24 @@ private:
 	void updatePresetBar();
 	void updateInfo();
 	std::string indicator2string(const Indicator& code) const;
-
 };
 
 
 class PrintPage: public BasePage {
 
-	enum Button {
+	enum class Icon {
+		UP,
+		FOLDER,
+		FILE,
+		EMPTY
+	};
+
+	enum class Button {
 		b_nav_home		= 2,
 		b_nav_control	= 3,
 		b_nav_settings	= 4,
-		b_page_next		= 6,
 		b_page_prev		= 5,
-		b_manager_icon	= 7,
+		b_page_next		= 6,
 		bi_mang_line	= 13,
 		bi_file_name_2	= 14,
 		bi_file_name_3	= 15,
@@ -162,12 +165,31 @@ class PrintPage: public BasePage {
 		bi_file_name_6	= 18,
 	};
 
+	enum class Indicator {
+		i_manager_icon,
+		i_icon_2,
+		i_icon_3,
+		i_icon_4,
+		i_icon_5,
+		i_icon_6,
+		bi_mang_line,
+		bi_file_name_2,
+		bi_file_name_3,
+		bi_file_name_4,
+		bi_file_name_5,
+		bi_file_name_6,
+		i_filepath,
+		i_mang_page,
+		b_page_prev,
+		b_page_next,
+	};
+
 public:
 	/* Properties */
 
 	/* Constructors and destructors */
 	PrintPage(ScreenController& controller);
-	virtual ~PrintPage() { }
+	virtual ~PrintPage();
 
 	/* Methods*/
 	virtual void update();
@@ -175,10 +197,40 @@ public:
 
 private:
 	/* Properties */
+	const int homePageMaxRowsNumber = 6;
+	const int pageMaxRowsNumber = 5;
+	const int maxRowStringLength = 34;
 
-	/* Constructors */
+	bool isInit = false;
+
+	int currentPage;
+	int maxPages;
+	std::string infoLine;
+
+	std::vector<std::pair<std::string, FileManager::FileType>> list;
 
 	/* Methods*/
+
+	bool initialise();
+
+	void nextPage();
+	void prevPage();
+	void rowButtonPressed(int row);
+	void changeDirectory();
+
+	void smartUpdate();
+	void updatePageButtons();
+	void updateInfoLine();
+	void updateRows();
+	void updateRowsIfNotAtHomeAndFirstPage();
+	void updateRowsNormal();
+
+	std::string getCurrentFolderName();
+	std::vector<std::pair<std::string, FileManager::FileType>> getFilesList(int page, bool isHome) const;
+
+	std::string indicator2string(const Indicator& code) const;
+	int ind2pic(const Icon& code) const;
+	int file2pic(const FileManager::FileType& code) const ;
 
 };
 

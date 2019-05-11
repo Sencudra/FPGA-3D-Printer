@@ -19,9 +19,11 @@ class UART {
 public:
 
 	enum Attribute { 
-		PICC, 
+		PIC,
+		PICC,
+		PICC2,
 		PIC0, 
-		PIC1, 
+		PIC1,
 		VAL,
 		TXT,
 		EN

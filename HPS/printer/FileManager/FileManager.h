@@ -26,10 +26,13 @@ public:
 
 	/* Methods */
 
+	bool isUSBConnected();
+
 	bool connectUSB();
 	bool disconnectUSB();
 
 	void showCurrentDirectory();
+	bool isHome();
 	vector<pair<string, FileType>> getCurrentDirectoryObjectsList();
 	
 	bool openDirectory(const string& name);
@@ -48,6 +51,8 @@ private:
 	/* Methods */
 
 	vector<pair<string, FileType>> readDirectory(const std::string& name);
+
+	bool isValidExtension(const string& ext);
 
 	string CMD(const string& cmd) const ;
 	string findUSB() const ;

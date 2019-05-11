@@ -12,6 +12,7 @@
 #include "MechanicsController.h"
 #include "ScreenController.h"
 #include "stl2gcode_parameters.h"
+#include "FileManager.h"
 
 #include <iostream>
 #include <fstream>
@@ -31,6 +32,7 @@ public:
 
     MechanicsController mechanics;
     ScreenController screen;
+    FileManager fileManager;
 
     StateType state;
     Position position;
