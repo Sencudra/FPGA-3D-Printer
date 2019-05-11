@@ -298,6 +298,7 @@ void PrinterController::change_preset_start(PrinterVariables::Common::Preset pre
 void PrinterController::setNewPresetValue(PrinterVariables::Common::Preset preset)
 {
     settings.common.currentPreset = preset;
+    update_parameters();
     screen.update();
 }
 
@@ -313,6 +314,7 @@ void PrinterController::home()
                     {'Y', 0},
                     {'Z', 0}};
     gcode_G28(a);
+    update_parameters();
     screen.update();
 }
 
@@ -357,12 +359,14 @@ void PrinterController::pause_printing()
 {
     state = Pause_Printing;
     settings.common.infoLine = PrinterVariables::Common::PAUSED;
+    update_parameters();
     screen.update();
 }
 
 void PrinterController::block_screen()
 {
     settings.common.infoLine = PrinterVariables::Common::BLOCKED_SCREEN;
+    update_parameters();
     screen.update();
 }
 
@@ -390,8 +394,7 @@ void PrinterController::start_printing(string path)
 
 void PrinterController::print_settings(SlicingParameters sp)
 {
-    switch (sp)
-    {
+    switch (sp) {
         case Layer_Width_Minus:
             settings.slicer.layerWidth -= settings.common.currentPrecision / 100;
             if (settings.slicer.layerWidth < 0)
