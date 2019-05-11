@@ -13,6 +13,7 @@
 
 #include "hwlib.h"
 #include "unistd.h"
+#include <stdio.h>
 
 // sys
 #include "sys/mman.h"

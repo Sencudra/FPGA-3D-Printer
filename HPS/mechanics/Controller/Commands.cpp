@@ -1,4 +1,5 @@
 #include "MechanicsController.h"
+#include "PrinterController.h"
 
 int32_t MechanicsController::voltage_adc(int32_t temp)
 {
@@ -55,7 +56,9 @@ void MechanicsController::move(int32_t da, int32_t db, int32_t dz, uint32_t sa, 
             k = k + 1;
         else
             k = 0;
-        usleep(1000);
+        printer->update_parameters();
+        printer->screen.update();
+        usleep(100000);
     }
     set_flags_in_start_driving_state(false);
 
@@ -99,7 +102,9 @@ void MechanicsController::move_extrude(int32_t da, int32_t db, int32_t dz, int32
             k = k + 1;
         else
             k = 0;
-        usleep(1000);
+        printer->update_parameters();
+        printer->screen.update();
+        usleep(100000);
     }
 
     set_flags_in_start_driving_state(false);
@@ -143,7 +148,9 @@ void MechanicsController::auto_home(bool x, bool y, bool z) {
             k = k + 1;
         else
             k = 0;
-        usleep(1000);
+        printer->update_parameters();
+        printer->screen.update();
+        usleep(100000);
     }
 
     set_flags_in_start_homing_state(false);
@@ -177,7 +184,13 @@ void MechanicsController::wait_hotend_temperature(int32_t t) {
     set_temp_e1_upper(voltage_adc(t));
     set_flags_in_heat_extruder_hold(true);
     usleep(2);
-    while (get_flags_out_heating_extruder());
+    while (get_flags_out_heating_extruder())
+    {
+        printer->update_parameters();
+        printer->screen.update();
+        usleep(100000);
+    }
+
 }
 
 void MechanicsController::set_bed_temperature(int32_t t) {
@@ -194,5 +207,10 @@ void MechanicsController::wait_bed_temperature(int32_t t) {
     set_temp_bed_upper(voltage_adc(t));
     set_flags_in_heat_bed_hold(true);
     usleep(2);
-    while (get_flags_out_heating_bed());
+    while (get_flags_out_heating_bed())
+    {
+        printer->update_parameters();
+        printer->screen.update();
+        usleep(100000);
+    }
 }

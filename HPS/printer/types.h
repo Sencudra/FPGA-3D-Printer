@@ -17,7 +17,6 @@ enum StepsSettings {Steps_X_Plus, Steps_X_Minus, Steps_Y_Plus, Steps_Y_Minus, St
 
 
 
-
 struct Position {
     float x = 0.0f;
     float y = 0.0f;

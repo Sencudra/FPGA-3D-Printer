@@ -103,6 +103,7 @@ void PrinterController::gcode_G1(const Parameters& parameters) {
     position.z += dz;
     position.e += de;
 
+    update_parameters();
     screen.update();
 
     int32_t steps_a, steps_b, steps_z, steps_e;

@@ -26,6 +26,17 @@ class PrinterController {
     void correction(int a_numofmicrosteps, int b_numofmicrosteps, int z_numofmicrosteps, int e_numofmicrosteps,
                     float& dx, float& dy, float& dz, float& de);
 
+    //Работа с файлом настроек
+    void set_pid(float pid_p, float pid_i, float pid_d);
+    void set_preset(PrinterVariables::Common::Preset preset, int temp_nozzle, int temp_pad, int cooler);
+    void set_speed(float x, float y, float z, float e);
+    void set_max_xyz(float max_x, float max_y, float max_z);
+
+    void get_pid(float& pid_p, float& pid_i, float& pid_d);
+    void get_preset(PrinterVariables::Common::Preset preset, int& temp_nozzle, int& temp_pad, int& cooler);
+    void get_speed(float& x, float& y, float& z, float& e);
+    void get_max_xyz(float& max_x, float& max_y, float& max_z);
+
 public:
     PrinterController();
 
@@ -98,6 +109,7 @@ public:
     void block_screen();
     void abort_printing();
     void start_slicing(string path);
+    void start_printing(string path);
     void print_settings(SlicingParameters sp);
 
     //Settings.General
@@ -120,16 +132,7 @@ public:
     void save_movement_steps();
     void restore_default_movement_steps();
 
-    //Работа с файлом настроек
-    void set_pid(float pid_p, float pid_i, float pid_d);
-    void set_preset(PrinterVariables::Common::Preset preset, int temp_nozzle, int temp_pad, int cooler);
-    void set_speed(float x, float y, float z, float e);
-    void set_max_xyz(float max_x, float max_y, float max_z);
 
-    void get_pid(float& pid_p, float& pid_i, float& pid_d);
-    void get_preset(PrinterVariables::Common::Preset preset, int& temp_nozzle, int& temp_pad, int& cooler);
-    void get_speed(float& x, float& y, float& z, float& e);
-    void get_max_xyz(float& max_x, float& max_y, float& max_z);
 
     };
 

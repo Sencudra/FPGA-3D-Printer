@@ -33,7 +33,9 @@ void PrinterController::main_loop() {
 void PrinterController::waiting() {
     // state == Waiting
     // работа с экраном: обратобать события экрана
-
+    usleep(100000);
+    update_parameters();
+    screen.update();
     // экран может изменять состояния принтера
 }
 
@@ -41,8 +43,7 @@ void PrinterController::slicing() {
     // state == Slicing
     // to_slice - путь к stl файлу
     stl2gcode stl2Gcode(to_slice, stl2GcodeParameters);
-    // TODO: указать путь для gcode файла
-    to_print = "";
+    to_print = to_slice.substr(0, to_slice.length() - 3) + "gcode";
     stl2Gcode.convert(to_print);
     state = Printing;
 }
@@ -64,6 +65,7 @@ void PrinterController::printing() {
         }
 
         settings.common.processBar = parser.get_command_percentage();// передать на экран кол-во пройденных комманд
+        update_parameters();
         screen.update();
         // обратобать события экрана
 
@@ -76,7 +78,7 @@ void PrinterController::printing() {
     if (parser.is_done())
         settings.common.infoLine = PrinterVariables::Common::IDLE;
     else
-        settings.common.infoLine = PrinterVariables::Common::ERROR;
+        settings.common.infoLine = PrinterVariables::Common::ERROR; //TODO: изменить на нужный
     // если parser.is_done то все хорошо
     // иначе печать завершилась аварийно
 }
