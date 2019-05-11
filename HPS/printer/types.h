@@ -4,18 +4,60 @@
 #include "configuration.h"
 
 
-enum StateType {Waiting, Slicing, Printing, Pause_Printing, Stop_Printing, ShuttingDown};
+enum StateType {Waiting, 
+                Slicing,
+                Printing,
+                Pause_Printing,
+                Stop_Printing,
+                ShuttingDown};
 
 enum CoordinateSystemType {Relative, Absolute};
 
-enum DrivingControl {X_Minus, X_Plus, Y_Minus, Y_Plus, Z_Minus, Z_Plus, E_Minus, E_Plus};
-enum SlicingParameters {Layer_Width_Minus, Layer_Width_Plus, Base_Thicknes_Minus, Base_Thicknes_Plus, Filling_Density_Minus, Filling_Density_Plus};
-enum SettingsPID {PID_P_Minus=6, PID_P_Plus, PID_I_Minus, PID_I_Plus, PID_D_Minus, PID_D_Plus};
-enum PreprintSetup {Nozzle_Plus, Nozzle_Minus, Pad_Plus, Pad_Minus, Cooler_Minus, Cooler_Plus};
-enum SpeedSettings {Speed_X_Plus, Speed_X_Minus, Speed_Y_Plus, Speed_Y_Minus, Speed_Z_Plus, Speed_Z_Minus, Speed_E_Plus, Speed_E_Minus};
-enum StepsSettings {Steps_X_Plus, Steps_X_Minus, Steps_Y_Plus, Steps_Y_Minus, Steps_Z_Plus, Steps_Z_Minus};
+enum DrivingControl {   X_Minus,
+                        X_Plus, 
+                        Y_Minus, 
+                        Y_Plus, 
+                        Z_Minus, 
+                        Z_Plus, 
+                        E_Minus, 
+                        E_Plus};
 
+enum SlicingParameters {Layer_Width_Minus, 
+                        Layer_Width_Plus, 
+                        Base_Thicknes_Minus, 
+                        Base_Thicknes_Plus, 
+                        Filling_Density_Minus, 
+                        Filling_Density_Plus};
 
+enum SettingsPID {  PID_P_Minus=6, 
+                    PID_P_Plus, 
+                    PID_I_Minus, 
+                    PID_I_Plus, 
+                    PID_D_Minus, 
+                    PID_D_Plus};
+
+enum PreprintSetup {Nozzle_Plus, 
+                    Nozzle_Minus, 
+                    Pad_Plus, 
+                    Pad_Minus,
+                    Cooler_Minus,
+                    Cooler_Plus};
+
+enum SpeedSettings {Speed_X_Plus, 
+                    Speed_X_Minus, 
+                    Speed_Y_Plus, 
+                    Speed_Y_Minus, 
+                    Speed_Z_Plus, 
+                    Speed_Z_Minus, 
+                    Speed_E_Plus, 
+                    Speed_E_Minus};
+
+enum StepsSettings {Steps_X_Plus, 
+                    Steps_X_Minus, 
+                    Steps_Y_Plus, 
+                    Steps_Y_Minus, 
+                    Steps_Z_Plus, 
+                    Steps_Z_Minus};
 
 
 struct Position {
@@ -154,5 +196,7 @@ bool isValueChanged(T firstArg, T secondArg) {
     */
     return firstArg != secondArg;
 }
+
+
 
 #endif //INC_3D_PRINTER_TYPES_H

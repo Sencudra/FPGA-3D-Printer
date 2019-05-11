@@ -10,6 +10,7 @@
 #include <future>
 #include <vector>
 #include <ctime>
+#include <cmath>
 
 #include "uart.h"
 
@@ -44,6 +45,20 @@ void UART::updateIndicator(string name, Attribute attribute, bool value) {
 void UART::updateIndicator(string name, Attribute attribute, int value) {
 	string attributeString = attribute2string(attribute);
 	string valueString = to_string(value);
+
+	if (attribute == Attribute::TXT) {
+		valueString = "\"" + valueString + "\"";
+	}
+
+	sendCommand(name + "." + attributeString + "=" + valueString);
+}
+
+void UART::updateIndicator(string name, Attribute attribute, float value) {
+	string attributeString = attribute2string(attribute);
+
+	string pre = to_string(round(value * 100.0)/ 100.0);
+    auto found = pre.find(".");
+    string valueString = pre.substr(0, found + 3);
 
 	if (attribute == Attribute::TXT) {
 		valueString = "\"" + valueString + "\"";
@@ -121,9 +136,12 @@ void UART::start_listening() {
  		bytes_read = read(port_descriptor, &buffer, buffer_size);
 
  		vector<int> command;
+ 		cout << "BUFFER:";
 		for(int i = 0; i < bytes_read - 3; ++i) {
+			cout << " " << (int) buffer[i]; 
 			command.push_back(int(buffer[i]));
 		}
+		cout << endl;
 
  		if (int(buffer[0]) == 101) {
 			addTask(command);

@@ -69,34 +69,64 @@ void ScreenController::setCurrentScreen(Screen name) {
 	delete currentPage;
 
 	switch(name) {
-	case LOADING:{ break;}
-	case HOME:
-	{ 
-		currentPage = new HomePage(*this);
-		break;
-	}
-	case PRINT:
-	{ 
-		currentPage = new PrintPage(*this);
-		break;
-	}
-	case PRINT_SETUP:{ break;}
-	case PRINTING:{ break;}
-	case PRINTING_DONE:{ break;}
-	case CONTROL:
-	{ 
-		currentPage = new ControlPage(*this);	
-		break;
-	}
-	case SETTINGS:
-	{ 
-		currentPage = new SettingsPage(*this);
-		break;
-	}
-	case SETTINGS_P:{ break;}
-	case SETTINGS_M_SPE:{ break;}
-	case SETTINGS_M_STE:{ break;}
-	case WARNING:{ break;}
+		case LOADING:{ 
+			currentPage = new LoadingPage(*this);
+			break;
+		}
+		case HOME:
+		{ 
+			currentPage = new HomePage(*this);
+			break;
+		}
+		case PRINT:
+		{ 
+			currentPage = new PrintPage(*this);
+			break;
+		}
+		case PRINT_SETUP:
+		{
+			currentPage = new PrintSetupPage(*this);
+			break;
+		}
+		case PRINTING:
+		 { 
+			currentPage = new PrintingPage(*this);
+			break;
+		}
+		case PRINTING_DONE:
+		{ 
+			currentPage = new PrintingDonePage(*this);
+			break;
+		}
+		case CONTROL:
+		{ 
+			currentPage = new ControlPage(*this);	
+			break;
+		}
+		case SETTINGS:
+		{ 
+			currentPage = new SettingsPage(*this);
+			break;
+		}
+		case SETTINGS_P:
+		{
+			currentPage = new SettingsPresetsPage(*this);
+			break;
+		}
+		case SETTINGS_M_SPE:
+		{	
+			currentPage = new SettingsMovSpeedPage(*this); 
+			break;
+		}
+		case SETTINGS_M_STE:
+		{
+			currentPage = new SettingsMovStepsPage(*this); 
+			break;
+		}
+		case WARNING:{ 
+			currentPage = new WarningPage(*this);
+			break;
+		}
 	}
 
 	// update current page with actial data

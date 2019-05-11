@@ -132,16 +132,18 @@ void  PrintPage::rowButtonPressed(int row) {
 			changeDirectory();
 		} else {
 			auto currentPageFileList = getFilesList(currentPage, controller.printer->fileManager.isHome());
+			pair<string, FileManager::FileType> choosedPair;
 
-			if (row > currentPageFileList.size()) {
-				cout << "ERROR - PrintPage::rowButtonPressed - row is wrong: " << row << endl;
-				return;
+			if (currentPage == 1 && !controller.printer->fileManager.isHome()) {
+
+				if (row > currentPageFileList.size()) return;
+
+				choosedPair = currentPageFileList[row];
+			} else {
+				if (row >= currentPageFileList.size()) return;
+
+				choosedPair = currentPageFileList[row - 1];
 			}
- 
-
-			cout << "ROW: " << row << " SIZE: "<< currentPageFileList.size() << endl;
-			// offset for screen 
-			auto choosedPair = (currentPage == 1 && !controller.printer->fileManager.isHome()) ? currentPageFileList[row - 1] : currentPageFileList[row];
 
 			if (choosedPair.second == FileManager::FileType::FILE) {
 
@@ -156,7 +158,8 @@ void  PrintPage::rowButtonPressed(int row) {
 
 				if (ext == "stl") {
 					// CHANGE FILE NAME TO WORK WITH FOR PRINTER
-					//controller.setCurrentScreen(ScreenController::Screen::PRINT_SETUP);
+					// send choosed file.
+					controller.setCurrentScreen(ScreenController::Screen::PRINT_SETUP);
 				}
 				// GCODE
 				if (ext == "g" || ext == "gcode") {

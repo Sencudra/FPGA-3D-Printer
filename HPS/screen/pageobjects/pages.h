@@ -5,6 +5,7 @@
 #include <cstring>
 
 #include "FileManager.h"
+#include "types.h"
 
 class ScreenController;
 class UART;
@@ -33,7 +34,7 @@ public:
 	BasePage(ScreenController& controller);
 	virtual ~BasePage() { } 
 
-	/* Methods*/
+	/* Virtual Methods*/
 	virtual void update() = 0;
 	virtual void touch(std::vector<int>& command) = 0;
 
@@ -41,9 +42,6 @@ protected:
 	/* Properties */
 	ScreenController& controller;
 
-	/* Constructors */
-
-	/* Methods*/
 };
 
 
@@ -59,14 +57,6 @@ public:
 	/* Methods*/
 	virtual void update();
 	virtual void touch(std::vector<int>& command);
-
-private:
-	/* Properties */
-
-	/* Constructors */
-
-	/* Methods*/
-
 
 };
 
@@ -185,8 +175,6 @@ class PrintPage: public BasePage {
 	};
 
 public:
-	/* Properties */
-
 	/* Constructors and destructors */
 	PrintPage(ScreenController& controller);
 	virtual ~PrintPage();
@@ -231,16 +219,231 @@ private:
 	std::string indicator2string(const Indicator& code) const;
 	int ind2pic(const Icon& code) const;
 	int file2pic(const FileManager::FileType& code) const ;
+};
+
+
+class PrintSetupPage: public BasePage {
+
+	enum class Button {
+		b_start_print	= 2,
+		b_return		= 3,
+		b_preset_1		= 10,
+		b_preset_2		= 11,
+		b_preset_3		= 12,
+		b_preset_4		= 13,
+		b_preset_5		= 14,
+		b_preset_6		= 15,
+		b_precis_1		= 20, // 19
+		b_precis_2		= 21,
+		b_precis_3		= 22,
+		b_precis_4		= 23,
+		b_precis_5		= 24,
+		b_r1_minus		= 4,
+		b_r2_minus		= 5,
+		b_r3_minus		= 6,
+		b_r1_plus		= 7,
+		b_r2_plus		= 8,
+		b_r3_plus		= 9,
+	};
+
+	enum class Indicator {
+		i_layer_w,
+		i_base_t,
+		i_fiiling_d,
+		b_preset_1,
+		b_preset_2,
+		b_preset_3,
+		b_preset_4,
+		b_preset_5,
+		b_preset_6,
+		b_precis_1,
+		b_precis_2,
+		b_precis_3,
+		b_precis_4,
+		b_precis_5
+	};
+
+public:
+	/* Properties */
+
+	/* Constructors and destructors */
+	PrintSetupPage(ScreenController& controller);
+	virtual ~PrintSetupPage() { }
+
+	/* Methods*/
+	virtual void update();
+	virtual void touch(std::vector<int>& command);
+
+private:
+	/* Properties */
+	bool isUpdateFirstTime;
+	/* Constructors */
+
+	/* Methods*/
+	void updateIndicators();
+
+	void updatePresetBar();
+
+	void updatePrecisionBar();
+
+
+	std::string indicator2string(const Indicator& code) const ;
+};
+
+
+class PrintingPage: public BasePage {
+
+	enum class Button {
+		b_hotspot_1 	= 25,
+		b_hotspot_2 	= 26,
+		b_hotspot_3 	= 27,
+		b_abort 		= 6,
+		b_block_screen 	= 7,
+		b_pause 		= 8
+	};
+
+	enum class Indicator {
+		b_pause,
+		i_ind_1,
+		i_ind_2,
+		i_ind_3,
+		i_ind_4,
+		bi_nozzle_ind,
+		bi_nozzle_set,
+		bi_nozzle_curr,
+		bi_pad_ind,
+		bi_pad_set,
+		bi_pad_curr,
+		bi_fan_ind,
+		bi_fan_set,
+		bi_fan_curr,
+		i_gif_loading,
+		i_info_text,
+		i_process,
+		i_info_pos_x,
+		i_info_pos_y,
+		i_info_pos_z,
+		i_preset,
+	};
+
+public:
+	/* Properties */
+
+	/* Constructors and destructors */
+	PrintingPage(ScreenController& controller);
+	virtual ~PrintingPage() { }
+
+	/* Methods*/
+	virtual void update();
+	virtual void touch(std::vector<int>& command);
+
+private:
+	/* Properties */
+	bool isBlocked;
+	bool isUpdateFirstTime;
+	
+	const int minNotActive = 304;
+    const int maxNotActive = 416;
+    const int rangeNotActive = maxNotActive - minNotActive;
+
+    const int minActive = 417;
+	const int maxActive = 527;
+	const int rangeActive = maxActive - minActive;
+
+	/* Methods*/
+
+	void updatePositionInfo();
+
+	void updatePresetInfo();
+
+	void updateStatusIndicators();
+
+	void updateDisplayIndicators();
+
+	void updateInfo();
+
+	void updateProcessbar();
+
+	std::string preset2string(const PrinterVariables::Common::Preset& preset) const ;
+	std::string indicator2string(const Indicator& code) const ;
 
 };
 
-// 5. PrintSetupPage
-// 6. PrintingPage
-// 7. PrintingDonePage
+
+class PrintingDonePage: public BasePage {
+
+	enum class Button {
+		b_home = 7
+	};
+
+	enum class Indicator {
+		i_ind_1,
+		i_ind_2,
+		i_ind_3,
+		i_ind_4,
+		bi_nozzle_ind,
+		bi_nozzle_set,
+		bi_nozzle_curr,
+		bi_pad_ind,
+		bi_pad_set,
+		bi_pad_curr,
+		bi_fan_ind,
+		bi_fan_set,
+		bi_fan_curr,
+		i_gif_loading,
+		i_info_text,
+		i_process,
+		i_info_pos_x,
+		i_info_pos_y,
+		i_info_pos_z,
+		i_preset
+	};
+
+public:
+	/* Properties */
+
+	/* Constructors and destructors */
+	PrintingDonePage(ScreenController& controller);
+	virtual ~PrintingDonePage() { }
+
+	/* Methods*/
+	virtual void update();
+	virtual void touch(std::vector<int>& command);
+
+private:
+	/* Properties */
+	bool isUpdateFirstTime;
+	
+	const int minNotActive = 304;
+    const int maxNotActive = 416;
+    const int rangeNotActive = maxNotActive - minNotActive;
+
+    const int minActive = 417;
+	const int maxActive = 527;
+	const int rangeActive = maxActive - minActive;
+
+	/* Methods*/
+
+	void updatePositionInfo();
+
+	void updatePresetInfo();
+
+	void updateStatusIndicators();
+
+	void updateDisplayIndicators();
+
+	void updateInfo();
+
+	void updateProcessbar();
+
+	std::string preset2string(const PrinterVariables::Common::Preset& preset) const ;
+	std::string indicator2string(const Indicator& code) const ;
+};
+
 
 class ControlPage: public BasePage {
 
-	enum Button {
+	enum class Button {
 		b_nav_home 		= 2,
 		b_nav_print 	= 3,
 		b_nav_settings 	= 4,
@@ -261,6 +464,20 @@ class ControlPage: public BasePage {
 		b_autocalib 	= 5
 	};
 
+	enum class Indicator {
+		i_gif_loading,
+		i_info_text,
+		i_x,
+		i_y,
+		i_z,
+		i_e,
+		b_precis_1,
+		b_precis_2,
+		b_precis_3,
+		b_precis_4,
+		b_precis_5,
+	};
+
 public:
 	/* Properties */
 
@@ -274,16 +491,22 @@ public:
 
 private:
 	/* Properties */
+	bool isUpdateFirstTime;
 
 	/* Constructors */
 
 	/* Methods*/
+	void updatePrecisionBar();
+	void updateInfo();
+	void updateVariables();
+
+	std::string indicator2string(const Indicator& code) const ;
 
 };
 
 class SettingsPage: public BasePage {
 
-	enum Button {
+	enum class Button {
 		b_preprint		= 38,
 		b_mov			= 39,
 		b_nav_home		= 2,
@@ -315,6 +538,18 @@ class SettingsPage: public BasePage {
 		b_temp_auto		= 31,
 	};
 
+	enum class Indicator {
+		i_nozzle,
+		i_pad,
+		i_cooler,
+		i_PID_P,
+		i_PID_I,
+		i_PID_D,
+		b_temp_auto,
+		i_temp_min,
+		i_temp_max
+	};
+
 public:
 	/* Properties */
 
@@ -328,10 +563,108 @@ public:
 
 private:
 	/* Properties */
+	bool isUpdateFirstTime;
 
 	/* Constructors */
 
 	/* Methods*/
+	void updateIndicators();
+};
+
+
+class SettingsPresetsPage: public BasePage {
+
+public:
+	/* Properties */
+
+	/* Constructors and destructors */
+	SettingsPresetsPage(ScreenController& controller);
+	virtual ~SettingsPresetsPage() { }
+
+	/* Methods*/
+	virtual void update();
+	virtual void touch(std::vector<int>& command);
+
+private:
+	/* Properties */
+
+	/* Constructors */
+
+	/* Methods*/
+
+
+};
+
+
+class SettingsMovSpeedPage: public BasePage {
+
+public:
+	/* Properties */
+
+	/* Constructors and destructors */
+	SettingsMovSpeedPage(ScreenController& controller);
+	virtual ~SettingsMovSpeedPage() { }
+
+	/* Methods*/
+	virtual void update();
+	virtual void touch(std::vector<int>& command);
+
+private:
+	/* Properties */
+
+	/* Constructors */
+
+	/* Methods*/
+
+
+};
+
+
+class SettingsMovStepsPage: public BasePage {
+
+public:
+	/* Properties */
+
+	/* Constructors and destructors */
+	SettingsMovStepsPage(ScreenController& controller);
+	virtual ~SettingsMovStepsPage() { }
+
+	/* Methods*/
+	virtual void update();
+	virtual void touch(std::vector<int>& command);
+
+private:
+	/* Properties */
+
+	/* Constructors */
+
+	/* Methods*/
+
+
+};
+
+
+class WarningPage: public BasePage {
+
+public:
+	/* Properties */
+
+	/* Constructors and destructors */
+	WarningPage(ScreenController& controller);
+	virtual ~WarningPage() { }
+
+	/* Methods*/
+	virtual void update();
+	virtual void touch(std::vector<int>& command);
+
+private:
+	/* Properties */
+
+	/* Constructors */
+
+	/* Methods*/
+
+
 };
 
 

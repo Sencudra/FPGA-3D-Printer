@@ -5,26 +5,34 @@
 #include "pages.h"
 #include "uart.h"
 
-HomePage::HomePage(ScreenController& controller) :
+/* Constructors and destructors */
+
+PrintingPage::PrintingPage(ScreenController& controller) :
 BasePage(controller) {
 
 	isUpdateFirstTime = true;
+	isBlocked = false;
 
-	controller.uart.openScreen(UART::Screen::HOME);
+	controller.uart.openScreen(UART::Screen::PRINTING);
 	
-	cout << "OK - HomePage::HomePage" << endl;
+	cout << "OK - PrintingPage::PrintingPage" << endl;
 }
 
+/* Public methods */
 
-void HomePage::update() {
+void PrintingPage::update() {
+
+	updatePositionInfo();
+
+	updatePresetInfo();
 
 	updateStatusIndicators();
 
 	updateDisplayIndicators();
 
-	updatePresetBar();
-
 	updateInfo();
+
+	updateProcessbar();
 
 	if (isUpdateFirstTime) {
 		isUpdateFirstTime = false;
@@ -32,106 +40,99 @@ void HomePage::update() {
 	
 }
 
-void HomePage::touch(vector<int>& command) {
+void PrintingPage::touch(vector<int>& command) {
 
 	Button code = static_cast<Button>(command.front());
-	const auto cpPreset = controller.copiedSettings.common.currentPreset;
 
 	switch(code) {
-		case Button::b_nav_print: {
-			controller.setCurrentScreen(ScreenController::Screen::PRINT);
-			break;
-		}
-		case Button::b_nav_control: {
-			controller.setCurrentScreen(ScreenController::Screen::CONTROL);
-			break;
-		}
-		case Button::b_nav_settings: {
-			controller.setCurrentScreen(ScreenController::Screen::SETTINGS);
-			break;
-		}
 		case Button::b_hotspot_1: {
+			if (!isBlocked) {	}
 			// CODE HERE
 			// PrinterController method that enables/disables NOZZLE
 			break;
 		}
 		case Button::b_hotspot_2: {
+			if (!isBlocked) {	}
 			// CODE HERE
 			// PrinterController method that enables/disables PAD
 			break;
 		}
 		case Button::b_hotspot_3: {
+			if (!isBlocked) {	}
 			// CODE HERE
 			// PrinterController method that enables/disables FAN
 			break;
 		}
-		
-		// change_preset_start()
-		case Button::b_preset_1:{
-			cout << "Button PLA" << endl;
-			controller.printer->setNewPresetValue(PrinterVariables::Common::Preset::PLA);
-			if (cpPreset == PrinterVariables::Common::Preset::PLA) {
-					controller.uart.updateIndicator(indicator2string(Indicator::b_preset_1), 
-					UART::Attribute::VAL, 1);
-			}
-			break;
-		}	
-		case Button::b_preset_2:{
-			cout << "Button ABS" << endl;
-			controller.printer->setNewPresetValue(PrinterVariables::Common::Preset::ABS);
-			if (cpPreset == PrinterVariables::Common::Preset::ABS) {
-					controller.uart.updateIndicator(indicator2string(Indicator::b_preset_2), 
-					UART::Attribute::VAL, 1);
+		case Button::b_abort: {
+			if (!isBlocked) {
+				controller.printer->abort_printing();
+				// TODO WARNING
+				controller.setCurrentScreen(ScreenController::Screen::PRINTING_DONE);
 			}
 			break;
 		}
-		case Button::b_preset_3:{
-			cout << "Button PVA" << endl;
-			controller.printer->setNewPresetValue(PrinterVariables::Common::Preset::PVA);
-			if (cpPreset == PrinterVariables::Common::Preset::PVA) {
-					controller.uart.updateIndicator(indicator2string(Indicator::b_preset_3), 
-					UART::Attribute::VAL, 1);
-			}
+		case Button::b_block_screen: {
+			isBlocked = !isBlocked;
+			controller.printer->block_screen();
+
+			// update pic
+			controller.uart.updateIndicator(indicator2string(Indicator::b_pause),
+				UART::Attribute::PICC,
+				isBlocked ? 294 : 292);
 			break;
 		}
-		case Button::b_preset_4:{
-			cout << "Button PRESET1" << endl;
-			controller.printer->setNewPresetValue(PrinterVariables::Common::Preset::PRESET1);
-			if (cpPreset == PrinterVariables::Common::Preset::PRESET1) {
-					controller.uart.updateIndicator(indicator2string(Indicator::b_preset_4), 
-					UART::Attribute::VAL, 1);
+		case Button::b_pause: {
+			if (!isBlocked) {
+				controller.printer->pause_printing();
 			}
 			break;
-		}
-		case Button::b_preset_5:{
-			cout << "Button PRESET2" << endl;
-			controller.printer->setNewPresetValue(PrinterVariables::Common::Preset::PRESET2);
-			if (cpPreset == PrinterVariables::Common::Preset::PRESET2) {
-					controller.uart.updateIndicator(indicator2string(Indicator::b_preset_5), 
-					UART::Attribute::VAL, 1);
-			}
-			break;
-		}
-		case Button::b_preset_6: {
-			cout << "Button PRESET3" << endl;
-			controller.printer->setNewPresetValue(PrinterVariables::Common::Preset::PRESET3);
-			if (cpPreset == PrinterVariables::Common::Preset::PRESET3) {
-					controller.uart.updateIndicator(indicator2string(Indicator::b_preset_6), 
-					UART::Attribute::VAL, 1);
-			}
-			break;
-		}
+		}		
 		default: {
-			cout << "ERROR - HomePage::touch - Unknown code: " << command.front() << endl;
+			cout << "ERROR - PrintingPage::touch - Unknown code: " << command.front() << endl;
 		}
 		
 	}
-	cout << "OK - HomePage::touch - touch event proceded." << endl;
+	cout << "OK - PrintingPage::touch - touch event proceded." << endl;
 }
 
 /* Private methods */
 
-void HomePage::updateStatusIndicators() {
+void PrintingPage::updatePositionInfo() {
+	const auto position = controller.printer->settings.position;
+	const auto cpPosition = controller.copiedSettings.position;
+
+	if (isUpdateFirstTime || isValueChanged<float>(position.x, cpPosition.x)) {
+		controller.uart.updateIndicator(indicator2string(Indicator::i_info_pos_x),
+				UART::Attribute::TXT,
+				position.x);
+	}
+	if (isUpdateFirstTime || isValueChanged<float>(position.y, cpPosition.y)) {
+		controller.uart.updateIndicator(indicator2string(Indicator::i_info_pos_y),
+				UART::Attribute::TXT,
+				position.y);
+	}
+	if (isUpdateFirstTime || isValueChanged<float>(position.z, cpPosition.z)) {
+		controller.uart.updateIndicator(indicator2string(Indicator::i_info_pos_z),
+				UART::Attribute::TXT,
+				position.z);
+	}
+
+}
+
+void PrintingPage::updatePresetInfo() {
+
+	const auto preset = controller.printer->settings.common.currentPreset;
+	const auto cpPreset = controller.copiedSettings.common.currentPreset;
+
+	if (isUpdateFirstTime || preset != cpPreset) {
+		controller.uart.updateIndicator(indicator2string(Indicator::i_preset),
+				UART::Attribute::TXT,
+				preset2string(preset));
+	}
+
+}
+
+void PrintingPage::updateStatusIndicators() {
 
 	const auto status = controller.printer->settings.status;
 	const auto cpStatus = controller.copiedSettings.status;
@@ -162,7 +163,7 @@ void HomePage::updateStatusIndicators() {
 
 }
 
-void HomePage::updateDisplayIndicators() {
+void PrintingPage::updateDisplayIndicators() {
 
 	const auto nozzle 		= controller.printer->settings.common.nozzle;
 	const auto pad 			= controller.printer->settings.common.pad;
@@ -320,69 +321,7 @@ void HomePage::updateDisplayIndicators() {
 
 }
 
-void HomePage::updatePresetBar() {
-
-	const auto preset = controller.printer->settings.common.currentPreset;
-	const auto cpPreset = controller.copiedSettings.common.currentPreset;
-
-	if(isUpdateFirstTime || preset != cpPreset) {
-
-		// getting buttons active state
-		bool presetOneActive = preset == PrinterVariables::Common::Preset::PLA;
-		bool presetTwoActive = preset == PrinterVariables::Common::Preset::ABS;
-		bool presetThreeActive = preset == PrinterVariables::Common::Preset::PVA;
-		bool presetFourActive = preset == PrinterVariables::Common::Preset::PRESET1;
-		bool presetFiveActive = preset == PrinterVariables::Common::Preset::PRESET2;
-		bool presetSixActive = preset == PrinterVariables::Common::Preset::PRESET3;
-
-		// checking only for changed buttons
-		if (cpPreset == PrinterVariables::Common::Preset::PLA || 
-			preset == PrinterVariables::Common::Preset::PLA) {
-			controller.uart.updateIndicator(indicator2string(Indicator::b_preset_1), 
-				UART::Attribute::VAL, 
-				presetOneActive);			
-		}
-
-		if (cpPreset == PrinterVariables::Common::Preset::ABS || 
-			preset == PrinterVariables::Common::Preset::ABS) {
-			controller.uart.updateIndicator(indicator2string(Indicator::b_preset_2), 
-				UART::Attribute::VAL, 
-				presetTwoActive);
-		}
-
-		if (cpPreset == PrinterVariables::Common::Preset::PVA || 
-		preset == PrinterVariables::Common::Preset::PVA) {	
-			controller.uart.updateIndicator(indicator2string(Indicator::b_preset_3), 
-				UART::Attribute::VAL, 
-				presetThreeActive);
-		}
-
-		if (cpPreset == PrinterVariables::Common::Preset::PRESET1 || 
-			preset == PrinterVariables::Common::Preset::PRESET1) {
-			controller.uart.updateIndicator(indicator2string(Indicator::b_preset_4), 
-				UART::Attribute::VAL, 
-				presetFourActive);
-		}	
-
-		if (cpPreset == PrinterVariables::Common::Preset::PRESET2 || 
-			preset == PrinterVariables::Common::Preset::PRESET2) {	
-			controller.uart.updateIndicator(indicator2string(Indicator::b_preset_5), 
-				UART::Attribute::VAL, 
-				presetFiveActive);
-		}
-
-		if (cpPreset == PrinterVariables::Common::Preset::PRESET3 || 
-			preset == PrinterVariables::Common::Preset::PRESET3) {
-			controller.uart.updateIndicator(indicator2string(Indicator::b_preset_6), 
-				UART::Attribute::VAL, 
-				presetSixActive);
-		}
-
-	}
-
-}
-
-void HomePage::updateInfo() {
+void PrintingPage::updateInfo() {
 
 	const auto infoLine = controller.printer->settings.common.infoLine;
 	const auto cpInfoLine = controller.copiedSettings.common.infoLine;
@@ -400,53 +339,85 @@ void HomePage::updateInfo() {
 
 }
 
-string HomePage::indicator2string(const Indicator& code) const {
+void PrintingPage::updateProcessbar() {
+	const auto bar = controller.printer->settings.common.processBar;
+	const auto cpBar = controller.copiedSettings.common.processBar;
+
+	if (isUpdateFirstTime || isValueChanged<int>(bar,cpBar)) {
+		controller.uart.updateIndicator(indicator2string(Indicator::i_process), 
+				UART::Attribute::VAL, 
+				bar);
+	}
+
+}
+
+std::string PrintingPage::preset2string(const PrinterVariables::Common::Preset& preset) const {
+	switch(preset) {
+		case PrinterVariables::Common::Preset::PLA:
+			return "PLA";
+		case PrinterVariables::Common::Preset::ABS:
+			return "ABS";
+		case PrinterVariables::Common::Preset::PVA:
+			return "PVA";
+		case PrinterVariables::Common::Preset::PRESET1:
+			return "P1";
+		case PrinterVariables::Common::Preset::PRESET2:
+			return "P2";
+		case PrinterVariables::Common::Preset::PRESET3:
+			return "P3";
+		default:
+			return ":D";
+	}
+
+}
+
+string PrintingPage::indicator2string(const Indicator& code) const {
 
 	switch(code) {
-		case Indicator::i_ind_1: 
+		case Indicator::b_pause:
+			return "b_pause";
+		case Indicator::i_ind_1:
 			return "i_ind_1";
-		case Indicator::i_ind_2: 
+		case Indicator::i_ind_2:
 			return "i_ind_2";
-		case Indicator::i_ind_3: 
+		case Indicator::i_ind_3:
 			return "i_ind_3";
-		case Indicator::i_ind_4: 
+		case Indicator::i_ind_4:
 			return "i_ind_4";
-		case Indicator::bi_nozzle_ind: 
+		case Indicator::bi_nozzle_ind:
 			return "bi_nozzle_ind";
-		case Indicator::bi_nozzle_set: 
+		case Indicator::bi_nozzle_set:
 			return "bi_nozzle_set";
-		case Indicator::bi_nozzle_curr: 
+		case Indicator::bi_nozzle_curr:
 			return "bi_nozzle_curr";
-		case Indicator::bi_pad_ind: 
+		case Indicator::bi_pad_ind:
 			return "bi_pad_ind";
-		case Indicator::bi_pad_set: 
+		case Indicator::bi_pad_set:
 			return "bi_pad_set";
-		case Indicator::bi_pad_curr: 
+		case Indicator::bi_pad_curr:
 			return "bi_pad_curr";
-		case Indicator::bi_fan_ind: 
+		case Indicator::bi_fan_ind:
 			return "bi_fan_ind";
-		case Indicator::bi_fan_set: 
+		case Indicator::bi_fan_set:
 			return "bi_fan_set";
-		case Indicator::bi_fan_curr: 
+		case Indicator::bi_fan_curr:
 			return "bi_fan_curr";
-		case Indicator::i_gif_loading: 
+		case Indicator::i_gif_loading:
 			return "i_gif_loading";
-		case Indicator::i_info_text: 
+		case Indicator::i_info_text:
 			return "i_info_text";
-		case Indicator::b_preset_1:
-			return "b_preset_1";
-		case Indicator::b_preset_2:
-			return "b_preset_2";
-		case Indicator::b_preset_3:
-			return "b_preset_3";
-		case Indicator::b_preset_4:
-			return "b_preset_4";
-		case Indicator::b_preset_5:
-			return "b_preset_5";
-		case Indicator::b_preset_6:
-			return "b_preset_6";
+		case Indicator::i_info_pos_x:
+			return "i_info_pos_x";
+		case Indicator::i_process:
+			return "i_process";
+		case Indicator::i_info_pos_y:
+			return "i_info_pos_y";
+		case Indicator::i_info_pos_z:
+			return "i_info_pos_z";
+		case Indicator::i_preset:
+			return "i_preset";
 		default: {
-			cout << "ERROR - HomePage::Indicator2String" << endl;
+			cout << "ERROR - PrintingPage::Indicator2String" << endl;
 			return "";
 		}
 
