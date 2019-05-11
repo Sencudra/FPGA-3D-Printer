@@ -1,4 +1,5 @@
 #include "MechanicsController.h"
+#include "PrinterController.h"
 
 int32_t MechanicsController::voltage_adc(int32_t temp)
 {

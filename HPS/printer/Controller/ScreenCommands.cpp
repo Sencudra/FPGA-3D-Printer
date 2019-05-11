@@ -424,26 +424,27 @@ void PrinterController::print_settings(SlicingParameters sp)
 
 void PrinterController::change_general_settings(int sg)
 {
+    Parameters a;
     switch (sg)
     {
         case Nozzle_Minus:
             position.temp_e0 -= int(settings.common.currentPrecision / 100);
-            Parameters a = {{'S', position.temp_e0}};
+            a = {{'S', position.temp_e0}};
             gcode_M104(a);
             break;
         case Nozzle_Plus:
             position.temp_e0 += int(settings.common.currentPrecision / 100);
-            Parameters a = {{'S', position.temp_e0}};
+            a = {{'S', position.temp_e0}};
             gcode_M104(a);
             break;
         case Pad_Minus:
             position.temp_bed -= int(settings.common.currentPrecision / 100);
-            Parameters a = {{'S', position.temp_e0}};
+            a = {{'S', position.temp_e0}};
             gcode_M140(a);
             break;
         case Pad_Plus:
             position.temp_bed += int(settings.common.currentPrecision / 100);
-            Parameters a = {{'S', position.temp_e0}};
+            a = {{'S', position.temp_e0}};
             gcode_M140(a);
             break;
         case Cooler_Minus:
