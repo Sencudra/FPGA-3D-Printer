@@ -1,9 +1,7 @@
-#include <stdio.h>
-
 #include "MechanicsController.h"
+#include "PrinterController.h"
 
 // Вспомогательные методы
-
 uint32_t MechanicsController::zeroing(uint32_t number, uint32_t count, uint32_t direction)
 //если direction=1, то обнуление левых count битов числа number
 //иначе обнуление правых count битов числа number
