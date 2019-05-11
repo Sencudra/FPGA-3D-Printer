@@ -48,7 +48,7 @@ pair<string, Parameters> gcodeParser::parse_command() {
             space_idx = i;
         }
     }
-    // TODO: Think about M10;
+
     if (i == line.size()) {
         parameters.insert(line[space_idx + 1], stof(line.substr(space_idx + 2, i - space_idx - 2)));
     }

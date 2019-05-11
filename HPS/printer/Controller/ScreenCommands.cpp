@@ -287,13 +287,12 @@ void PrinterController::get_speed(float& x, float& y, float& z, float& e) {
 void PrinterController::change_preset_start(PrinterVariables::Common::Preset preset)
 {
     Parameters a;
-    settings.common.currentPreset = preset;
     get_preset(preset, position.temp_e0, position.temp_bed, position.cooler);
     a = {{'S', position.temp_e0}};
     gcode_M104(a);
     a = {{'S', position.temp_bed}};
     gcode_M140(a);
-    screen.update();
+    setNewPresetValue(preset);
 }
 
 void PrinterController::setNewPresetValue(PrinterVariables::Common::Preset preset)
@@ -322,28 +321,27 @@ void PrinterController::control(DrivingControl d)
     Parameters a;
     gcode_M83(a);
     gcode_G91(a);
-    switch (d)
-    {
+    switch (d) {
         case X_Minus:
-            a = {{'X', - settings.common.currentPrecision / 100}};
+            a = {{'X', -settings.common.currentPrecision / 100}};
             break;
         case X_Plus:
             a = {{'X', settings.common.currentPrecision / 100}};
             break;
         case Y_Minus:
-            a = {{'Y', - settings.common.currentPrecision / 100}};
+            a = {{'Y', -settings.common.currentPrecision / 100}};
             break;
         case Y_Plus:
             a = {{'Y', settings.common.currentPrecision / 100}};
             break;
         case Z_Minus:
-            a = {{'Z', - settings.common.currentPrecision / 100}};
+            a = {{'Z', -settings.common.currentPrecision / 100}};
             break;
         case Z_Plus:
             a = {{'Z', settings.common.currentPrecision / 100}};
             break;
         case E_Minus:
-            a = {{'E', - settings.common.currentPrecision / 100}};
+            a = {{'E', -settings.common.currentPrecision / 100}};
             break;
         case E_Plus:
             a = {{'E', settings.common.currentPrecision / 100}};
@@ -351,8 +349,8 @@ void PrinterController::control(DrivingControl d)
         default:
             break;
     }
-    screen.update();
     gcode_G1(a);
+    screen.update();
 }
 
 void PrinterController::pause_printing()
@@ -371,7 +369,10 @@ void PrinterController::block_screen()
 void PrinterController::abort_printing()
 {
     state = Stop_Printing;
-    settings.common.infoLine = PrinterVariables::Common::IDLE;
+    Parameters a = {{'S', 0}};
+    gcode_M104(a);
+    gcode_M140(a);
+    update_parameters();
     screen.update();
 }
 
@@ -379,6 +380,12 @@ void PrinterController::start_slicing(string path)
 {
     to_slice = path;
     state = Slicing;
+}
+
+void PrinterController::start_printing(string path)
+{
+    to_print = path;
+    state = Printing;
 }
 
 void PrinterController::print_settings(SlicingParameters sp)
@@ -418,22 +425,26 @@ void PrinterController::print_settings(SlicingParameters sp)
 void PrinterController::change_general_settings(int sg)
 {
     switch (sg)
-    {   //Проблема: какую команду использовать. нагреть до указанной температуры или ожидать нагрева и поддерживать?
+    {
         case Nozzle_Minus:
             position.temp_e0 -= int(settings.common.currentPrecision / 100);
-            //Нагреть
+            Parameters a = {{'S', position.temp_e0}};
+            gcode_M104(a);
             break;
         case Nozzle_Plus:
             position.temp_e0 += int(settings.common.currentPrecision / 100);
-            //Нагреть
+            Parameters a = {{'S', position.temp_e0}};
+            gcode_M104(a);
             break;
         case Pad_Minus:
             position.temp_bed -= int(settings.common.currentPrecision / 100);
-            //Нагреть
+            Parameters a = {{'S', position.temp_e0}};
+            gcode_M140(a);
             break;
         case Pad_Plus:
             position.temp_bed += int(settings.common.currentPrecision / 100);
-            //Нагреть
+            Parameters a = {{'S', position.temp_e0}};
+            gcode_M140(a);
             break;
         case Cooler_Minus:
             break;
