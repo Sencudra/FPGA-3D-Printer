@@ -167,9 +167,7 @@ void  PrintPage::rowButtonPressed(int row) {
 
 					controller.printer->to_slice = controller.printer->fileManager.getCurrentFolder() + "/" + choosedPair.first;
 
-					if (isDebug) {
-						cout << "to_slice: " << controller.printer->to_slice << endl;
-					}
+					cout << "OK - PrintPage::rowButtonPressed - to_slice: " << controller.printer->to_slice << endl;
 
 					controller.setCurrentScreen(ScreenController::Screen::PRINT_SETUP);
 				}
@@ -178,9 +176,9 @@ void  PrintPage::rowButtonPressed(int row) {
 
 					string toPrint = controller.printer->fileManager.getCurrentFolder() + "/" + choosedPair.first;
 
-					if(isDebug) {
-						cout << "OK - PrintPage::rowButtonPressed - to_print: " << toPrint << endl;
-					} else {
+					cout << "OK - PrintPage::rowButtonPressed - to_print: " << toPrint << endl;
+
+					if (!isDebug) {
 						controller.printer->to_print = toPrint;
 						controller.printer->start_printing(toPrint);
 						controller.setCurrentScreen(ScreenController::Screen::PRINTING);
