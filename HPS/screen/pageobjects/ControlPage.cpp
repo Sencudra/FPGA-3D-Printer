@@ -20,6 +20,10 @@ void ControlPage::update() {
 	updatePrecisionBar();
 	updateInfo();
 	updateVariables();
+
+	if (isUpdateFirstTime) {
+		isUpdateFirstTime = false;
+	}
 	
 }
 

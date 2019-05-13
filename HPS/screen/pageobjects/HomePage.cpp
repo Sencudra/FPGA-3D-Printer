@@ -5,6 +5,8 @@
 #include "pages.h"
 #include "uart.h"
 
+#include "config.h"
+
 HomePage::HomePage(ScreenController& controller) :
 BasePage(controller) {
 
@@ -12,7 +14,8 @@ BasePage(controller) {
 
 	controller.uart.openScreen(UART::Screen::HOME);
 	
-	cout << "OK - HomePage::HomePage" << endl;
+	if (isDebug) 
+		cout << "OK - HomePage::HomePage" << endl;
 }
 
 
@@ -68,7 +71,8 @@ void HomePage::touch(vector<int>& command) {
 		
 		// change_preset_start()
 		case Button::b_preset_1:{
-			cout << "Button PLA" << endl;
+			if (isDebug) 
+				cout << "OK - HomePage::touch - Button PLA" << endl;
 			controller.printer->setNewPresetValue(PrinterVariables::Common::Preset::PLA);
 			if (cpPreset == PrinterVariables::Common::Preset::PLA) {
 					controller.uart.updateIndicator(indicator2string(Indicator::b_preset_1), 
@@ -77,7 +81,8 @@ void HomePage::touch(vector<int>& command) {
 			break;
 		}	
 		case Button::b_preset_2:{
-			cout << "Button ABS" << endl;
+			if (isDebug) 
+				cout << "OK - HomePage::touch - Button ABS" << endl;
 			controller.printer->setNewPresetValue(PrinterVariables::Common::Preset::ABS);
 			if (cpPreset == PrinterVariables::Common::Preset::ABS) {
 					controller.uart.updateIndicator(indicator2string(Indicator::b_preset_2), 
@@ -86,7 +91,8 @@ void HomePage::touch(vector<int>& command) {
 			break;
 		}
 		case Button::b_preset_3:{
-			cout << "Button PVA" << endl;
+			if (isDebug) 
+				cout << "OK - HomePage::touch - Button PVA" << endl;
 			controller.printer->setNewPresetValue(PrinterVariables::Common::Preset::PVA);
 			if (cpPreset == PrinterVariables::Common::Preset::PVA) {
 					controller.uart.updateIndicator(indicator2string(Indicator::b_preset_3), 
@@ -95,7 +101,8 @@ void HomePage::touch(vector<int>& command) {
 			break;
 		}
 		case Button::b_preset_4:{
-			cout << "Button PRESET1" << endl;
+			if (isDebug) 
+				cout << "OK - HomePage::touch - Button PRESET1" << endl;
 			controller.printer->setNewPresetValue(PrinterVariables::Common::Preset::PRESET1);
 			if (cpPreset == PrinterVariables::Common::Preset::PRESET1) {
 					controller.uart.updateIndicator(indicator2string(Indicator::b_preset_4), 
@@ -104,7 +111,8 @@ void HomePage::touch(vector<int>& command) {
 			break;
 		}
 		case Button::b_preset_5:{
-			cout << "Button PRESET2" << endl;
+			if (isDebug) 
+				cout << "OK - HomePage::touch - Button PRESET2" << endl;
 			controller.printer->setNewPresetValue(PrinterVariables::Common::Preset::PRESET2);
 			if (cpPreset == PrinterVariables::Common::Preset::PRESET2) {
 					controller.uart.updateIndicator(indicator2string(Indicator::b_preset_5), 
@@ -113,7 +121,8 @@ void HomePage::touch(vector<int>& command) {
 			break;
 		}
 		case Button::b_preset_6: {
-			cout << "Button PRESET3" << endl;
+			if (isDebug) 
+				cout << "OK - HomePage::touch - Button PRESET3" << endl;
 			controller.printer->setNewPresetValue(PrinterVariables::Common::Preset::PRESET3);
 			if (cpPreset == PrinterVariables::Common::Preset::PRESET3) {
 					controller.uart.updateIndicator(indicator2string(Indicator::b_preset_6), 
@@ -126,7 +135,8 @@ void HomePage::touch(vector<int>& command) {
 		}
 		
 	}
-	cout << "OK - HomePage::touch - touch event proceded." << endl;
+	if (isDebug) 
+		cout << "OK - HomePage::touch - touch event proceded." << endl;
 }
 
 /* Private methods */
@@ -172,6 +182,11 @@ void HomePage::updateDisplayIndicators() {
 	const auto cpPad 		= controller.copiedSettings.common.pad;
 	const auto cpCooler 	= controller.copiedSettings.common.cooler;
 
+	if (isDebug) {
+		cout << "OK - HomePage::touch - TO SHOW";
+		cout << nozzle.current << " " << pad.current << " " << cooler.current << " " << endl;
+	}
+ 
 	/// MAX VALUES SHOULD NOT EQUAL 0
 	int nozzlePicNotActive 	= minNotActive + (((float)nozzle.current / nozzle.max) * rangeNotActive);
 	int nozzlePicActive 	= minActive + (((float)nozzle.current / nozzle.max) * rangeActive);

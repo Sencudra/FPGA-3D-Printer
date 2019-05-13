@@ -6,6 +6,9 @@
 #include "uart.h"
 #include "pages.h"
 
+#include "config.h"
+const bool isDebug = false;
+
 using namespace std;
 
 //* Public Constructors and Destructors *//
@@ -44,7 +47,7 @@ void ScreenController::update() {
   	double elapsed_secs = double(timeElapsedSinceLastUpdateCall - sekundomer) / CLOCKS_PER_SEC;
 
   	// Update process
-  	if (elapsed_secs >= 0.1) {
+  	if (elapsed_secs >= 0.2) {
 
   		while (!uart.taskQueue.empty()) {
 			vector<int> command = uart.taskQueue.front();
@@ -124,7 +127,7 @@ void ScreenController::setCurrentScreen(Screen name) {
 			break;
 		}
 		case WARNING:{ 
-			currentPage = new WarningPage(*this);
+			//currentPage = new WarningPage(*this);
 			break;
 		}
 	}
@@ -189,24 +192,8 @@ void ScreenController::interpretCommand(vector<int>& command) {
 
 void ScreenController::touchEvent(vector<int>& command) {
 
-	Screen code = static_cast<Screen>(command.front());
+	//Screen code = static_cast<Screen>(command.front());
 	command.erase(command.begin());
 
 	currentPage->touch(command);
-  
-	switch(code) {
-		case LOADING:{ break;}
-		case HOME:{ break;}
-		case PRINT:{ break;}
-		case PRINT_SETUP:{ break;}
-		case PRINTING:{ break;}
-		case PRINTING_DONE:{ break;}
-		case CONTROL:{ break;}
-		case SETTINGS:{ break;}
-		case SETTINGS_P:{ break;}
-		case SETTINGS_M_SPE:{ break;}
-		case SETTINGS_M_STE:{ break;}
-		case WARNING:{ break;}
-	}
-
 }

@@ -13,6 +13,7 @@
 #include <cmath>
 
 #include "uart.h"
+#include "config.h"
 
 
 /*	Public methods	*/
@@ -95,7 +96,8 @@ void UART::sendCommand(const string& message) {
 	string substrMessage = message;
 	int msgLen = substrMessage.length();
 
-	cout << "Command: " << message << endl; 
+	if (isDebug)
+		cout << "Command: " << message << endl; 
 
 	while (msgLen > 0) {
 		string toSend;
@@ -119,7 +121,8 @@ void UART::listen2port() {
 	listening_thread = thread(&UART::start_listening, ref(this->getPort()));
 	listening_thread.detach();
 
-	cout << "OK - UART::UART - Thread detached" << endl;
+	if (isDebug)
+		cout << "OK - UART::UART - Thread detached" << endl;
 }
 
 void UART::start_listening() {
@@ -136,9 +139,15 @@ void UART::start_listening() {
  		bytes_read = read(port_descriptor, &buffer, buffer_size);
 
  		vector<int> command;
- 		cout << "BUFFER:";
+
+ 		if (isDebug)
+ 			cout << "BUFFER:";
+
 		for(int i = 0; i < bytes_read - 3; ++i) {
-			cout << " " << (int) buffer[i]; 
+			
+			if (isDebug)
+				cout << " " << (int) buffer[i]; 
+	
 			command.push_back(int(buffer[i]));
 		}
 		cout << endl;
@@ -147,13 +156,15 @@ void UART::start_listening() {
 			addTask(command);
 		}
 
-		cout << "COMMAND: ";
-		for(auto symbol : command) {
-			cout << symbol << " ";
+		if (isDebug) {
+			cout << "COMMAND: ";
+			for(auto symbol : command) {
+				cout << symbol << " ";
+			}
+			cout << endl;
+			cout << "OK - UART::start_listening - bytes read: " << bytes_read << endl;
 		}
-		cout << endl;
-
-		cout << "OK - UART::start_listening - bytes read: " << bytes_read << endl;
+		
  	}
  	close(port_descriptor);
  	

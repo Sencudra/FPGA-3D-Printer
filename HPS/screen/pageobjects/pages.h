@@ -233,11 +233,11 @@ class PrintSetupPage: public BasePage {
 		b_preset_4		= 13,
 		b_preset_5		= 14,
 		b_preset_6		= 15,
-		b_precis_1		= 20, // 19
-		b_precis_2		= 21,
-		b_precis_3		= 22,
-		b_precis_4		= 23,
-		b_precis_5		= 24,
+		b_precis_1		= 19,
+		b_precis_2		= 20,
+		b_precis_3		= 21,
+		b_precis_4		= 22,
+		b_precis_5		= 23,
 		b_r1_minus		= 4,
 		b_r2_minus		= 5,
 		b_r3_minus		= 6,
@@ -547,7 +547,12 @@ class SettingsPage: public BasePage {
 		i_PID_D,
 		b_temp_auto,
 		i_temp_min,
-		i_temp_max
+		i_temp_max,
+		b_precis_1,
+		b_precis_2,
+		b_precis_3,
+		b_precis_4,
+		b_precis_5,
 	};
 
 public:
@@ -569,10 +574,56 @@ private:
 
 	/* Methods*/
 	void updateIndicators();
+	void updatePrecisionBar();
+	std::string indicator2string(const Indicator& code) const ;
 };
 
 
 class SettingsPresetsPage: public BasePage {
+
+	enum class Button {
+		b_general		= 5,
+		b_mov			= 6,
+		b_nav_home		= 2,
+		b_nav_print		= 3,
+		b_nav_control	= 4,
+		b_preset_1		= 7,
+		b_preset_2		= 8,
+		b_preset_3		= 9,
+		b_preset_4		= 10,
+		b_preset_5		= 11,
+		b_preset_6		= 12,
+		b_precis_1		= 14,
+		b_precis_2		= 15,
+		b_precis_3		= 16,
+		b_precis_4		= 17,
+		b_precis_5		= 18,
+		b_reset_def		= 30,
+		b_save			= 29,
+		b_r1_minus		= 23,
+		b_r2_minus		= 24,
+		b_r3_minus		= 25,
+		b_r1_plus		= 26,
+		b_r2_plus		= 27,
+		b_r3_plus		= 28
+	};
+
+	enum class Indicator {
+		i_nozzle,
+		i_pad,
+		i_cooler,
+		b_preset_1,
+		b_preset_2,
+		b_preset_3,
+		b_preset_4,
+		b_preset_5,
+		b_preset_6,
+		b_precis_1,
+		b_precis_2,
+		b_precis_3,
+		b_precis_4,
+		b_precis_5
+	};
 
 public:
 	/* Properties */
@@ -587,20 +638,61 @@ public:
 
 private:
 	/* Properties */
+	bool isUpdateFirstTime;
 
 	/* Constructors */
 
 	/* Methods*/
+	void updatePrecisionBar();
+	void updatePresetBar();
+	void updateIndicators();
 
+
+	std::string indicator2string(const Indicator& code) const ;
 
 };
 
 
 class SettingsMovSpeedPage: public BasePage {
 
-public:
-	/* Properties */
+	enum class Button {
+		b_general		= 1,
+		b_preprint		= 2,
+		b_nav_home		= 3,
+		b_nav_print		= 4,
+		b_nav_control	= 5,
+		b_steps			= 6,
+		b_r1_minus		= 15,
+		b_r2_minus		= 17,
+		b_r3_minus		= 19,
+		b_r4_minus		= 21,
+		b_r1_plus		= 16,
+		b_r2_plus		= 18,
+		b_r3_plus		= 20,
+		b_r4_plus		= 22,
+		b_precis_1		= 7,
+		b_precis_2		= 8,
+		b_precis_3		= 9,
+		b_precis_4		= 10,
+		b_precis_5		= 11,
+		b_reset_def		= 12,
+		b_save			= 13
+	};
 
+	enum class Indicator {
+		b_precis_1,
+		b_precis_2,
+		b_precis_3,
+		b_precis_4,
+		b_precis_5,
+		i_x,
+		i_y,
+		i_z,
+		i_e
+	};
+
+
+public:
 	/* Constructors and destructors */
 	SettingsMovSpeedPage(ScreenController& controller);
 	virtual ~SettingsMovSpeedPage() { }
@@ -611,20 +703,55 @@ public:
 
 private:
 	/* Properties */
-
-	/* Constructors */
+	bool isUpdateFirstTime;
 
 	/* Methods*/
+	void updatePrecisionBar();
+	void updateIndicators();
 
-
+	std::string indicator2string(const Indicator& code) const ;
 };
 
 
 class SettingsMovStepsPage: public BasePage {
 
-public:
-	/* Properties */
+	enum class Button {
+		b_general		= 5,
+		b_preprint		= 4,
+		b_nav_home		= 1,
+		b_nav_print		= 2,
+		b_nav_control	= 3,
+		b_speed			= 6,
+		b_r1_minus		= 15,
+		b_r2_minus		= 18,
+		b_r3_minus		= 19,
+		b_r4_minus		= 22,
+		b_r1_plus		= 16,
+		b_r2_plus		= 17,
+		b_r3_plus		= 20,
+		b_r4_plus		= 21,
+		b_precis_1		= 8,
+		b_precis_2		= 9,
+		b_precis_3		= 10,
+		b_precis_4		= 11,
+		b_precis_5		= 12,
+		b_reset_def		= 13,
+		b_save			= 14
+	};
 
+	enum class Indicator {
+		b_precis_1,
+		b_precis_2,
+		b_precis_3,
+		b_precis_4,
+		b_precis_5,
+		i_x,
+		i_y,
+		i_z,
+		i_e,
+	};
+
+public:
 	/* Constructors and destructors */
 	SettingsMovStepsPage(ScreenController& controller);
 	virtual ~SettingsMovStepsPage() { }
@@ -635,37 +762,38 @@ public:
 
 private:
 	/* Properties */
-
-	/* Constructors */
+	bool isUpdateFirstTime;
 
 	/* Methods*/
+	void updatePrecisionBar();
+	void updateIndicators();
 
-
+	std::string indicator2string(const Indicator& code) const ;
 };
 
 
-class WarningPage: public BasePage {
+// class WarningPage: public BasePage {
 
-public:
-	/* Properties */
+// public:
+// 	/* Properties */
 
-	/* Constructors and destructors */
-	WarningPage(ScreenController& controller);
-	virtual ~WarningPage() { }
+// 	/* Constructors and destructors */
+// 	WarningPage(ScreenController& controller);
+// 	virtual ~WarningPage() { }
 
-	/* Methods*/
-	virtual void update();
-	virtual void touch(std::vector<int>& command);
+// 	/* Methods*/
+// 	virtual void update();
+// 	virtual void touch(std::vector<int>& command);
 
-private:
-	/* Properties */
+// private:
+// 	/* Properties */
 
-	/* Constructors */
+// 	/* Constructors */
 
-	/* Methods*/
+// 	/* Methods*/
 
 
-};
+// };
 
 
 #endif // INC_3D_PRINTER_PAGEOBJECT_H

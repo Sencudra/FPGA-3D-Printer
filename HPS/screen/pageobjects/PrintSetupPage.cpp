@@ -5,6 +5,8 @@
 #include "pages.h"
 #include "uart.h"
 
+#include "config.h"
+
 /* Constructors and destructors */
 
 PrintSetupPage::PrintSetupPage(ScreenController& controller) :
@@ -21,10 +23,6 @@ BasePage(controller) {
 /* Public Methods */
 
 void PrintSetupPage::update() {
-
-	//updateStatusIndicators();
-
-	//updateDisplayIndicators();
 
 	updateIndicators();
 
@@ -47,6 +45,10 @@ void PrintSetupPage::touch(vector<int>& command) {
 	switch(code) {
 		case Button::b_start_print: {
 			// Here should be warning page and then redirect to printing page;
+
+			if (!isDebug)
+				controller.printer->start_printing(controller.printer->to_print);
+
 			controller.setCurrentScreen(ScreenController::Screen::PRINTING);
 			break;
 		}
@@ -193,8 +195,6 @@ void PrintSetupPage::updateIndicators() {
 
 	const auto slicer = controller.printer->settings.slicer;
 	const auto cpSlicer = controller.copiedSettings.slicer;
-
-	//cout << slicer.layerWidth << " " << slicer.baseThicknes << " " << slicer.fillingDensity << endl;
 
 	if (isUpdateFirstTime || slicer.layerWidth != cpSlicer.layerWidth) {
 		controller.uart.updateIndicator(indicator2string(Indicator::i_layer_w), 

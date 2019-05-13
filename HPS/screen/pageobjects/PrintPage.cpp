@@ -7,6 +7,8 @@
 #include "pages.h"
 #include "uart.h"
 
+#include "config.h"
+
 using namespace std;
 
 /* Constructors and destructors */
@@ -16,7 +18,8 @@ BasePage(controller) {
 
 	controller.uart.openScreen(UART::Screen::PRINT);
 
-	cout << "OK - PrintPage::PrintPage" << endl;
+	if (isDebug) 
+		cout << "OK - PrintPage::PrintPage" << endl;
 }
 
 PrintPage::~PrintPage() {
@@ -127,22 +130,26 @@ void  PrintPage::rowButtonPressed(int row) {
 	if (row >= 0 && row < homePageMaxRowsNumber) {
 
 		// first Page, not home
-		if (!controller.printer->fileManager.isHome() && currentPage == 1 && row == 0) {
+		if (!(controller.printer->fileManager.isHome()) && currentPage == 1 && row == 0) {
 			controller.printer->fileManager.closeDirectory();
 			changeDirectory();
 		} else {
+
 			auto currentPageFileList = getFilesList(currentPage, controller.printer->fileManager.isHome());
 			pair<string, FileManager::FileType> choosedPair;
 
-			if (currentPage == 1 && !controller.printer->fileManager.isHome()) {
+			if (currentPage == 1 && !(controller.printer->fileManager.isHome())) {
 
 				if (row > currentPageFileList.size()) return;
 
-				choosedPair = currentPageFileList[row];
+				choosedPair = currentPageFileList[row - 1];
+
 			} else {
+
 				if (row >= currentPageFileList.size()) return;
 
-				choosedPair = currentPageFileList[row - 1];
+				choosedPair = currentPageFileList[row];
+
 			}
 
 			if (choosedPair.second == FileManager::FileType::FILE) {
@@ -151,20 +158,36 @@ void  PrintPage::rowButtonPressed(int row) {
 				string fn = choosedPair.first;
 				string ext = fn.substr(fn.find_last_of(".") + 1);
 
-				cout << "EXT: " << ext << endl;
-
 				// to lower case 
 				transform(ext.begin(), ext.end(), ext.begin(), ::tolower);
 
 				if (ext == "stl") {
 					// CHANGE FILE NAME TO WORK WITH FOR PRINTER
 					// send choosed file.
+
+					controller.printer->to_slice = controller.printer->fileManager.getCurrentFolder() + "/" + choosedPair.first;
+
+					if (isDebug) {
+						cout << "to_slice: " << controller.printer->to_slice << endl;
+					}
+
 					controller.setCurrentScreen(ScreenController::Screen::PRINT_SETUP);
 				}
 				// GCODE
 				if (ext == "g" || ext == "gcode") {
-					// RUN GCODE 
+
+					string toPrint = controller.printer->fileManager.getCurrentFolder() + "/" + choosedPair.first;
+
+					if(isDebug) {
+						cout << "OK - PrintPage::rowButtonPressed - to_print: " << toPrint << endl;
+					} else {
+						controller.printer->to_print = toPrint;
+						controller.printer->start_printing(toPrint);
+						controller.setCurrentScreen(ScreenController::Screen::PRINTING);
+					}
+
 				}
+
 			} else if (choosedPair.second == FileManager::FileType::DIRECTORY) {
 				controller.printer->fileManager.openDirectory(choosedPair.first);
 				changeDirectory();
@@ -252,8 +275,6 @@ void PrintPage::updateRows() {
 
 void PrintPage::updateRowsIfNotAtHomeAndFirstPage() {
 
-	cout << "WITH UP" << endl;
-
 	auto cpList = getFilesList(currentPage, controller.printer->fileManager.isHome());
 	
 	int row;
@@ -318,8 +339,6 @@ void PrintPage::updateRowsIfNotAtHomeAndFirstPage() {
 }
 
 void PrintPage::updateRowsNormal() {
-
-	cout << "WITHOUT UP" << endl;
 
 	auto cpList = getFilesList(currentPage, controller.printer->fileManager.isHome());
 
@@ -388,8 +407,6 @@ string PrintPage::getCurrentFolderName() {
 	string line = controller.printer->fileManager.getCurrentFolder();
 	auto found = line.find_last_of("/");
 	line = line.substr(found);
-
-	cout << "UPDATE LINE " << line << endl;
 
 	// if longer than 22 symbols
 	if (line.length() > 22) {

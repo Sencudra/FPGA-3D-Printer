@@ -169,6 +169,7 @@ struct PrinterVariables {
             float steps_x = 250.0f;
             float steps_y = 250.0f;
             float steps_z = 250.0f;
+            float steps_e = 250.0f;
         };
 
         Speed speed;
