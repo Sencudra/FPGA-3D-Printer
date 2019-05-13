@@ -4,6 +4,9 @@
 #include "GCodeParser.h"
 #include "stl2gcode.h"
 
+#include "iostream"
+using namespace std;
+
 PrinterController::PrinterController() {
     mechanics.printer = this;
     screen.printer = this;
@@ -36,6 +39,7 @@ void PrinterController::waiting() {
     usleep(100000);
     update_parameters();
     screen.update();
+    cout << "Waiting" << endl;
     // экран может изменять состояния принтера
 }
 

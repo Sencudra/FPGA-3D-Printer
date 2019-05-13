@@ -380,6 +380,24 @@ void PrinterController::abort_printing()
 void PrinterController::start_slicing(string path)
 {
     to_slice = path;
+    //TODO: передать параметры в метод Андрея (stl2gcode_parameters)\
+                    в том числе скорость, размеры стола и т.д.
+    stl2gcode_parameters.layer_height = 0.2f; //!< Высота слоя (мм).
+    stl2gcode_parameters.nozzle_diameter = 0.25f; //!< Диаметр экструдера (мм).
+    stl2gcode_parameters.thread_thickness = 1.75f; //!< Диаметр пластика (мм).
+    stl2gcode_parameters.top_bottom_thickness = 0.4f; //!< Высота ? (мм).
+    stl2gcode_parameters.shell_thickness = 1.0f; //!< Толщена стенок (мм). Не будет реализовано в данной версии.
+    stl2gcode_parameters.filling_density = 0.15; //!< Плотность заполнения (%).
+    stl2gcode_parameters.nozzle_temperature = 205; //!< Темпиратура экструдера (С).
+    stl2gcode_parameters.table_temperature = 55; //!< Темпиратура стола (С).
+    stl2gcode_parameters.printing_speed = 35; //!< Скорость печати (мм/с).
+    stl2gcode_parameters.filling_speed = 40; //!< Скорость заполнения (мм/с).
+    stl2gcode_parameters.moving_speed = 90; //!< Скорость перемещения (мм/с).
+
+    stl2gcode_parameters.printer_width = 215; //!< Ширина принтера (мм).
+    stl2gcode_parameters.printer_depth = 215; //!< Длина принтера (мм).
+    stl2gcode_parameters.printer_height = 300; //!< Высота принтера (мм).
+
     state = Slicing;
 }
 
