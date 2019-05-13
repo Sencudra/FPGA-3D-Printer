@@ -14,13 +14,14 @@ PrinterController::PrinterController() {
     restore_default_movement_speed();
     restore_default_movement_steps();
 
+    screen.initialise();
+
     state = Waiting;
     waiting();
 }
 
 void PrinterController::main_loop() {
 
-    screen.initialise();
     while (state != ShuttingDown) {
         if (state == Waiting) {
             waiting();
