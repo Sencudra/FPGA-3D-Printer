@@ -2,10 +2,10 @@
 
 void PrinterController::update_parameters()
 {
-    settings.common.nozzle.current     = mechanics.get_temp0();
+    settings.common.nozzle.current     = mechanics.temperature_adc(mechanics.get_temp0());
     settings.common.nozzle.isEnabled   = mechanics.get_flags_out_heating_extruder();
 
-    settings.common.pad.current        = mechanics.get_temp_bed();
+    settings.common.pad.current        = mechanics.temperature_adc(mechanics.get_temp_bed());
     settings.common.pad.isEnabled      = mechanics.get_flags_out_heating_bed();
 
     settings.common.cooler.set        = settings.common.cooler.set;
@@ -17,7 +17,7 @@ void PrinterController::set_max_xyz(float max_x, float max_y, float max_z) {
     f.open(to_settings);
     // проверить существует ли файл
     if (!f.is_open()) {
-        throw invalid_argument("Wrong settings file to_settings!");
+        throw invalid_argument("Wrong settings file to_settings!max_xyz");
     }
     // прочитать файл и найти свойства пресета
     string line;
@@ -64,7 +64,7 @@ void PrinterController::set_preset(PrinterVariables::Common::Preset preset, int 
     f.open(to_settings);
     // проверить существует ли файл
     if (!f.is_open()) {
-        throw invalid_argument("Wrong settings file to_settings!");
+        throw invalid_argument("Wrong settings file to_settings!preset");
     }
     // прочитать файл и найти свойства пресета
     string line;
@@ -103,7 +103,7 @@ void PrinterController::set_speed(float x, float y, float z, float e) {
     f.open(to_settings);
     // проверить существует ли файл
     if (!f.is_open()) {
-        throw invalid_argument("Wrong settings file to_settings!");
+        throw invalid_argument("Wrong settings file to_settings!speed");
     }
     // прочитать файл и найти свойства пресета
     string line;
@@ -150,7 +150,7 @@ void PrinterController::set_pid(float pid_p, float pid_i, float pid_d) {
     f.open(to_settings);
     // проверить существует ли файл
     if (!f.is_open()) {
-        throw invalid_argument("Wrong settings file to_settings!");
+        throw invalid_argument("Wrong settings file to_settings!pid");
     }
     // прочитать файл и найти свойства пресета
     string line;
@@ -196,7 +196,7 @@ void PrinterController::get_preset(PrinterVariables::Common::Preset preset, int&
     f.open(to_settings);
     // проверить существует ли файл
     if (!f.is_open()) {
-        throw invalid_argument("Wrong settings file to_settings!");
+        throw invalid_argument("Wrong settings file to_settings!preset");
     }
     // прочитать файл и найти свойства пресета
     string line;
@@ -215,7 +215,7 @@ void PrinterController::get_max_xyz(float& max_x, float& max_y, float& max_z) {
     f.open(to_settings);
     // проверить существует ли файл
     if (!f.is_open()) {
-        throw invalid_argument("Wrong settings file to_settings!");
+        throw invalid_argument("Wrong settings file to_settings!max_xyz");
     }
     // прочитать файл и найти свойства пресета
     string line;
@@ -238,7 +238,7 @@ void PrinterController::get_pid(float& pid_p, float& pid_i, float& pid_d) {
     f.open(to_settings);
     // проверить существует ли файл
     if (!f.is_open()) {
-        throw invalid_argument("Wrong settings file to_settings!");
+        throw invalid_argument("Wrong settings file to_settings!pid");
     }
     // прочитать файл и найти свойства пресета
     string line;
@@ -261,7 +261,7 @@ void PrinterController::get_speed(float& x, float& y, float& z, float& e) {
     f.open(to_settings);
     // проверить существует ли файл
     if (!f.is_open()) {
-        throw invalid_argument("Wrong settings file to_settings!");
+        throw invalid_argument("Wrong settings file to_settings!speed");
     }
     // прочитать файл и найти свойства пресета
     string line;
@@ -322,28 +322,28 @@ void PrinterController::control(DrivingControl d)
     gcode_G91(a);
     switch (d) {
         case X_Minus:
-            a = {{'X', -settings.common.currentPrecision / 100}};
+            a = {{'X', -settings.common.currentPrecision / 100.0}};
             break;
         case X_Plus:
-            a = {{'X', settings.common.currentPrecision / 100}};
+            a = {{'X', settings.common.currentPrecision / 100.0}};
             break;
         case Y_Minus:
-            a = {{'Y', -settings.common.currentPrecision / 100}};
+            a = {{'Y', -settings.common.currentPrecision / 100.0}};
             break;
         case Y_Plus:
-            a = {{'Y', settings.common.currentPrecision / 100}};
+            a = {{'Y', settings.common.currentPrecision / 100.0}};
             break;
         case Z_Minus:
-            a = {{'Z', -settings.common.currentPrecision / 100}};
+            a = {{'Z', -settings.common.currentPrecision / 100.0}};
             break;
         case Z_Plus:
-            a = {{'Z', settings.common.currentPrecision / 100}};
+            a = {{'Z', settings.common.currentPrecision / 100.0}};
             break;
         case E_Minus:
-            a = {{'E', -settings.common.currentPrecision / 100}};
+            a = {{'E', -settings.common.currentPrecision / 100.0}};
             break;
         case E_Plus:
-            a = {{'E', settings.common.currentPrecision / 100}};
+            a = {{'E', settings.common.currentPrecision / 100.0}};
             break;
         default:
             break;
@@ -393,28 +393,28 @@ void PrinterController::print_settings(SlicingParameters sp)
 {
     switch (sp) {
         case Layer_Width_Minus:
-            settings.slicer.layerWidth -= settings.common.currentPrecision / 100;
+            settings.slicer.layerWidth -= settings.common.currentPrecision / 100.0;
             if (settings.slicer.layerWidth < 0)
                 settings.slicer.layerWidth = 0;
             break;
         case Layer_Width_Plus:
-            settings.slicer.layerWidth += settings.common.currentPrecision / 100;
+            settings.slicer.layerWidth += settings.common.currentPrecision / 100.0;
             break;
         case Base_Thicknes_Minus:
-            settings.slicer.baseThicknes -= settings.common.currentPrecision / 100;
+            settings.slicer.baseThicknes -= settings.common.currentPrecision / 100.0;
             if (settings.slicer.baseThicknes < 0)
                 settings.slicer.baseThicknes = 0;
             break;
         case Base_Thicknes_Plus:
-            settings.slicer.baseThicknes += settings.common.currentPrecision / 100;
+            settings.slicer.baseThicknes += settings.common.currentPrecision / 100.0;
             break;
         case Filling_Density_Minus:
-            settings.slicer.fillingDensity -= settings.common.currentPrecision / 100;
+            settings.slicer.fillingDensity -= settings.common.currentPrecision / 100.0;
             if (settings.slicer.fillingDensity < 0)
                 settings.slicer.fillingDensity = 0;
             break;
         case Filling_Density_Plus:
-            settings.slicer.fillingDensity -= settings.common.currentPrecision / 100;
+            settings.slicer.fillingDensity -= settings.common.currentPrecision / 100.0;
             break;
         default:
             break;
@@ -452,22 +452,22 @@ void PrinterController::change_general_settings(int sg)
         case Cooler_Plus:
             break;
         case PID_P_Minus:
-            settings.common.PID_P -= settings.common.currentPrecision / 100;
+            settings.common.PID_P -= settings.common.currentPrecision / 100.0;
             break;
         case PID_P_Plus:
-            settings.common.PID_P += settings.common.currentPrecision / 100;
+            settings.common.PID_P += settings.common.currentPrecision / 100.0;
             break;
         case PID_I_Minus:
-            settings.common.PID_I -= settings.common.currentPrecision / 100;
+            settings.common.PID_I -= settings.common.currentPrecision / 100.0;
             break;
         case PID_I_Plus:
-            settings.common.PID_I += settings.common.currentPrecision / 100;
+            settings.common.PID_I += settings.common.currentPrecision / 100.0;
             break;
         case PID_D_Minus:
-            settings.common.PID_D -= settings.common.currentPrecision / 100;
+            settings.common.PID_D -= settings.common.currentPrecision / 100.0;
             break;
         case PID_D_Plus:
-            settings.common.PID_D += settings.common.currentPrecision / 100;
+            settings.common.PID_D += settings.common.currentPrecision / 100.0;
             break;
         default:
             break;
@@ -665,28 +665,28 @@ void PrinterController::change_movement_speed(SpeedSettings ps)
     switch (ps)
     {
         case Speed_X_Minus:
-            settings.movement.speed.speedX -= settings.common.currentPrecision / 100;
+            settings.movement.speed.speedX -= settings.common.currentPrecision / 100.0;
             break;
         case Speed_X_Plus:
-            settings.movement.speed.speedX += settings.common.currentPrecision / 100;
+            settings.movement.speed.speedX += settings.common.currentPrecision / 100.0;
             break;
         case Speed_Y_Minus:
-            settings.movement.speed.speedY -= settings.common.currentPrecision / 100;
+            settings.movement.speed.speedY -= settings.common.currentPrecision / 100.0;
             break;
         case Speed_Y_Plus:
-            settings.movement.speed.speedY += settings.common.currentPrecision / 100;
+            settings.movement.speed.speedY += settings.common.currentPrecision / 100.0;
             break;
         case Speed_Z_Minus:
-            settings.movement.speed.speedZ -= settings.common.currentPrecision / 100;
+            settings.movement.speed.speedZ -= settings.common.currentPrecision / 100.0;
             break;
         case Speed_Z_Plus:
-            settings.movement.speed.speedZ += settings.common.currentPrecision / 100;
+            settings.movement.speed.speedZ += settings.common.currentPrecision / 100.0;
             break;
         case Speed_E_Minus:
-            settings.movement.speed.speedE += settings.common.currentPrecision / 100;
+            settings.movement.speed.speedE += settings.common.currentPrecision / 100.0;
             break;
         case Speed_E_Plus:
-            settings.movement.speed.speedE += settings.common.currentPrecision / 100;
+            settings.movement.speed.speedE += settings.common.currentPrecision / 100.0;
             break;
         default:
             break;
@@ -710,22 +710,22 @@ void PrinterController::change_movement_steps(StepsSettings ps)
     switch (ps)
     {
         case Speed_X_Minus:
-            settings.movement.steps.steps_x -= settings.common.currentPrecision / 100;
+            settings.movement.steps.steps_x -= settings.common.currentPrecision / 100.0;
             break;
         case Speed_X_Plus:
-            settings.movement.steps.steps_x += settings.common.currentPrecision / 100;
+            settings.movement.steps.steps_x += settings.common.currentPrecision / 100.0;
             break;
         case Speed_Y_Minus:
-            settings.movement.steps.steps_y -= settings.common.currentPrecision / 100;
+            settings.movement.steps.steps_y -= settings.common.currentPrecision / 100.0;
             break;
         case Speed_Y_Plus:
-            settings.movement.steps.steps_y += settings.common.currentPrecision / 100;
+            settings.movement.steps.steps_y += settings.common.currentPrecision / 100.0;
             break;
         case Speed_Z_Minus:
-            settings.movement.steps.steps_z -= settings.common.currentPrecision / 100;
+            settings.movement.steps.steps_z -= settings.common.currentPrecision / 100.0;
             break;
         case Speed_Z_Plus:
-            settings.movement.steps.steps_z += settings.common.currentPrecision / 100;
+            settings.movement.steps.steps_z += settings.common.currentPrecision / 100.0;
             break;
         default:
             break;

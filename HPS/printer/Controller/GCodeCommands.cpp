@@ -16,7 +16,7 @@ void PrinterController::calc_steps_speed(float dx, float dy, float dz, float de,
     //подсчет макс расстояния в микрошагах для опреодоления общего времени
     //позволяет настроить скорость и время для единовременного завершения работы двигателей
     float max = abs(steps_z);
-    float speed = fmin(maxspeed, position.s);
+    float speed = fmin(maxspeed, settings.position.s);
     float n_speed = speed / 60;
     float t = abs(dz/n_speed); //t - общее время при макс скорости в секундах
     if (abs(steps_a) > max)
@@ -61,19 +61,19 @@ void PrinterController::gcode_G0(const Parameters& parameters) {
 void PrinterController::gcode_G1(const Parameters& parameters) {
     float dx = 0, dy = 0, dz = 0, de = 0;
     if (parameters.find('F'))
-        position.s = parameters['F'];
-    if (position.xyz_type == Absolute) {
+        settings.position.s = parameters['F'];
+    if (settings.position.xyz_type == Absolute) {
         if (parameters.find('X')) {
-            dx = parameters['X'] - position.x;
+            dx = parameters['X'] - settings.position.x;
         }
         if (parameters.find('Y')) {
-            dy = parameters['Y'] - position.y;
+            dy = parameters['Y'] - settings.position.y;
         }
         if (parameters.find('Z')) {
-            dz = parameters['Z'] - position.z;
+            dz = parameters['Z'] - settings.position.z;
         }
         if (parameters.find('E')) {
-            de = parameters['E'] - position.e;
+            de = parameters['E'] - settings.position.e;
         }
     } else {
         if (parameters.find('X')) {
@@ -91,17 +91,17 @@ void PrinterController::gcode_G1(const Parameters& parameters) {
     }
 
     // каретка не может уйти в минус по координатам
-    if (position.x + dx < 0)
-        dx = 0 - position.x;
-    if (position.y + dy < 0)
-        dy = 0 - position.y;
-    if (position.z + dz < 0)
-        dz = 0 - position.z;
+    if (settings.position.x + dx < 0)
+        dx = 0 - settings.position.x;
+    if (settings.position.y + dy < 0)
+        dy = 0 - settings.position.y;
+    if (settings.position.z + dz < 0)
+        dz = 0 - settings.position.z;
 
-    position.x += dx;
-    position.y += dy;
-    position.z += dz;
-    position.e += de;
+    settings.position.x += dx;
+    settings.position.y += dy;
+    settings.position.z += dz;
+    settings.position.e += de;
 
     update_parameters();
     screen.update();
@@ -120,26 +120,26 @@ void PrinterController::gcode_G1(const Parameters& parameters) {
                  dx, dy, dz, de);
 
     if (parameters.find('X')) {
-        position.x -= dx;
+        settings.position.x -= dx;
     }
     if (parameters.find('Y')) {
-        position.y -= dy;
+        settings.position.y -= dy;
     }
     if (parameters.find('Z')) {
-        position.z -= dz;
+        settings.position.z -= dz;
     }
     if (parameters.find('E')) {
-        position.e -= de;
+        settings.position.e -= de;
     }
 
     bool xmin, xmax, ymin, ymax, zmin, zmax;
     mechanics.endstop_states(xmin, xmax, ymin, ymax, zmin, zmax);
     if (xmin)
-        position.x = 0;
+        settings.position.x = 0;
     if (ymin)
-        position.y = 0;
+        settings.position.y = 0;
     if (zmin)
-        position.z = 0;
+        settings.position.z = 0;
 }
 
 void PrinterController::gcode_G4(const Parameters &parameters) {
@@ -155,35 +155,35 @@ void PrinterController::gcode_G4(const Parameters &parameters) {
 
 void PrinterController::gcode_G28(const Parameters& parameters) {
     if (parameters.find('F'))
-        position.s = parameters['F'];
+        settings.position.s = parameters['F'];
 
     mechanics.auto_home(parameters.find('X'), parameters.find('Y'), parameters.find('Z'));
 
     if (parameters.find('X'))
-        position.x = 0;
+        settings.position.x = 0;
     if (parameters.find('Y'))
-        position.y = 0;
+        settings.position.y = 0;
     if (parameters.find('Z'))
-        position.z = 0;
+        settings.position.z = 0;
 }
 
 void PrinterController::gcode_G90(const Parameters& parameters) {
-    position.xyz_type = Absolute;
+    settings.position.xyz_type = Absolute;
 }
 
 void PrinterController::gcode_G91(const Parameters& parameters){
-    position.xyz_type = Relative;
+    settings.position.xyz_type = Relative;
 }
 
 void PrinterController::gcode_G92(const Parameters& parameters) {
     if (parameters.find('X'))
-        position.x = parameters['X'];
+        settings.position.x = parameters['X'];
     if (parameters.find('Y'))
-        position.y = parameters['Y'];
+        settings.position.y = parameters['Y'];
     if (parameters.find('Z'))
-        position.z = parameters['Z'];
+        settings.position.z = parameters['Z'];
     if (parameters.find('E'))
-        position.e = parameters['E'];
+        settings.position.e = parameters['E'];
 }
 
 void PrinterController::gcode_M17(const Parameters& parameters) {
@@ -195,11 +195,11 @@ void PrinterController::gcode_M18(const Parameters& parameters) {
 }
 
 void PrinterController::gcode_M82(const Parameters& parameters) {
-    position.extruder_type = Absolute;
+    settings.position.extruder_type = Absolute;
 }
 
 void PrinterController::gcode_M83(const Parameters& parameters) {
-    position.extruder_type = Relative;
+    settings.position.extruder_type = Relative;
 }
 
 void PrinterController::gcode_M104(const Parameters& parameters) {
