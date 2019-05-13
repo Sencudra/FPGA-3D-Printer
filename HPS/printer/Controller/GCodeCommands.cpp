@@ -204,7 +204,7 @@ void PrinterController::gcode_M83(const Parameters& parameters) {
 
 void PrinterController::gcode_M104(const Parameters& parameters) {
     if (parameters.find('S')) {
-        position.temp_e0 = parameters['S'];
+        settings.common.nozzle.set = parameters['S'];
         mechanics.set_hotend_temperature(parameters['S']);
     }
 }
@@ -213,12 +213,12 @@ void PrinterController::gcode_M109(const Parameters& parameters) {
     if (parameters.find('S'))
         mechanics.wait_hotend_temperature(parameters['S']);
     else
-        mechanics.wait_hotend_temperature(position.temp_e0);
+        mechanics.wait_hotend_temperature(settings.common.nozzle.set);
 }
 
 void PrinterController::gcode_M140(const Parameters& parameters) {
     if (parameters.find('S')) {
-        position.temp_bed = parameters['S'];
+        settings.common.pad.set = parameters['S'];
         mechanics.set_bed_temperature(parameters['S']);
     }
 }
@@ -227,5 +227,6 @@ void PrinterController::gcode_M190(const Parameters& parameters) {
     if (parameters.find('S'))
         mechanics.wait_bed_temperature(parameters['S']);
     else
-        mechanics.wait_bed_temperature(position.temp_bed);
+        mechanics.wait_bed_temperature(settings.common.pad.set);
+
 }

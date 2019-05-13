@@ -27,10 +27,6 @@ struct Position {
 
     CoordinateSystemType xyz_type = Absolute;
     CoordinateSystemType extruder_type = Absolute;
-
-    int32_t temp_bed = 0;
-    int32_t temp_e0 = 0;
-    int32_t cooler = 0;
 };
 
 struct PrinterVariables {

@@ -3,15 +3,12 @@
 void PrinterController::update_parameters()
 {
     settings.common.nozzle.current     = mechanics.get_temp0();
-    settings.common.nozzle.set         = position.temp_e0;
     settings.common.nozzle.isEnabled   = mechanics.get_flags_out_heating_extruder();
 
     settings.common.pad.current        = mechanics.get_temp_bed();
-    settings.common.pad.set            = position.temp_bed;
     settings.common.pad.isEnabled      = mechanics.get_flags_out_heating_bed();
 
-    settings.common.cooler.current    = 0;
-    settings.common.cooler.set        = position.cooler;
+    settings.common.cooler.set        = settings.common.cooler.set;
     settings.common.cooler.isEnabled  = false;
 }
 
@@ -287,10 +284,10 @@ void PrinterController::get_speed(float& x, float& y, float& z, float& e) {
 void PrinterController::change_preset_start(PrinterVariables::Common::Preset preset)
 {
     Parameters a;
-    get_preset(preset, position.temp_e0, position.temp_bed, position.cooler);
-    a = {{'S', position.temp_e0}};
+    get_preset(preset, settings.common.nozzle.set, settings.common.pad.set, settings.common.cooler.set);
+    a = {{'S', settings.common.nozzle.set}};
     gcode_M104(a);
-    a = {{'S', position.temp_bed}};
+    a = {{'S', settings.common.pad.set}};
     gcode_M140(a);
     setNewPresetValue(preset);
 }
@@ -431,23 +428,23 @@ void PrinterController::change_general_settings(int sg)
     switch (sg)
     {
         case Nozzle_Minus:
-            position.temp_e0 -= int(settings.common.currentPrecision / 100);
-            a = {{'S', position.temp_e0}};
+            settings.common.nozzle.set -= int(settings.common.currentPrecision / 100);
+            a = {{'S', settings.common.nozzle.set}};
             gcode_M104(a);
             break;
         case Nozzle_Plus:
-            position.temp_e0 += int(settings.common.currentPrecision / 100);
-            a = {{'S', position.temp_e0}};
+            settings.common.nozzle.set += int(settings.common.currentPrecision / 100);
+            a = {{'S', settings.common.nozzle.set}};
             gcode_M104(a);
             break;
         case Pad_Minus:
-            position.temp_bed -= int(settings.common.currentPrecision / 100);
-            a = {{'S', position.temp_e0}};
+            settings.common.pad.set -= int(settings.common.currentPrecision / 100);
+            a = {{'S', settings.common.nozzle.set}};
             gcode_M140(a);
             break;
         case Pad_Plus:
-            position.temp_bed += int(settings.common.currentPrecision / 100);
-            a = {{'S', position.temp_e0}};
+            settings.common.pad.set += int(settings.common.currentPrecision / 100);
+            a = {{'S', settings.common.nozzle.set}};
             gcode_M140(a);
             break;
         case Cooler_Minus:
