@@ -383,7 +383,7 @@ void PrinterController::start_slicing(string path)
 
     stl2GcodeParameters.layer_height = settings.slicer.baseThicknes; //!< Высота слоя (мм).
     stl2GcodeParameters.nozzle_diameter = settings.slicer.layerWidth; //!< Диаметр экструдера (мм).
-    stl2GcodeParameters.filling_density = settings.slicer.fillingDensity; //!< Плотность заполнения (%).
+    stl2GcodeParameters.filling_density = settings.slicer.fillingDensity / 100.0; //!< Плотность заполнения (%).
 
     switch (settings.common.currentPreset)
     {
@@ -455,7 +455,7 @@ void PrinterController::print_settings(SlicingParameters sp)
                 settings.slicer.fillingDensity = 0;
             break;
         case Filling_Density_Plus:
-            settings.slicer.fillingDensity -= settings.common.currentPrecision / 100.0;
+            settings.slicer.fillingDensity += settings.common.currentPrecision / 100.0;
             break;
         default:
             break;

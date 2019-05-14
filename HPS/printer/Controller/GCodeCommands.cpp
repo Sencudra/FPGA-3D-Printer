@@ -106,8 +106,8 @@ void PrinterController::gcode_G1(const Parameters& parameters) {
     update_parameters();
     screen.update();
 
-    int32_t steps_a, steps_b, steps_z, steps_e;
-    uint32_t speed_a, speed_b, speed_z, speed_e;
+    int32_t steps_a = 0, steps_b = 0, steps_z = 0, steps_e = 0;
+    uint32_t speed_a = 0, speed_b = 0, speed_z = 0, speed_e = 0;
     int32_t ra, rb, rz, re;
 
     calc_steps_speed(dx, dy, dz, de, speed_a, speed_b, speed_z, speed_e, steps_a, steps_b, steps_z, steps_e);
