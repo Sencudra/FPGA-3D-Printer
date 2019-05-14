@@ -22,6 +22,10 @@ void SettingsPresetsPage::update() {
 	updatePrecisionBar();
 	updateIndicators();
 
+	if (isUpdateFirstTime) {
+		isUpdateFirstTime = false;
+	}
+
 	cout << "SettingsPresetsPage::update" << endl;
 }
 

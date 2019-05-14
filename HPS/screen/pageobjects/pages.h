@@ -6,6 +6,7 @@
 
 #include "FileManager.h"
 #include "types.h"
+#include "config.h"
 
 class ScreenController;
 class UART;
@@ -28,8 +29,6 @@ class UART;
 class BasePage {
 
 public:
-	/* Properties */
-
 	/* Constructors and destructors */
 	BasePage(ScreenController& controller);
 	virtual ~BasePage() { } 
@@ -48,8 +47,6 @@ protected:
 class LoadingPage: public BasePage {
 
 public:
-	/* Properties */
-
 	/* Constructors and destructors */
 	LoadingPage(ScreenController& controller);
 	virtual ~LoadingPage() { }
@@ -264,8 +261,6 @@ class PrintSetupPage: public BasePage {
 	};
 
 public:
-	/* Properties */
-
 	/* Constructors and destructors */
 	PrintSetupPage(ScreenController& controller);
 	virtual ~PrintSetupPage() { }
@@ -277,7 +272,6 @@ public:
 private:
 	/* Properties */
 	bool isUpdateFirstTime;
-	/* Constructors */
 
 	/* Methods*/
 	void updateIndicators();
@@ -285,7 +279,6 @@ private:
 	void updatePresetBar();
 
 	void updatePrecisionBar();
-
 
 	std::string indicator2string(const Indicator& code) const ;
 };
@@ -303,7 +296,7 @@ class PrintingPage: public BasePage {
 	};
 
 	enum class Indicator {
-		b_pause,
+		b_block_screen,
 		i_ind_1,
 		i_ind_2,
 		i_ind_3,
@@ -350,6 +343,9 @@ private:
 	const int maxActive = 527;
 	const int rangeActive = maxActive - minActive;
 
+	const int indicatorPicActive = 293;
+	const int indicatorPicNonActive = 292;
+
 	/* Methods*/
 
 	void updatePositionInfo();
@@ -373,7 +369,7 @@ private:
 class PrintingDonePage: public BasePage {
 
 	enum class Button {
-		b_home = 7
+		b_home = 8
 	};
 
 	enum class Indicator {
@@ -400,8 +396,6 @@ class PrintingDonePage: public BasePage {
 	};
 
 public:
-	/* Properties */
-
 	/* Constructors and destructors */
 	PrintingDonePage(ScreenController& controller);
 	virtual ~PrintingDonePage() { }
@@ -423,7 +417,6 @@ private:
 	const int rangeActive = maxActive - minActive;
 
 	/* Methods*/
-
 	void updatePositionInfo();
 
 	void updatePresetInfo();
@@ -479,8 +472,6 @@ class ControlPage: public BasePage {
 	};
 
 public:
-	/* Properties */
-
 	/* Constructors and destructors */
 	ControlPage(ScreenController& controller);
 	virtual ~ControlPage() { }
@@ -493,15 +484,12 @@ private:
 	/* Properties */
 	bool isUpdateFirstTime;
 
-	/* Constructors */
-
 	/* Methods*/
 	void updatePrecisionBar();
 	void updateInfo();
 	void updateVariables();
 
 	std::string indicator2string(const Indicator& code) const ;
-
 };
 
 class SettingsPage: public BasePage {
@@ -556,8 +544,6 @@ class SettingsPage: public BasePage {
 	};
 
 public:
-	/* Properties */
-
 	/* Constructors and destructors */
 	SettingsPage(ScreenController& controller);
 	virtual ~SettingsPage() { }
@@ -569,8 +555,6 @@ public:
 private:
 	/* Properties */
 	bool isUpdateFirstTime;
-
-	/* Constructors */
 
 	/* Methods*/
 	void updateIndicators();
@@ -626,8 +610,6 @@ class SettingsPresetsPage: public BasePage {
 	};
 
 public:
-	/* Properties */
-
 	/* Constructors and destructors */
 	SettingsPresetsPage(ScreenController& controller);
 	virtual ~SettingsPresetsPage() { }
@@ -639,8 +621,6 @@ public:
 private:
 	/* Properties */
 	bool isUpdateFirstTime;
-
-	/* Constructors */
 
 	/* Methods*/
 	void updatePrecisionBar();
@@ -725,11 +705,9 @@ class SettingsMovStepsPage: public BasePage {
 		b_r1_minus		= 15,
 		b_r2_minus		= 18,
 		b_r3_minus		= 19,
-		b_r4_minus		= 22,
 		b_r1_plus		= 16,
 		b_r2_plus		= 17,
 		b_r3_plus		= 20,
-		b_r4_plus		= 21,
 		b_precis_1		= 8,
 		b_precis_2		= 9,
 		b_precis_3		= 10,

@@ -8,16 +8,13 @@
 using namespace std;
 
 #include "FileManager.h"
+#include "config.h"
 
 /* Constructors and Destructors */
 
-FileManager::FileManager() {
+FileManager::FileManager() 	{	}
 
-}
-
-FileManager::~FileManager() {
-
-}
+FileManager::~FileManager() {	}
 
 /* Public methods */
 
@@ -75,8 +72,12 @@ void FileManager::showCurrentDirectory() {
 }
 
 bool FileManager::isHome() {
-	cout << "IS HOME ";
-	cout << deviceDeafultPath << currentPosition << endl;
+
+	if (isScreenDebug) {
+		cout << "IS HOME ";
+		cout << "devDefPath: "<< deviceDeafultPath << " currentPosition: "<< currentPosition << endl;
+	}
+
 	return deviceDeafultPath == currentPosition;
 }
 
@@ -92,7 +93,6 @@ bool FileManager::openDirectory(const string& name) {
 	bool isFound = false;
 	for (const auto& pair : fileList) {
 		if (pair.first == name && pair.second == FileManager::FileType::DIRECTORY) {
-			cout << "DIRECTORY FOUND: " << pair.first << endl;
 			isFound = true;
 			break;
 		}
@@ -188,7 +188,9 @@ string FileManager::findUSB() const {
     
     if (found != string::npos) {
         port_name = blkid_output.substr(found, pattern.length() + 2);
-        //cout << "OK - FileManager::findUSB - USB device found: " << port_name << endl;
+        
+
+        if (isScreenDebug) cout << "OK - FileManager::findUSB - USB device found: " << port_name << endl;
         return port_name;
     } else {
         return "";

@@ -7,7 +7,6 @@
 #include "pages.h"
 #include "uart.h"
 
-#include "config.h"
 
 using namespace std;
 
@@ -18,8 +17,7 @@ BasePage(controller) {
 
 	controller.uart.openScreen(UART::Screen::PRINT);
 
-	if (isDebug) 
-		cout << "OK - PrintPage::PrintPage" << endl;
+	if (isScreenDebug) cout << "OK - PrintPage::PrintPage" << endl;
 }
 
 PrintPage::~PrintPage() {
@@ -98,7 +96,7 @@ void PrintPage::touch(vector<int>& command) {
 		}
 
 	}
-	cout << "OK - PrintPage::touch - touch event proceded." << endl;
+	if (isScreenDebug) cout << "OK - PrintPage::touch - touch event proceded." << endl;
 }
 
 /* Private methods */
@@ -178,7 +176,7 @@ void  PrintPage::rowButtonPressed(int row) {
 
 					cout << "OK - PrintPage::rowButtonPressed - to_print: " << toPrint << endl;
 
-					if (!isDebug) {
+					if (!isScreenDebug) {
 						controller.printer->to_print = toPrint;
 						controller.printer->start_printing(toPrint);
 						controller.setCurrentScreen(ScreenController::Screen::PRINTING);
@@ -340,8 +338,9 @@ void PrintPage::updateRowsNormal() {
 
 	auto cpList = getFilesList(currentPage, controller.printer->fileManager.isHome());
 
+
 	for (auto& str : cpList) {
-		cout << str.first << endl;
+		if (isScreenDebug) cout << str.first << endl;
 		str.first = str.first.length() < maxRowStringLength ? str.first : str.first.substr(str.first.length() - maxRowStringLength);
 	} 
 

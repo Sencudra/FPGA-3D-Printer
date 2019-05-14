@@ -96,7 +96,7 @@ void UART::sendCommand(const string& message) {
 	string substrMessage = message;
 	int msgLen = substrMessage.length();
 
-	if (isDebug)
+	if (isScreenDebug)
 		cout << "Command: " << message << endl; 
 
 	while (msgLen > 0) {
@@ -121,7 +121,7 @@ void UART::listen2port() {
 	listening_thread = thread(&UART::start_listening, ref(this->getPort()));
 	listening_thread.detach();
 
-	if (isDebug)
+	if (isScreenDebug)
 		cout << "OK - UART::UART - Thread detached" << endl;
 }
 
@@ -140,12 +140,12 @@ void UART::start_listening() {
 
  		vector<int> command;
 
- 		if (isDebug)
+ 		if (isScreenDebug)
  			cout << "BUFFER:";
 
 		for(int i = 0; i < bytes_read - 3; ++i) {
 			
-			if (isDebug)
+			if (isScreenDebug)
 				cout << " " << (int) buffer[i]; 
 	
 			command.push_back(int(buffer[i]));
@@ -156,7 +156,7 @@ void UART::start_listening() {
 			addTask(command);
 		}
 
-		if (isDebug) {
+		if (isScreenDebug) {
 			cout << "COMMAND: ";
 			for(auto symbol : command) {
 				cout << symbol << " ";
@@ -235,10 +235,12 @@ void UART::setup_port() {
 	serial_port_settings.c_cflag &= ~CRTSCTS;
 	serial_port_settings.c_cflag &= ~PARENB;
 	serial_port_settings.c_cflag &= ~CSTOPB;
-	
+
 	// input flags
 	serial_port_settings.c_iflag &= ~ICRNL & ~IMAXBEL;
 	serial_port_settings.c_iflag |= BRKINT;
+	serial_port_settings.c_iflag &= ~IXON;
+	serial_port_settings.c_iflag &= ~IXOFF;
 
 	// output flags
 	serial_port_settings.c_oflag &= ~OPOST & ~ONLCR;
@@ -323,4 +325,5 @@ string UART::screen2string(const Screen& code) const {
 			cout << "ERROR - UART::UART::screen2string - wrong code:" << code << endl;
 			return "";		
 	}
+	
 }

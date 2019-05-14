@@ -15,7 +15,7 @@ BasePage(controller) {
 
 	controller.uart.openScreen(UART::Screen::PRINTING);
 	
-	cout << "OK - PrintingPage::PrintingPage" << endl;
+	if (isScreenDebug) cout << "OK - PrintingPage::PrintingPage" << endl;
 }
 
 /* Public methods */
@@ -36,6 +36,10 @@ void PrintingPage::update() {
 
 	if (isUpdateFirstTime) {
 		isUpdateFirstTime = false;
+	}
+
+	if (isScreenDebug) {
+		controller.printer->settings.common.processBar += 1;
 	}
 	
 }
@@ -75,8 +79,10 @@ void PrintingPage::touch(vector<int>& command) {
 			isBlocked = !isBlocked;
 			controller.printer->block_screen();
 
+			if (isScreenDebug) cout << "LOCK: " << isBlocked << endl;
+
 			// update pic
-			controller.uart.updateIndicator(indicator2string(Indicator::b_pause),
+			controller.uart.updateIndicator(indicator2string(Indicator::b_block_screen),
 				UART::Attribute::PICC,
 				isBlocked ? 294 : 292);
 			break;
@@ -92,7 +98,7 @@ void PrintingPage::touch(vector<int>& command) {
 		}
 		
 	}
-	cout << "OK - PrintingPage::touch - touch event proceded." << endl;
+	if (isScreenDebug) cout << "OK - PrintingPage::touch - touch event proceded." << endl;
 }
 
 /* Private methods */
@@ -140,25 +146,25 @@ void PrintingPage::updateStatusIndicators() {
 	if (isUpdateFirstTime || isValueChanged<bool>(status.isPadHot,cpStatus.isPadHot)) {
 		controller.uart.updateIndicator(indicator2string(Indicator::i_ind_1),
 				UART::Attribute::PICC,
-				status.isPadHot);
+				status.isPadHot ? indicatorPicActive : indicatorPicNonActive);
 	}
 
 	if (isUpdateFirstTime || isValueChanged<bool>(status.isRodEmpty,cpStatus.isRodEmpty)) {
 		controller.uart.updateIndicator(indicator2string(Indicator::i_ind_2),
 				UART::Attribute::PICC,
-				status.isRodEmpty);
+				status.isRodEmpty ? indicatorPicActive : indicatorPicNonActive);
 	}
 
 	if (isUpdateFirstTime || isValueChanged<bool>(status.isExtruderDirty,cpStatus.isExtruderDirty)) {
 		controller.uart.updateIndicator(indicator2string(Indicator::i_ind_3), 
 				UART::Attribute::PICC, 
-				status.isExtruderDirty);
+				status.isExtruderDirty ? indicatorPicActive : indicatorPicNonActive);
 	}
 
 	if (isUpdateFirstTime || isValueChanged<bool>(status.isRodBroken,cpStatus.isRodBroken)) {
 		controller.uart.updateIndicator(indicator2string(Indicator::i_ind_4), 
 				UART::Attribute::PICC, 
-				status.isRodBroken);
+				status.isRodBroken ? indicatorPicActive : indicatorPicNonActive);
 	}
 
 }
@@ -374,8 +380,8 @@ std::string PrintingPage::preset2string(const PrinterVariables::Common::Preset& 
 string PrintingPage::indicator2string(const Indicator& code) const {
 
 	switch(code) {
-		case Indicator::b_pause:
-			return "b_pause";
+		case Indicator::b_block_screen:
+			return "b_block_screen";
 		case Indicator::i_ind_1:
 			return "i_ind_1";
 		case Indicator::i_ind_2:

@@ -7,7 +7,6 @@
 #include "pages.h"
 
 #include "config.h"
-const bool isDebug = false;
 
 using namespace std;
 
@@ -19,7 +18,7 @@ ScreenController::ScreenController()
 	// Initialising screen home page
 	initializeScreen();
   	
-	cout << "OK - ScreenController::ScreenController()" << endl;
+	if (isScreenDebug) cout << "OK - ScreenController::ScreenController()" << endl;
 }
 
 ScreenController::~ScreenController() {
@@ -135,7 +134,7 @@ void ScreenController::setCurrentScreen(Screen name) {
 	// update current page with actial data
 	currentPage->update();
 
-	cout << "OK - ScreenController::setCurrentScreen - Changing screen for " << name << endl;
+	if (isScreenDebug) cout << "OK - ScreenController::setCurrentScreen - Changing screen for " << name << endl;
 }
 
 //* Private methods *//
@@ -143,7 +142,7 @@ void ScreenController::setCurrentScreen(Screen name) {
 void ScreenController::initializeScreen() {
 	uart.listen2port();
 	currentPage = new HomePage(*this);
-	cout << "OK - ScreenController::initializeUART - Initialized" << endl;
+	if (isScreenDebug) cout << "OK - ScreenController::initializeUART - Initialized" << endl;
 }
 
 void ScreenController::interpretCommand(vector<int>& command) {
@@ -154,11 +153,11 @@ void ScreenController::interpretCommand(vector<int>& command) {
 		case TOUCH_EVENT:
 			command.erase(command.begin());
 			touchEvent(command);
-			cout << "OK - ScreenController::interpretCommand - Touch event return data" << endl;
+			if (isScreenDebug) cout << "OK - ScreenController::interpretCommand - Touch event return data" << endl;
 			break;
 		case CURRENT_PAGE_RETURN:{
 
-			cout << "OK - ScreenController::interpretCommand - Current page ID number returns" << endl;
+			if (isScreenDebug) cout << "OK - ScreenController::interpretCommand - Current page ID number returns" << endl;
 			break;
 		}
 		case INVALID_INSTRUCTION:
@@ -174,7 +173,7 @@ void ScreenController::interpretCommand(vector<int>& command) {
 		case INVALID_PARAMETER_QUEANTITY:
 		case FAILED_IO_OPERATION: {
 
-			cout << "Notification of success/failure" << endl;
+			if (isScreenDebug) cout << "Notification of success/failure" << endl;
 			break;
 		}
 		default: {
@@ -182,18 +181,11 @@ void ScreenController::interpretCommand(vector<int>& command) {
 		}
 	}
 
-	cout << "COMMAND: ";
-	for(auto symbol : command) {
-		cout << symbol << " ";
-	}
-
-	cout << endl;
 }
 
 void ScreenController::touchEvent(vector<int>& command) {
 
-	//Screen code = static_cast<Screen>(command.front());
 	command.erase(command.begin());
-
 	currentPage->touch(command);
+	
 }

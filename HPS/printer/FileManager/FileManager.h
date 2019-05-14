@@ -17,8 +17,6 @@ public:
 		DIRECTORY
 	};
 
-	/* Properties */
-
 	/* Constructors and destructors */
 
 	FileManager();
@@ -45,7 +43,7 @@ private:
 	/* Properties */
 
 	string usbName;
-	string deviceDeafultPath = "/media/usb";
+	const string deviceDeafultPath = "/media/usb";
 	string currentPosition = deviceDeafultPath;
 
 	/* Methods */
@@ -64,7 +62,6 @@ private:
 
 	bool mountUSB() const;
 	bool umountUSB() const ; 
-
 };
 
 #endif

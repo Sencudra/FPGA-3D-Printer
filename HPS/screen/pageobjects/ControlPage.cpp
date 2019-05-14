@@ -46,7 +46,7 @@ void ControlPage::touch(vector<int>& command) {
 			break;
 		}
 		case Button::b_precis_1: {
-			cout << "Button PRECISION 100" << endl;
+			if (isScreenDebug) cout << "Button PRECISION 100" << endl;
 			controller.printer->setNewPrecisionValue(PrinterVariables::Common::Precision::P100);
 			if (cpPrecision == PrinterVariables::Common::Precision::P100) {
 					controller.uart.updateIndicator(indicator2string(Indicator::b_precis_1), 
@@ -55,7 +55,7 @@ void ControlPage::touch(vector<int>& command) {
 			break;
 		}
 		case Button::b_precis_2: {
-			cout << "Button PRECISION 10" << endl;
+			if (isScreenDebug) cout << "Button PRECISION 10" << endl;
 			controller.printer->setNewPrecisionValue(PrinterVariables::Common::Precision::P10);
 			if (cpPrecision == PrinterVariables::Common::Precision::P10) {
 					controller.uart.updateIndicator(indicator2string(Indicator::b_precis_2), 
@@ -64,7 +64,7 @@ void ControlPage::touch(vector<int>& command) {
 			break;
 		}
 		case Button::b_precis_3: {
-			cout << "Button PRECISION 1" << endl;
+			if (isScreenDebug) cout << "Button PRECISION 1" << endl;
 			controller.printer->setNewPrecisionValue(PrinterVariables::Common::Precision::P1);
 			if (cpPrecision == PrinterVariables::Common::Precision::P1) {
 					controller.uart.updateIndicator(indicator2string(Indicator::b_precis_3), 
@@ -73,7 +73,7 @@ void ControlPage::touch(vector<int>& command) {
 			break;
 		}
 		case Button::b_precis_4: {
-			cout << "Button PRECISION 0.1" << endl;
+			if (isScreenDebug) cout << "Button PRECISION 0.1" << endl;
 			controller.printer->setNewPrecisionValue(PrinterVariables::Common::Precision::P01);
 			if (cpPrecision == PrinterVariables::Common::Precision::P01) {
 					controller.uart.updateIndicator(indicator2string(Indicator::b_precis_4), 
@@ -82,7 +82,7 @@ void ControlPage::touch(vector<int>& command) {
 			break;
 		}
 		case Button::b_precis_5: {
-			cout << "Button PRECISION 0.01" << endl;
+			if (isScreenDebug) cout << "Button PRECISION 0.01" << endl;
 			controller.printer->setNewPrecisionValue(PrinterVariables::Common::Precision::P001);
 			if (cpPrecision == PrinterVariables::Common::Precision::P001) {
 					controller.uart.updateIndicator(indicator2string(Indicator::b_precis_5), 
@@ -91,39 +91,39 @@ void ControlPage::touch(vector<int>& command) {
 			break;
 		}
 		case Button::b_reset_def: {
-			//controller.printer->home();
+			controller.printer->home();
 			break;
 		}
 		case Button::b_hor_up: {
-			//controller.printer->control(DrivingControl::X_Minus);
+			controller.printer->control(DrivingControl::X_Minus);
 			break;
 		}
 		case Button::b_hor_down: {
-			//controller.printer->control(DrivingControl::X_Plus);
+			controller.printer->control(DrivingControl::X_Plus);
 			break;
 		}
 		case Button::b_hor_left: {
-			//controller.printer->control(DrivingControl::Y_Minus);
+			controller.printer->control(DrivingControl::Y_Minus);
 			break;
 		}
 		case Button::b_hor_right: {
-			//controller.printer->control(DrivingControl::Y_Plus);
+			controller.printer->control(DrivingControl::Y_Plus);
 			break;
 		}
 		case Button::b_ver_up: {
-			//controller.printer->control(DrivingControl::Z_Plus);
+			controller.printer->control(DrivingControl::Z_Plus);
 			break;
 		}
 		case Button::b_ver_down: {
-			//controller.printer->control(DrivingControl::Z_Minus);
+			controller.printer->control(DrivingControl::Z_Minus);
 			break;
 		}
 		case Button::b_ext_up: {
-			//controller.printer->control(DrivingControl::E_Plus);
+			controller.printer->control(DrivingControl::E_Plus);
 			break;
 		}
 		case Button::b_ext_down: {
-			//controller.printer->control(DrivingControl::E_Minus);
+			controller.printer->control(DrivingControl::E_Minus);
 			break;
 		}
 		case Button::b_autocalib: {
@@ -137,7 +137,7 @@ void ControlPage::touch(vector<int>& command) {
 
 	}
 
-	cout << "OK - ControlPage::touch - touch event proceded." << endl;
+	if (isScreenDebug) cout << "OK - ControlPage::touch - touch event proceded." << endl;
 }
 
 /* Private methods */

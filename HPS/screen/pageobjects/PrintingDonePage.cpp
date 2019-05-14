@@ -12,9 +12,9 @@ BasePage(controller) {
 
 	isUpdateFirstTime = true;
 
-	controller.uart.openScreen(UART::Screen::PRINTING);
+	controller.uart.openScreen(UART::Screen::PRINTING_DONE);
 	
-	cout << "OK - PrintingDonePage::PrintingDonePage" << endl;
+	if (isScreenDebug) cout << "OK - PrintingDonePage::PrintingDonePage" << endl;
 }
 
 /* Public methods */
@@ -71,7 +71,7 @@ void PrintingDonePage::touch(vector<int>& command) {
 		}
 		
 	}
-	cout << "OK - PrintingDonePage::touch - touch event proceded." << endl;
+	if (isScreenDebug) cout << "OK - PrintingDonePage::touch - touch event proceded." << endl;
 }
 
 /* Private methods */

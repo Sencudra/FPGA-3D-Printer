@@ -1,4 +1,5 @@
 #include <tuple>
+#include <chrono>
 
 #include "PrinterController.h"
 #include "GCodeParser.h"
@@ -9,10 +10,17 @@ PrinterController::PrinterController() {
     screen.printer = this;
 
     //Считывание настроек экрана из файла
-    restore_default_general_settings();
-    restore_default_preset_settings();
-    restore_default_movement_speed();
-    restore_default_movement_steps();
+    // restore_default_general_settings();
+    // restore_default_preset_settings();
+    // restore_default_movement_speed();
+    // restore_default_movement_steps();
+
+
+    // testing 
+    settings.status.isPadHot           = true;
+    settings.status.isRodEmpty         = true; 
+    settings.status.isExtruderDirty    = true;
+    settings.status.isRodBroken        = true;
 
     screen.initialise();
 
@@ -75,9 +83,13 @@ void PrinterController::printing() {
 
         while (state == Pause_Printing) {
             // обратобать события экрана
+            screen.update();
         }
         
     }
+
+    // Переключение на PRINTING_DONE
+    screen.setCurrentScreen(ScreenController::Screen::PRINTING_DONE);
 
     state = Waiting;
     if (parser.is_done())

@@ -114,7 +114,7 @@ struct PrinterVariables {
         /* Properties */
 
         Preset currentPreset      = PLA;  // Текущий выбранный пресет
-        Precision currentPrecision = P100; // 100 10 1 0.1 0.01
+        Precision currentPrecision = P1; // 100 10 1 0.1 0.01
 
         InfoLine infoLine   = IDLE;     // Информационная стока
         bool isThinking = false;        // Для вращающейся фигни
@@ -169,7 +169,6 @@ struct PrinterVariables {
             float steps_x = 250.0f;
             float steps_y = 250.0f;
             float steps_z = 250.0f;
-            float steps_e = 250.0f;
         };
 
         Speed speed;

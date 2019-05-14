@@ -136,11 +136,20 @@ void SettingsMovSpeedPage::touch(vector<int>& command) {
 			break;
 		}
 		case Button::b_reset_def: {
-			controller.printer->save_movement_speed();
+			if (!isScreenDebug) {
+				controller.printer->restore_default_movement_steps();
+			} else {
+				cout << "SHOULD RUN controller.printer->restore_default_movement_steps();" << endl;
+			}
 			break;
 		}
 		case Button::b_save: {
-			controller.printer->restore_default_movement_speed();
+			if (!isScreenDebug) {
+				controller.printer->save_movement_steps();
+				
+			} else {
+				cout << "SHOULD RUN controller.printer->save_movement_steps();" << endl;
+			}
 			break;
 		}
 		default: {

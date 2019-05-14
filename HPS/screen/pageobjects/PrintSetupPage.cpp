@@ -5,7 +5,6 @@
 #include "pages.h"
 #include "uart.h"
 
-#include "config.h"
 
 /* Constructors and destructors */
 
@@ -46,7 +45,7 @@ void PrintSetupPage::touch(vector<int>& command) {
 		case Button::b_start_print: {
 			// Here should be warning page and then redirect to printing page;
 
-			if (!isDebug)
+			if (!isScreenDebug)
 				controller.printer->start_printing(controller.printer->to_print);
 
 			controller.setCurrentScreen(ScreenController::Screen::PRINTING);
