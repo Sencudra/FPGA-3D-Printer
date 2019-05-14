@@ -379,6 +379,7 @@ void PrinterController::abort_printing()
 
 void PrinterController::start_slicing(string path)
 {
+    cout << "OK - PrinterController::start_slicing" << endl;
     to_slice = path;
 
     stl2GcodeParameters.layer_height = settings.slicer.baseThicknes; //!< Высота слоя (мм).

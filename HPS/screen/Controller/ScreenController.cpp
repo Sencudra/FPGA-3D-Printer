@@ -22,6 +22,7 @@ ScreenController::ScreenController()
 }
 
 ScreenController::~ScreenController() {
+	printer->fileManager.disconnectUSB();
 	delete currentPage;
 }
 
