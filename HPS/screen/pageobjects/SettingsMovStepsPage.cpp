@@ -173,11 +173,6 @@ void SettingsMovStepsPage::updateIndicators() {
 				UART::Attribute::TXT,
 				steps.steps_z);
 	}
-	if (isUpdateFirstTime || isValueChanged<float>(steps.steps_e, cpSteps.steps_e)) {
-		controller.uart.updateIndicator(indicator2string(Indicator::i_e),
-				UART::Attribute::TXT,
-				steps.steps_e);
-	}
 
 }
 
