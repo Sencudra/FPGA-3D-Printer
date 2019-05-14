@@ -10,17 +10,10 @@ PrinterController::PrinterController() {
     screen.printer = this;
 
     //Считывание настроек экрана из файла
-    // restore_default_general_settings();
-    // restore_default_preset_settings();
-    // restore_default_movement_speed();
-    // restore_default_movement_steps();
-
-
-    // testing 
-    settings.status.isPadHot           = true;
-    settings.status.isRodEmpty         = true; 
-    settings.status.isExtruderDirty    = true;
-    settings.status.isRodBroken        = true;
+    restore_default_general_settings();
+    restore_default_preset_settings();
+    restore_default_movement_speed();
+    restore_default_movement_steps();
 
     screen.initialise();
 
