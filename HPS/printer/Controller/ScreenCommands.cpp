@@ -380,23 +380,46 @@ void PrinterController::abort_printing()
 void PrinterController::start_slicing(string path)
 {
     to_slice = path;
-    //TODO: передать параметры в метод Андрея (stl2gcode_parameters)\
-                    в том числе скорость, размеры стола и т.д.
-    stl2gcode_parameters.layer_height = 0.2f; //!< Высота слоя (мм).
-    stl2gcode_parameters.nozzle_diameter = 0.25f; //!< Диаметр экструдера (мм).
-    stl2gcode_parameters.thread_thickness = 1.75f; //!< Диаметр пластика (мм).
-    stl2gcode_parameters.top_bottom_thickness = 0.4f; //!< Высота ? (мм).
-    stl2gcode_parameters.shell_thickness = 1.0f; //!< Толщена стенок (мм). Не будет реализовано в данной версии.
-    stl2gcode_parameters.filling_density = 0.15; //!< Плотность заполнения (%).
-    stl2gcode_parameters.nozzle_temperature = 205; //!< Темпиратура экструдера (С).
-    stl2gcode_parameters.table_temperature = 55; //!< Темпиратура стола (С).
-    stl2gcode_parameters.printing_speed = 35; //!< Скорость печати (мм/с).
-    stl2gcode_parameters.filling_speed = 40; //!< Скорость заполнения (мм/с).
-    stl2gcode_parameters.moving_speed = 90; //!< Скорость перемещения (мм/с).
 
-    stl2gcode_parameters.printer_width = 215; //!< Ширина принтера (мм).
-    stl2gcode_parameters.printer_depth = 215; //!< Длина принтера (мм).
-    stl2gcode_parameters.printer_height = 300; //!< Высота принтера (мм).
+    stl2gcode_parameters.layer_height = settings.slicer.baseThicknes; //!< Высота слоя (мм).
+    stl2gcode_parameters.nozzle_diameter = settings.slicer.layerWidth; //!< Диаметр экструдера (мм).
+    stl2gcode_parameters.filling_density = settings.slicer.fillingDensity; //!< Плотность заполнения (%).
+
+    switch (settings.common.currentPreset)
+    {
+        case PrinterVariables::Common::Preset::ABS:
+            stl2gcode_parameters.nozzle_temperature = settings.presets.ABS.nozzle; //!< Темпиратура экструдера (С).
+            stl2gcode_parameters.table_temperature = settings.presets.ABS.pad; //!< Темпиратура стола (С).
+            break;
+        case PrinterVariables::Common::Preset::PLA:
+            stl2gcode_parameters.nozzle_temperature = settings.presets.PLA.nozzle; //!< Темпиратура экструдера (С).
+            stl2gcode_parameters.table_temperature = settings.presets.PLA.pad; //!< Темпиратура стола (С).
+            break;
+        case PrinterVariables::Common::Preset::PVA:
+            stl2gcode_parameters.nozzle_temperature = settings.presets.PVA.nozzle; //!< Темпиратура экструдера (С).
+            stl2gcode_parameters.table_temperature = settings.presets.PVA.pad; //!< Темпиратура стола (С).
+            break;
+        case PrinterVariables::Common::Preset::PRESET1:
+            stl2gcode_parameters.nozzle_temperature = settings.presets.Preset1.nozzle; //!< Темпиратура экструдера (С).
+            stl2gcode_parameters.table_temperature = settings.presets.Preset1.pad; //!< Темпиратура стола (С).
+            break;
+        case PrinterVariables::Common::Preset::PRESET2:
+            stl2gcode_parameters.nozzle_temperature = settings.presets.Preset2.nozzle; //!< Темпиратура экструдера (С).
+            stl2gcode_parameters.table_temperature = settings.presets.Preset2.pad; //!< Темпиратура стола (С).
+            break;
+        case PrinterVariables::Common::Preset::PRESET3:
+            stl2gcode_parameters.nozzle_temperature = settings.presets.Preset3.nozzle; //!< Темпиратура экструдера (С).
+            stl2gcode_parameters.table_temperature = settings.presets.Preset3.pad; //!< Темпиратура стола (С).
+            break;
+    }
+
+    stl2gcode_parameters.printing_speed = (int) (default_speed * 0.5 / 60); //!< Скорость печати (мм/с).
+    stl2gcode_parameters.filling_speed  = (int) (default_speed * 0.5 / 60); //!< Скорость заполнения (мм/с).
+    stl2gcode_parameters.moving_speed   = (int) (default_speed / 60); //!< Скорость перемещения (мм/с).
+
+    stl2gcode_parameters.printer_width  = (int) settings.movement.steps.steps_x; //!< Ширина принтера (мм).
+    stl2gcode_parameters.printer_depth  = (int) settings.movement.steps.steps_y; //!< Длина принтера (мм).
+    stl2gcode_parameters.printer_height = (int) settings.movement.steps.steps_z; //!< Высота принтера (мм).
 
     state = Slicing;
 }
