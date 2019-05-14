@@ -8,7 +8,7 @@
 LoadingPage::LoadingPage(ScreenController& controller) : 
 BasePage(controller) {
 	
-	cout << "OK - LoadingPage::LoadingPage" << endl;	
+	if (isScreenDebug) cout << "OK - LoadingPage::LoadingPage" << endl;	
 }
 
 void LoadingPage::update(){

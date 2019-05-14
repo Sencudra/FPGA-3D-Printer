@@ -37,7 +37,7 @@ INCLUDE_SOURCES 	:= 	-I$(SRCDIR) \
 						-I$(SRCDIR)/Screen/UART \
 						-I$(SRCDIR)/Screen/PageObjects \
 						-I$(SRCDIR)/Screen/Controller \
-						-I$(SRCDIR)/Printer
+						-I$(SRCDIR)/Printer/FileManager
 
 # Altera sources
 ARCH 				:= arm
@@ -53,7 +53,7 @@ INCLUDE_ALTERA 		:=	-I$(HWLIBS_ROOT)/include/$(ALT_DEVICE_FAMILY) \
 INC 				:= -D$(ALT_DEVICE_FAMILY) $(INCLUDE_ALTERA) $(INCLUDE_SOURCES)
 
 WARNINGS 			:= -Wall # -pedantic
-HIDE_WARNINGS		:= -Wno-pointer-arith -Wsign-compare
+HIDE_WARNINGS		:= -Wno-pointer-arith -Wno-sign-compare
 CFLAGS 				:= -g -std=c++11 -pthread -lm $(WARNINGS) $(HIDE_WARNINGS)
 LDFLAGS 			:= $(CFLAGS) -lstdc++
 
@@ -64,7 +64,7 @@ vpath %.cpp $(sort $(dir $(SOURCES)))
 #
 
 # Fast make
-fast: info linking done
+fast: linking done
 
 # Default make
 full: clean info linking done

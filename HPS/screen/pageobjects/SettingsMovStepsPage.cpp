@@ -6,17 +6,17 @@
 #include "uart.h"
 #include "types.h"
 
-SettingsPage::SettingsPage(ScreenController& controller) :
+SettingsMovStepsPage::SettingsMovStepsPage(ScreenController& controller) :
 BasePage(controller) {
 
 	isUpdateFirstTime = true;
 
-	controller.uart.openScreen(UART::Screen::SETTINGS);
+	controller.uart.openScreen(UART::Screen::SETTINGS_M_STE);
 
-	cout << "OK - SettingsPage::SettingsPage" << endl;
+	if (isScreenDebug) cout << "OK - SettingsMovStepsPage::SettingsMovStepsPage" << endl;
 }
 
-void SettingsPage::update() {
+void SettingsMovStepsPage::update() {
 
 	updatePrecisionBar();
 	updateIndicators();
@@ -26,18 +26,18 @@ void SettingsPage::update() {
 	}
 }
 
-void SettingsPage::touch(vector<int>& command) {
+void SettingsMovStepsPage::touch(vector<int>& command) {
 
 	Button code = static_cast<Button>(command.front());
 	const auto cpPrecision = controller.copiedSettings.common.currentPrecision;
 
 	switch(code) {
-		case Button::b_preprint: {
-			controller.setCurrentScreen(ScreenController::Screen::SETTINGS_P);
+		case Button::b_general: {
+			controller.setCurrentScreen(ScreenController::Screen::SETTINGS);
 			break;
 		}
-		case Button::b_mov: {
-			controller.setCurrentScreen(ScreenController::Screen::SETTINGS_M_SPE);
+		case Button::b_preprint: {
+			controller.setCurrentScreen(ScreenController::Screen::SETTINGS_P);
 			break;
 		}
 		case Button::b_nav_home: {
@@ -52,8 +52,37 @@ void SettingsPage::touch(vector<int>& command) {
 			controller.setCurrentScreen(ScreenController::Screen::CONTROL);
 			break;
 		}
+		case Button::b_speed: {
+			controller.setCurrentScreen(ScreenController::Screen::SETTINGS_M_SPE);
+			break;
+		}
+
+		case Button::b_r1_minus: {
+			controller.printer->change_movement_steps(StepsSettings::Steps_X_Minus);
+			break;
+		}
+		case Button::b_r2_minus: {
+			controller.printer->change_movement_steps(StepsSettings::Steps_Y_Minus);
+			break;
+		}
+		case Button::b_r3_minus: {
+			controller.printer->change_movement_steps(StepsSettings::Steps_Z_Minus);
+			break;
+		}
+		case Button::b_r1_plus: {
+			controller.printer->change_movement_steps(StepsSettings::Steps_X_Plus);
+			break;
+		}
+		case Button::b_r2_plus: {
+			controller.printer->change_movement_steps(StepsSettings::Steps_Y_Plus);
+			break;
+		}
+		case Button::b_r3_plus: {
+			controller.printer->change_movement_steps(StepsSettings::Steps_Z_Plus);
+			break;
+		}
 		case Button::b_precis_1: {
-			cout << "Button PRECISION 100" << endl;
+			if (isScreenDebug) cout << "Button PRECISION 100" << endl;
 			controller.printer->setNewPrecisionValue(PrinterVariables::Common::Precision::P100);
 			if (cpPrecision == PrinterVariables::Common::Precision::P100) {
 					controller.uart.updateIndicator(indicator2string(Indicator::b_precis_1), 
@@ -62,7 +91,7 @@ void SettingsPage::touch(vector<int>& command) {
 			break;
 		}
 		case Button::b_precis_2: {
-			cout << "Button PRECISION 10" << endl;
+			if (isScreenDebug) cout << "Button PRECISION 10" << endl;
 			controller.printer->setNewPrecisionValue(PrinterVariables::Common::Precision::P10);
 			if (cpPrecision == PrinterVariables::Common::Precision::P10) {
 					controller.uart.updateIndicator(indicator2string(Indicator::b_precis_2), 
@@ -71,7 +100,7 @@ void SettingsPage::touch(vector<int>& command) {
 			break;
 		}
 		case Button::b_precis_3: {
-			cout << "Button PRECISION 1" << endl;
+			if (isScreenDebug) cout << "Button PRECISION 1" << endl;
 			controller.printer->setNewPrecisionValue(PrinterVariables::Common::Precision::P1);
 			if (cpPrecision == PrinterVariables::Common::Precision::P1) {
 					controller.uart.updateIndicator(indicator2string(Indicator::b_precis_3), 
@@ -80,7 +109,7 @@ void SettingsPage::touch(vector<int>& command) {
 			break;
 		}
 		case Button::b_precis_4: {
-			cout << "Button PRECISION 0.1" << endl;
+			if (isScreenDebug) cout << "Button PRECISION 0.1" << endl;
 			controller.printer->setNewPrecisionValue(PrinterVariables::Common::Precision::P01);
 			if (cpPrecision == PrinterVariables::Common::Precision::P01) {
 					controller.uart.updateIndicator(indicator2string(Indicator::b_precis_4), 
@@ -89,7 +118,7 @@ void SettingsPage::touch(vector<int>& command) {
 			break;
 		}
 		case Button::b_precis_5: {
-			cout << "Button PRECISION 0.01" << endl;
+			if (isScreenDebug) cout << "Button PRECISION 0.01" << endl;
 			controller.printer->setNewPrecisionValue(PrinterVariables::Common::Precision::P001);
 			if (cpPrecision == PrinterVariables::Common::Precision::P001) {
 					controller.uart.updateIndicator(indicator2string(Indicator::b_precis_5), 
@@ -98,80 +127,20 @@ void SettingsPage::touch(vector<int>& command) {
 			break;
 		}
 		case Button::b_reset_def: {
-			controller.printer->restore_default_general_settings();
+			if (!isScreenDebug) {
+				controller.printer->restore_default_movement_steps();
+			} else {
+				cout << "SHOULD RUN controller.printer->restore_default_movement_steps();" << endl;
+			}
 			break;
 		}
 		case Button::b_save: {
-			controller.printer->save_general_settings();
-			break;
-		}
-		case Button::b_r1_minus: {
-			//controller.printer->change_general_settings(0);
-			break;
-		}
-
-		case Button::b_r2_minus: {
-			//controller.printer->change_general_settings(0);
-			break;
-		}
-		case Button::b_r3_minus: {
-			//controller.printer->change_general_settings(0);
-			break;
-		}
-		case Button::b_r4_minus: {
-			//controller.printer->change_general_settings(0);
-			break;
-		}
-		case Button::b_r5_minus: {
-			//controller.printer->change_general_settings(0);
-			break;
-		}
-		case Button::b_r6_minus: {
-			//controller.printer->change_general_settings(0);
-			break;
-		}
-		case Button::b_r7_minus: {
-			//controller.printer->change_general_settings(0);
-			break;
-		}
-		case Button::b_r8_minus: {
-			//controller.printer->change_general_settings(0);
-			break;
-		}
-		case Button::b_r1_plus: {
-			//controller.printer->change_general_settings(0);
-			break;
-		}
-		case Button::b_r2_plus: {
-			//controller.printer->change_general_settings(0);
-			break;
-		}
-		case Button::b_r3_plus: {
-			//controller.printer->change_general_settings(0);
-			break;
-		}
-		case Button::b_r4_plus: {
-			//controller.printer->change_general_settings(0);
-			break;
-		}
-		case Button::b_r5_plus: {
-			//controller.printer->change_general_settings(0);
-			break;
-		}
-		case Button::b_r6_plus: {
-			//controller.printer->change_general_settings(0);
-			break;
-		}
-		case Button::b_r7_plus: {
-			//controller.printer->change_general_settings(0);
-			break;
-		}
-		case Button::b_r8_plus: {
-			//controller.printer->change_general_settings(0);
-			break;
-		}
-		case Button::b_temp_auto: {
-			// CODE HERE
+			if (!isScreenDebug) {
+				controller.printer->save_movement_steps();
+				
+			} else {
+				cout << "SHOULD RUN controller.printer->save_movement_steps();" << endl;
+			}
 			break;
 		}
 		default: {
@@ -183,62 +152,31 @@ void SettingsPage::touch(vector<int>& command) {
 	cout << "OK - SettingsPage::touch - touch event proceded." << endl;
 }
 
-/* Private types */
+/* Private methods */
 
-void SettingsPage::updateIndicators() {
-	const auto parametrs = controller.printer->settings.common;
-	const auto cpParametrs = controller.copiedSettings.common;
+void SettingsMovStepsPage::updateIndicators() {
+	const auto steps = controller.printer->settings.movement.steps;
+	const auto cpSteps = controller.copiedSettings.movement.steps;
 
-	if (isUpdateFirstTime || isValueChanged<int>(parametrs.nozzle.current, cpParametrs.nozzle.current)) {
-		controller.uart.updateIndicator(indicator2string(Indicator::i_nozzle),
+	if (isUpdateFirstTime || isValueChanged<float>(steps.steps_x, cpSteps.steps_x)) {
+		controller.uart.updateIndicator(indicator2string(Indicator::i_x),
 				UART::Attribute::TXT,
-				parametrs.nozzle.current);
+				steps.steps_x);
 	}
-	if (isUpdateFirstTime || isValueChanged<int>(parametrs.pad.current, cpParametrs.pad.current)) {
-		controller.uart.updateIndicator(indicator2string(Indicator::i_pad),
+	if (isUpdateFirstTime || isValueChanged<float>(steps.steps_y, cpSteps.steps_y)) {
+		controller.uart.updateIndicator(indicator2string(Indicator::i_y),
 				UART::Attribute::TXT,
-				parametrs.pad.current);
+				steps.steps_y);
 	}
-	if (isUpdateFirstTime || isValueChanged<int>(parametrs.cooler.current, cpParametrs.cooler.current)) {
-		controller.uart.updateIndicator(indicator2string(Indicator::i_cooler),
+	if (isUpdateFirstTime || isValueChanged<float>(steps.steps_z, cpSteps.steps_z)) {
+		controller.uart.updateIndicator(indicator2string(Indicator::i_z),
 				UART::Attribute::TXT,
-				parametrs.cooler.current);
-	}
-	if (isUpdateFirstTime || isValueChanged<float>(parametrs.PID_P, cpParametrs.PID_P)) {
-		controller.uart.updateIndicator(indicator2string(Indicator::i_PID_P),
-				UART::Attribute::TXT,
-				parametrs.PID_P);
-	}
-	if (isUpdateFirstTime || isValueChanged<float>(parametrs.PID_I, cpParametrs.PID_I)) {
-		controller.uart.updateIndicator(indicator2string(Indicator::i_PID_I),
-				UART::Attribute::TXT,
-				parametrs.PID_I);
-	}
-	if (isUpdateFirstTime || isValueChanged<float>(parametrs.PID_D, cpParametrs.PID_D)) {
-		controller.uart.updateIndicator(indicator2string(Indicator::i_PID_D),
-				UART::Attribute::TXT,
-				parametrs.PID_D);
-	}
-	if (isUpdateFirstTime || isValueChanged<bool>(parametrs.isTemperatureAuto, parametrs.isTemperatureAuto)) {
-		controller.uart.updateIndicator(indicator2string(Indicator::b_temp_auto),
-				UART::Attribute::VAL,
-				parametrs.isTemperatureAuto);
-	}
-	// ????
-	if (isUpdateFirstTime || isValueChanged<int>(1, 1)) {
-		controller.uart.updateIndicator(indicator2string(Indicator::i_temp_min),
-				UART::Attribute::TXT,
-				0);
-	}
-	if (isUpdateFirstTime || isValueChanged<int>(1, 1)) {
-		controller.uart.updateIndicator(indicator2string(Indicator::i_temp_min),
-				UART::Attribute::TXT,
-				0);
+				steps.steps_z);
 	}
 
 }
 
-void SettingsPage::updatePrecisionBar() {
+void SettingsMovStepsPage::updatePrecisionBar() {
 	// // { P100 = 10000, P10 = 1000, P1 = 100, P01 = 10, P001 = 1};
 
 	const auto precision = controller.printer->settings.common.currentPrecision;
@@ -293,24 +231,8 @@ void SettingsPage::updatePrecisionBar() {
 
 }
 
-string SettingsPage::indicator2string(const Indicator& code) const {
+string SettingsMovStepsPage::indicator2string(const Indicator& code) const {
 	switch(code) {
-		case Indicator::i_nozzle:
-			return "i_nozzle";
-		case Indicator::i_pad:
-			return "i_pad";
-		case Indicator::i_cooler:
-			return "i_cooler";
-		case Indicator::i_PID_P:
-			return "i_PID_P";
-		case Indicator::i_PID_I:
-			return "i_PID_I";
-		case Indicator::i_PID_D:
-			return "i_PID_D";
-		case Indicator::i_temp_min:
-			return "i_temp_min";
-		case Indicator::i_temp_max:
-			return "i_temp_max";
 		case Indicator::b_precis_1:
 			return "b_precis_1";
 		case Indicator::b_precis_2:
@@ -321,8 +243,16 @@ string SettingsPage::indicator2string(const Indicator& code) const {
 			return "b_precis_4";
 		case Indicator::b_precis_5:
 			return "b_precis_5";
+		case Indicator::i_x:
+			return "i_x";
+		case Indicator::i_y:
+			return "i_y";
+		case Indicator::i_z:
+			return "i_z";
+		case Indicator::i_e:
+			return "i_e";
 		default: {
-			cout << "ERROR - SettingsPage::Indicator2String" << endl;
+			cout << "ERROR - SettingsMovStepsPage::Indicator2String" << endl;
 			return "";
 		}
 

@@ -6,6 +6,8 @@
 #include "uart.h"
 #include "pages.h"
 
+#include "config.h"
+
 using namespace std;
 
 //* Public Constructors and Destructors *//
@@ -16,7 +18,7 @@ ScreenController::ScreenController()
 	// Initialising screen home page
 	initializeScreen();
   	
-	cout << "OK - ScreenController::ScreenController()" << endl;
+	if (isScreenDebug) cout << "OK - ScreenController::ScreenController()" << endl;
 }
 
 ScreenController::~ScreenController() {
@@ -44,7 +46,7 @@ void ScreenController::update() {
   	double elapsed_secs = double(timeElapsedSinceLastUpdateCall - sekundomer) / CLOCKS_PER_SEC;
 
   	// Update process
-  	if (elapsed_secs >= 0.1) {
+  	if (elapsed_secs >= 0.2) {
 
   		while (!uart.taskQueue.empty()) {
 			vector<int> command = uart.taskQueue.front();
@@ -69,40 +71,70 @@ void ScreenController::setCurrentScreen(Screen name) {
 	delete currentPage;
 
 	switch(name) {
-	case LOADING:{ break;}
-	case HOME:
-	{ 
-		currentPage = new HomePage(*this);
-		break;
-	}
-	case PRINT:
-	{ 
-		currentPage = new PrintPage(*this);
-		break;
-	}
-	case PRINT_SETUP:{ break;}
-	case PRINTING:{ break;}
-	case PRINTING_DONE:{ break;}
-	case CONTROL:
-	{ 
-		currentPage = new ControlPage(*this);	
-		break;
-	}
-	case SETTINGS:
-	{ 
-		currentPage = new SettingsPage(*this);
-		break;
-	}
-	case SETTINGS_P:{ break;}
-	case SETTINGS_M_SPE:{ break;}
-	case SETTINGS_M_STE:{ break;}
-	case WARNING:{ break;}
+		case LOADING:{ 
+			currentPage = new LoadingPage(*this);
+			break;
+		}
+		case HOME:
+		{ 
+			currentPage = new HomePage(*this);
+			break;
+		}
+		case PRINT:
+		{ 
+			currentPage = new PrintPage(*this);
+			break;
+		}
+		case PRINT_SETUP:
+		{
+			currentPage = new PrintSetupPage(*this);
+			break;
+		}
+		case PRINTING:
+		 { 
+			currentPage = new PrintingPage(*this);
+			break;
+		}
+		case PRINTING_DONE:
+		{ 
+			currentPage = new PrintingDonePage(*this);
+			break;
+		}
+		case CONTROL:
+		{ 
+			currentPage = new ControlPage(*this);	
+			break;
+		}
+		case SETTINGS:
+		{ 
+			currentPage = new SettingsPage(*this);
+			break;
+		}
+		case SETTINGS_P:
+		{
+			currentPage = new SettingsPresetsPage(*this);
+			break;
+		}
+		case SETTINGS_M_SPE:
+		{	
+			currentPage = new SettingsMovSpeedPage(*this); 
+			break;
+		}
+		case SETTINGS_M_STE:
+		{
+			currentPage = new SettingsMovStepsPage(*this); 
+			break;
+		}
+		case WARNING:{ 
+			//currentPage = new WarningPage(*this);
+			break;
+		}
 	}
 
 	// update current page with actial data
 	currentPage->update();
 
-	cout << "OK - ScreenController::setCurrentScreen - Changing screen for " << name << endl;
+	if (isScreenDebug) cout << "OK - ScreenController::setCurrentScreen - Changing screen for " << name << endl;
 }
 
 //* Private methods *//
@@ -110,7 +142,7 @@ void ScreenController::setCurrentScreen(Screen name) {
 void ScreenController::initializeScreen() {
 	uart.listen2port();
 	currentPage = new HomePage(*this);
-	cout << "OK - ScreenController::initializeUART - Initialized" << endl;
+	if (isScreenDebug) cout << "OK - ScreenController::initializeUART - Initialized" << endl;
 }
 
 void ScreenController::interpretCommand(vector<int>& command) {
@@ -121,11 +153,11 @@ void ScreenController::interpretCommand(vector<int>& command) {
 		case TOUCH_EVENT:
 			command.erase(command.begin());
 			touchEvent(command);
-			cout << "OK - ScreenController::interpretCommand - Touch event return data" << endl;
+			if (isScreenDebug) cout << "OK - ScreenController::interpretCommand - Touch event return data" << endl;
 			break;
 		case CURRENT_PAGE_RETURN:{
 
-			cout << "OK - ScreenController::interpretCommand - Current page ID number returns" << endl;
+			if (isScreenDebug) cout << "OK - ScreenController::interpretCommand - Current page ID number returns" << endl;
 			break;
 		}
 		case INVALID_INSTRUCTION:
@@ -141,7 +173,7 @@ void ScreenController::interpretCommand(vector<int>& command) {
 		case INVALID_PARAMETER_QUEANTITY:
 		case FAILED_IO_OPERATION: {
 
-			cout << "Notification of success/failure" << endl;
+			if (isScreenDebug) cout << "Notification of success/failure" << endl;
 			break;
 		}
 		default: {
@@ -149,34 +181,11 @@ void ScreenController::interpretCommand(vector<int>& command) {
 		}
 	}
 
-	cout << "COMMAND: ";
-	for(auto symbol : command) {
-		cout << symbol << " ";
-	}
-
-	cout << endl;
 }
 
 void ScreenController::touchEvent(vector<int>& command) {
 
-	Screen code = static_cast<Screen>(command.front());
 	command.erase(command.begin());
-
 	currentPage->touch(command);
-  
-	switch(code) {
-		case LOADING:{ break;}
-		case HOME:{ break;}
-		case PRINT:{ break;}
-		case PRINT_SETUP:{ break;}
-		case PRINTING:{ break;}
-		case PRINTING_DONE:{ break;}
-		case CONTROL:{ break;}
-		case SETTINGS:{ break;}
-		case SETTINGS_P:{ break;}
-		case SETTINGS_M_SPE:{ break;}
-		case SETTINGS_M_STE:{ break;}
-		case WARNING:{ break;}
-	}
-
+	
 }

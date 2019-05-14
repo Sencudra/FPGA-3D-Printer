@@ -19,9 +19,11 @@ class UART {
 public:
 
 	enum Attribute { 
-		PICC, 
+		PIC,
+		PICC,
+		PICC2,
 		PIC0, 
-		PIC1, 
+		PIC1,
 		VAL,
 		TXT,
 		EN
@@ -54,6 +56,7 @@ public:
 	void refreshIndicator(string name);
     void updateIndicator(string name, Attribute attribute, bool value);
     void updateIndicator(string name, Attribute attribute, int value);
+    void updateIndicator(string name, Attribute attribute, float value);
     void updateIndicator(string name, Attribute attribute, string value);
     void updateTimer(int value);
 

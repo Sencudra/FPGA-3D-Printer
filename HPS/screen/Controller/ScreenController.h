@@ -6,6 +6,7 @@
 #include <ctime>
 
 #include "types.h"
+#include "config.h"
 
 using namespace std;
 
