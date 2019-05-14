@@ -12,6 +12,7 @@
 #include "MechanicsController.h"
 #include "ScreenController.h"
 #include "stl2gcode_parameters.h"
+#include "FileManager.h"
 
 #include <iostream>
 #include <fstream>
@@ -42,6 +43,7 @@ public:
 
     MechanicsController mechanics;
     ScreenController screen;
+    FileManager fileManager;
 
     StateType state;
     Position position;
@@ -131,9 +133,7 @@ public:
     void change_movement_steps(StepsSettings ps);
     void save_movement_steps();
     void restore_default_movement_steps();
-
-
-
-    };
+    
+};
 
 #endif //INC_3D_PRINTER_PRINTERCONTROLLER_H

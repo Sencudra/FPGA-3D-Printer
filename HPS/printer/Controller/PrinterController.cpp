@@ -1,4 +1,5 @@
 #include <tuple>
+#include <chrono>
 
 #include "PrinterController.h"
 #include "GCodeParser.h"
@@ -14,11 +15,14 @@ PrinterController::PrinterController() {
     restore_default_movement_speed();
     restore_default_movement_steps();
 
+    screen.initialise();
+
     state = Waiting;
     waiting();
 }
 
 void PrinterController::main_loop() {
+
     while (state != ShuttingDown) {
         if (state == Waiting) {
             waiting();
@@ -28,12 +32,13 @@ void PrinterController::main_loop() {
             printing();
         }
     }
+
 }
 
 void PrinterController::waiting() {
     // state == Waiting
     // работа с экраном: обратобать события экрана
-    usleep(100000);
+    //usleep(100000);
     update_parameters();
     screen.update();
     // экран может изменять состояния принтера
@@ -71,8 +76,13 @@ void PrinterController::printing() {
 
         while (state == Pause_Printing) {
             // обратобать события экрана
+            screen.update();
         }
+        
     }
+
+    // Переключение на PRINTING_DONE
+    screen.setCurrentScreen(ScreenController::Screen::PRINTING_DONE);
 
     state = Waiting;
     if (parser.is_done())

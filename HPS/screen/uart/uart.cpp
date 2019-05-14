@@ -10,8 +10,10 @@
 #include <future>
 #include <vector>
 #include <ctime>
+#include <cmath>
 
 #include "uart.h"
+#include "config.h"
 
 
 /*	Public methods	*/
@@ -52,6 +54,20 @@ void UART::updateIndicator(string name, Attribute attribute, int value) {
 	sendCommand(name + "." + attributeString + "=" + valueString);
 }
 
+void UART::updateIndicator(string name, Attribute attribute, float value) {
+	string attributeString = attribute2string(attribute);
+
+	string pre = to_string(round(value * 100.0)/ 100.0);
+    auto found = pre.find(".");
+    string valueString = pre.substr(0, found + 3);
+
+	if (attribute == Attribute::TXT) {
+		valueString = "\"" + valueString + "\"";
+	}
+
+	sendCommand(name + "." + attributeString + "=" + valueString);
+}
+
 void UART::updateIndicator(string name, Attribute attribute, string value) {
 	string attributeString = attribute2string(attribute);
 		string valueString = value;
@@ -60,7 +76,7 @@ void UART::updateIndicator(string name, Attribute attribute, string value) {
 		valueString = "\"" + valueString + "\"";
 	}
 
-	sendCommand(name + "." + attributeString + "=" + value);
+	sendCommand(name + "." + attributeString + "=" + valueString);
 }
 
 void UART::updateTimer(int value) {
@@ -80,7 +96,8 @@ void UART::sendCommand(const string& message) {
 	string substrMessage = message;
 	int msgLen = substrMessage.length();
 
-	cout << "Command: " << message << endl; 
+	if (isScreenDebug)
+		cout << "Command: " << message << endl; 
 
 	while (msgLen > 0) {
 		string toSend;
@@ -104,7 +121,8 @@ void UART::listen2port() {
 	listening_thread = thread(&UART::start_listening, ref(this->getPort()));
 	listening_thread.detach();
 
-	cout << "OK - UART::UART - Thread detached" << endl;
+	if (isScreenDebug)
+		cout << "OK - UART::UART - Thread detached" << endl;
 }
 
 void UART::start_listening() {
@@ -121,21 +139,32 @@ void UART::start_listening() {
  		bytes_read = read(port_descriptor, &buffer, buffer_size);
 
  		vector<int> command;
+
+ 		if (isScreenDebug)
+ 			cout << "BUFFER:";
+
 		for(int i = 0; i < bytes_read - 3; ++i) {
+			
+			if (isScreenDebug)
+				cout << " " << (int) buffer[i]; 
+	
 			command.push_back(int(buffer[i]));
 		}
+		cout << endl;
 
  		if (int(buffer[0]) == 101) {
 			addTask(command);
 		}
 
-		cout << "COMMAND: ";
-		for(auto symbol : command) {
-			cout << symbol << " ";
+		if (isScreenDebug) {
+			cout << "COMMAND: ";
+			for(auto symbol : command) {
+				cout << symbol << " ";
+			}
+			cout << endl;
+			cout << "OK - UART::start_listening - bytes read: " << bytes_read << endl;
 		}
-		cout << endl;
-
-		cout << "OK - UART::start_listening - bytes read: " << bytes_read << endl;
+		
  	}
  	close(port_descriptor);
  	
@@ -166,8 +195,8 @@ void UART::write2port(const string& message) const {
 	memset(write_buffer, 0, msg_len);	
 	strcpy(write_buffer, message.c_str());
 
-	int bytes_written = write(port_descriptor, write_buffer, msg_len);
-	
+	//int bytes_written = 
+	write(port_descriptor, write_buffer, msg_len);
 	//cout << "OK - UART::write - Word: |" << message << "| , Bytes written: " << bytes_written << " / " << msg_len << endl;
 }
 
@@ -206,10 +235,12 @@ void UART::setup_port() {
 	serial_port_settings.c_cflag &= ~CRTSCTS;
 	serial_port_settings.c_cflag &= ~PARENB;
 	serial_port_settings.c_cflag &= ~CSTOPB;
-	
+
 	// input flags
 	serial_port_settings.c_iflag &= ~ICRNL & ~IMAXBEL;
 	serial_port_settings.c_iflag |= BRKINT;
+	serial_port_settings.c_iflag &= ~IXON;
+	serial_port_settings.c_iflag &= ~IXOFF;
 
 	// output flags
 	serial_port_settings.c_oflag &= ~OPOST & ~ONLCR;
@@ -242,8 +273,12 @@ void UART::addTask(const vector<int>& task) {
 
 string UART::attribute2string(const Attribute& code) const {
 	switch(code) {
+		case PIC:
+			return "pic";
 		case PICC:
 			return "picc";
+		case PICC2: 
+			return "picc2";
 		case PIC0:
 			return "pic0";
 		case PIC1:
@@ -290,4 +325,5 @@ string UART::screen2string(const Screen& code) const {
 			cout << "ERROR - UART::UART::screen2string - wrong code:" << code << endl;
 			return "";		
 	}
+	
 }
