@@ -190,7 +190,7 @@ string FileManager::findUSB() const {
         port_name = blkid_output.substr(found, pattern.length() + 2);
         
 
-        // if (isScreenDebug) cout << "OK - FileManager::findUSB - USB device found: " << port_name << endl;
+        if (isScreenDebug) cout << "OK - FileManager::findUSB - USB device found: " << port_name << endl;
         return port_name;
     } else {
         return "";

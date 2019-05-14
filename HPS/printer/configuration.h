@@ -25,7 +25,7 @@ static const int stepsperrot =  200; // количество шагов на о�
 static const int microsteps = 16; // количество микрошагов на шаг
 static const float maxspeed = 8000; // максимальная скорость 8000 mm/min
 static const int frequency = 1000000; //тактовая частота двигателя
-static const float default_speed = 5000; //скорость по умолчанию
+static const float default_speed = 2500; //скорость по умолчанию
 
 static const int circlelength = 8; //длина одного оборота винта оси Z
 static const float h = 2; //расстояние между соседними витками винта оси Z

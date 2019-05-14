@@ -35,7 +35,6 @@ pair<string, Parameters> gcodeParser::parse_command() {
     while (line.length() == 0 || (line[0] != 'G' && line[0] != 'M')) {
         getline(f, line);
     }
-
     int space_idx = -1;
     int i = 0;
     for (; i < line.size() && line[i] != ';'; ++i) {

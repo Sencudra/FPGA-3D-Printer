@@ -38,8 +38,6 @@ void PrinterController::main_loop() {
 void PrinterController::waiting() {
     // state == Waiting
     // работа с экраном: обратобать события экрана
-    //usleep(100000);
-
     update_parameters();
     screen.update();
     // экран может изменять состояния принтера
@@ -77,7 +75,6 @@ void PrinterController::printing() {
         string command;
         Parameters parameters;
         tie(command, parameters) = parser.parse_command();
-
         if (gcode_commands.find(command)) {
             (this->*gcode_commands[command])(parameters);
             // auto error = (this->*gcode_commands[command])(parameters);

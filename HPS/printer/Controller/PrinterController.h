@@ -46,7 +46,6 @@ public:
     FileManager fileManager;
 
     StateType state;
-    Position position;
     PrinterVariables settings;
     stl2gcode_parameters stl2GcodeParameters;
 
