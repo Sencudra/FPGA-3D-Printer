@@ -24,6 +24,5 @@ int main(int argc, char *argv[]) {
 
   	PrinterController printer;
   	printer.main_loop();
-
     return 0;
 }

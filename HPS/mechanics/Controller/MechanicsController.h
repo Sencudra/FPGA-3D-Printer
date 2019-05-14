@@ -99,7 +99,6 @@ class MechanicsController {
 
     //Вспомогательные методы
     int32_t voltage_adc(int32_t temp);
-    int32_t temperature_adc(int32_t volt);
     uint32_t zeroing(uint32_t number, uint32_t count, uint32_t direction);
     uint32_t create_number(bool state, uint32_t count);
 
@@ -216,6 +215,8 @@ public:
     PrinterController* printer;
 
     MechanicsController();
+
+    int32_t temperature_adc(int32_t volt);
 
     void move(int32_t da, int32_t db, int32_t dz, uint32_t sa, uint32_t sb, uint32_t sz,
                int32_t& ra, int32_t& rb, int32_t& rz);

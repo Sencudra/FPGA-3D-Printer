@@ -50,7 +50,7 @@ void MechanicsController::move(int32_t da, int32_t db, int32_t dz, uint32_t sa, 
     usleep(100);
 
     int k = 0;
-    while (get_flags_out_stepper_state() || (k!=1000))
+    while (get_flags_out_stepper_state() || (k!=10))
     {
         if (!get_flags_out_stepper_state())
             k = k + 1;
@@ -96,7 +96,7 @@ void MechanicsController::move_extrude(int32_t da, int32_t db, int32_t dz, int32
     usleep(100);
 
     int k = 0;
-    while (get_flags_out_stepper_state() || (k!=1000))
+    while (get_flags_out_stepper_state() || (k!=10))
     {
         if (!get_flags_out_stepper_state())
             k = k + 1;
@@ -142,7 +142,7 @@ void MechanicsController::auto_home(bool x, bool y, bool z) {
     usleep(100);
 
     int k = 0;
-    while (get_flags_out_stepper_state() || (k!=1000))
+    while (get_flags_out_stepper_state() || (k!=10))
     {
         if (!get_flags_out_stepper_state())
             k = k + 1;
@@ -190,7 +190,6 @@ void MechanicsController::wait_hotend_temperature(int32_t t) {
         printer->screen.update();
         usleep(100000);
     }
-
 }
 
 void MechanicsController::set_bed_temperature(int32_t t) {
