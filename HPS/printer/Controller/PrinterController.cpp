@@ -59,6 +59,7 @@ void PrinterController::printing() {
         string command;
         Parameters parameters;
         tie(command, parameters) = parser.parse_command();
+
         if (gcode_commands.find(command)) {
             (this->*gcode_commands[command])(parameters);
             // auto error = (this->*gcode_commands[command])(parameters);
