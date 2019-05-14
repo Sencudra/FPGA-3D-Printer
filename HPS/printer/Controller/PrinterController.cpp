@@ -39,22 +39,39 @@ void PrinterController::waiting() {
     // state == Waiting
     // работа с экраном: обратобать события экрана
     //usleep(100000);
+
     update_parameters();
     screen.update();
     // экран может изменять состояния принтера
 }
 
 void PrinterController::slicing() {
+
     // state == Slicing
     // to_slice - путь к stl файлу
+
+    cout << "OK - PrinterController::slicing" << endl;
+    cout << "\tFile2slice: " << to_slice << endl;
+
     stl2gcode stl2Gcode(to_slice, stl2GcodeParameters);
+
     to_print = to_slice.substr(0, to_slice.length() - 3) + "gcode";
+    
+    clock_t start = clock();
     stl2Gcode.convert(to_print);
+    clock_t end = clock();
+
     state = Printing;
+
+    double elapsed_secs_full = double(end - start) / CLOCKS_PER_SEC;
+    cout << "Time elapsed: " << elapsed_secs_full << endl;
 }
 
 void PrinterController::printing() {
     // state == Printing
+
+    cout << "OK - PrinterController::printing" << endl;
+
     gcodeParser parser(to_print);
     while ((!parser.is_done()) && (state != Stop_Printing)) {
         string command;

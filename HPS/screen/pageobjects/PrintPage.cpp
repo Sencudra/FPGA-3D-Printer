@@ -21,7 +21,7 @@ BasePage(controller) {
 }
 
 PrintPage::~PrintPage() {
-	controller.printer->fileManager.disconnectUSB();
+	
 }
 
 /* Public methods */

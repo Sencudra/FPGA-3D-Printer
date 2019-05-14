@@ -46,7 +46,7 @@ void PrintSetupPage::touch(vector<int>& command) {
 			// Here should be warning page and then redirect to printing page;
 
 			if (!isScreenDebug)
-				controller.printer->start_printing(controller.printer->to_print);
+				controller.printer->start_slicing(controller.printer->to_slice);
 
 			controller.setCurrentScreen(ScreenController::Screen::PRINTING);
 			break;
