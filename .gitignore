@@ -1,48 +1,9 @@
 # Don't track this files
 CMakeLists.txt
-FPGA/*_generation_script*
-FPGA/*_inst.vhd
-FPGA/*.bak
-FPGA/*.cmp
-FPGA/*.done
-FPGA/*.eqn
-FPGA/*.hex
-FPGA/*.html
-FPGA/*.jdi
-FPGA/*.jpg
-# *.mif
-FPGA/*.pin
-FPGA/*.pof
-FPGA/*.ptf.*
-FPGA/*.qar
-FPGA/*.qarlog
-FPGA/*.qws
-FPGA/*.rpt
-FPGA/*.smsg
-FPGA/*.sof
-FPGA/*.sopc_builder
-FPGA/*.summary
-FPGA/*.tcl
-FPGA/*.txt # Explicitly add any text files used
-FPGA/*~
-FPGA/*example*
-FPGA/*sopc_*
 
 # Don't track content of these folders
 /cmake-build-debug
 /.idea
-FPGA/*/db/
-FPGA/*/incremental_db/
-FPGA/*/simulation/
-FPGA/*/timing/
-FPGA/*/testbench/
-FPGA/*/*_sim/
-FPGA/incremental_db/
-FPGA/db/
-FPGA/simulation/
-FPGA/_output_files/
-FPGA/PLLJ_PLLSPE_INFO.txt
-FPGA/testing
 
 # Compiled source #
 ###################
