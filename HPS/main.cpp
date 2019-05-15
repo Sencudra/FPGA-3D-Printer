@@ -5,7 +5,7 @@
 bool isScreenDebug;
 
 int main(int argc, char *argv[]) {
-/*
+
 	std::cout << "OK - main() - Running with flags: ";
 
 	// cout flags
@@ -20,13 +20,9 @@ int main(int argc, char *argv[]) {
     } else {
     	std::cout << "OK - main() - Running regularly" << std::endl;
     	isScreenDebug = false;
-    }*/
-
+    }
 
   	PrinterController printer;
-
-  	printer.start_printing("model.gcode");
-    //printer.start_printing("file.txt");
-    printer.main_loop();
+  	printer.main_loop();
     return 0;
 }

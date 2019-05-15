@@ -17,7 +17,8 @@ BasePage(controller) {
 
 	controller.uart.openScreen(UART::Screen::PRINT);
 
-	if (isScreenDebug) cout << "OK - PrintPage::PrintPage" << endl;
+	if (isScreenDebug) 
+		cout << "OK - PrintPage::PrintPage" << endl;
 }
 
 PrintPage::~PrintPage() {
