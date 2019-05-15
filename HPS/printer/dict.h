@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <algorithm>
+#include <ostream>
 
 using namespace std;
 
@@ -45,6 +46,13 @@ public:
             return parameter.first == key;
         });
         return parameter->second;
+    }
+
+    friend ostream& operator<< (ostream& stream, dict<K,V> d) {
+        for (auto& value : d.values) {
+            stream << value.first << " " << value.second << ", ";
+        }
+        return stream;
     }
 };
 
