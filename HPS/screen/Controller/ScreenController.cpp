@@ -1,3 +1,10 @@
+
+// Список косяков:
+// 0. Все
+// 1. PID-P
+// 
+
+
 #include <iostream>
 #include <cstring>
 
@@ -18,7 +25,8 @@ ScreenController::ScreenController()
 	// Initialising screen home page
 	initializeScreen();
   	
-	if (isScreenDebug) cout << "OK - ScreenController::ScreenController()" << endl;
+	if (isScreenDebug) 
+		cout << "OK - ScreenController::ScreenController()" << endl;
 }
 
 ScreenController::~ScreenController() {
