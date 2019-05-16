@@ -13,8 +13,10 @@ BasePage(controller) {
 
 	controller.uart.openScreen(UART::Screen::HOME);
 	
-	if (isScreenDebug) 
+	if (isScreenDebug) {
 		cout << "OK - HomePage::HomePage" << endl;
+	}
+
 }
 
 

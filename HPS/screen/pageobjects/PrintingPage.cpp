@@ -13,6 +13,8 @@ BasePage(controller) {
 	isUpdateFirstTime = true;
 	isBlocked = false;
 
+	controller.printer->settings.common.isThinking = true;
+
 	controller.uart.openScreen(UART::Screen::PRINTING);
 	
 	if (isScreenDebug) cout << "OK - PrintingPage::PrintingPage" << endl;
@@ -79,7 +81,8 @@ void PrintingPage::touch(vector<int>& command) {
 			isBlocked = !isBlocked;
 			controller.printer->block_screen();
 
-			if (isScreenDebug) cout << "LOCK: " << isBlocked << endl;
+			if (isScreenDebug) 
+				cout << "LOCK: " << isBlocked << endl;
 
 			// update pic
 			controller.uart.updateIndicator(indicator2string(Indicator::b_block_screen),
