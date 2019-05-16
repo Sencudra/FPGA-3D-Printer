@@ -49,7 +49,11 @@ pair<string, Parameters> gcodeParser::parse_command() {
     }
 
     if (i == line.size()) {
-        parameters.insert(line[space_idx + 1], stof(line.substr(space_idx + 2, i - space_idx - 2)));
+        if (space_idx == -1) {
+            command = line.substr(0, line.size());
+        } else {
+            parameters.insert(line[space_idx + 1], stof(line.substr(space_idx + 2, i - space_idx - 2)));
+        }
     }
     ++current_command;
 

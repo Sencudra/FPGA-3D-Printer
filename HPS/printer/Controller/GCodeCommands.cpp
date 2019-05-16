@@ -17,8 +17,10 @@ void PrinterController::calc_steps_speed(float dx, float dy, float dz, float de,
     //позволяет настроить скорость и время для единовременного завершения работы двигателей
     float max = abs(steps_z);
     float speed = fmin(maxspeed, settings.position.s);
+    float speedz = fmin(maxspeed_z, settings.position.s);
     float n_speed = speed / 60;
-    float t = abs(dz/n_speed); //t - общее время при макс скорости в секундах
+    float n_speed_z = speedz / 60;
+    float t = abs(dz/n_speed_z); //t - общее время при макс скорости в секундах
     if (abs(steps_a) > max)
     {   max = abs(steps_a);
         t = abs(da/n_speed);}
