@@ -47,7 +47,7 @@ void ScreenController::update() {
   	double elapsed_secs = double(timeElapsedSinceLastUpdateCall - sekundomer) / CLOCKS_PER_SEC;
 
   	// Update process
-  	if (elapsed_secs >= 0.2) {
+  	if (elapsed_secs >= 0.1) {
 
   		while (!uart.taskQueue.empty()) {
 			vector<int> command = uart.taskQueue.front();
