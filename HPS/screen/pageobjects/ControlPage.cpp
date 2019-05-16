@@ -95,19 +95,19 @@ void ControlPage::touch(vector<int>& command) {
 			break;
 		}
 		case Button::b_hor_up: {
-			controller.printer->control(DrivingControl::X_Minus);
+			controller.printer->control(DrivingControl::Y_Plus);
 			break;
 		}
 		case Button::b_hor_down: {
-			controller.printer->control(DrivingControl::X_Plus);
-			break;
-		}
-		case Button::b_hor_left: {
 			controller.printer->control(DrivingControl::Y_Minus);
 			break;
 		}
+		case Button::b_hor_left: {
+			controller.printer->control(DrivingControl::X_Minus);
+			break;
+		}
 		case Button::b_hor_right: {
-			controller.printer->control(DrivingControl::Y_Plus);
+			controller.printer->control(DrivingControl::X_Plus);
 			break;
 		}
 		case Button::b_ver_up: {

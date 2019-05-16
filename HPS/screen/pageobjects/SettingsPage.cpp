@@ -98,76 +98,93 @@ void SettingsPage::touch(vector<int>& command) {
 			break;
 		}
 		case Button::b_reset_def: {
-			controller.printer->restore_default_general_settings();
+			// if (!isScreenDebug)
+			// 	controller.printer->restore_default_general_settings();
 			break;
 		}
 		case Button::b_save: {
-			controller.printer->save_general_settings();
+			// if (!isScreenDebug)
+			// 	controller.printer->save_general_settings();
 			break;
 		}
 		case Button::b_r1_minus: {
-			//controller.printer->change_general_settings(0);
+			if (!isScreenDebug)
+				controller.printer->change_general_settings(1);
 			break;
 		}
-
 		case Button::b_r2_minus: {
-			//controller.printer->change_general_settings(0);
+			if (!isScreenDebug)
+				controller.printer->change_general_settings(3);
 			break;
 		}
 		case Button::b_r3_minus: {
-			//controller.printer->change_general_settings(0);
+			// if (isScreenDebug)
+			// 	controller.printer->change_general_settings(0);
 			break;
 		}
 		case Button::b_r4_minus: {
-			//controller.printer->change_general_settings(0);
+			if (!isScreenDebug)
+				controller.printer->change_general_settings(6);
 			break;
 		}
 		case Button::b_r5_minus: {
-			//controller.printer->change_general_settings(0);
+			if (!isScreenDebug)
+				controller.printer->change_general_settings(8);
 			break;
 		}
 		case Button::b_r6_minus: {
-			//controller.printer->change_general_settings(0);
+			if (!isScreenDebug)
+				controller.printer->change_general_settings(10);
 			break;
 		}
 		case Button::b_r7_minus: {
-			//controller.printer->change_general_settings(0);
+			if (!isScreenDebug)
+				controller.printer->change_general_settings(0);
 			break;
 		}
 		case Button::b_r8_minus: {
-			//controller.printer->change_general_settings(0);
+			if (!isScreenDebug)
+				controller.printer->change_general_settings(0);
 			break;
 		}
 		case Button::b_r1_plus: {
-			//controller.printer->change_general_settings(0);
+			if (!isScreenDebug)
+				controller.printer->change_general_settings(0);
 			break;
 		}
 		case Button::b_r2_plus: {
-			//controller.printer->change_general_settings(0);
+			if (!isScreenDebug)
+				controller.printer->change_general_settings(2);
 			break;
 		}
 		case Button::b_r3_plus: {
-			//controller.printer->change_general_settings(0);
+			// if (!isScreenDebug)
+			// 	controller.printer->change_general_settings(0);
 			break;
 		}
 		case Button::b_r4_plus: {
-			//controller.printer->change_general_settings(0);
+			if (!isScreenDebug)
+				controller.printer->change_general_settings(7);
 			break;
 		}
 		case Button::b_r5_plus: {
-			//controller.printer->change_general_settings(0);
+			if (!isScreenDebug)
+				controller.printer->change_general_settings(9);
 			break;
 		}
 		case Button::b_r6_plus: {
-			//controller.printer->change_general_settings(0);
+			if (!isScreenDebug)
+				controller.printer->change_general_settings(11);
 			break;
 		}
 		case Button::b_r7_plus: {
-			//controller.printer->change_general_settings(0);
+			// if (!isScreenDebug)
+			// 	controller.printer->change_general_settings(0);
 			break;
 		}
 		case Button::b_r8_plus: {
-			//controller.printer->change_general_settings(0);
+			// if (!isScreenDebug)
+			// 	controller.printer->change_general_settings(0);
 			break;
 		}
 		case Button::b_temp_auto: {
@@ -311,6 +328,8 @@ string SettingsPage::indicator2string(const Indicator& code) const {
 			return "i_temp_min";
 		case Indicator::i_temp_max:
 			return "i_temp_max";
+		case Indicator::b_temp_auto:
+			return "b_temp_auto";
 		case Indicator::b_precis_1:
 			return "b_precis_1";
 		case Indicator::b_precis_2:

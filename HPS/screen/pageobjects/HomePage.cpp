@@ -73,7 +73,7 @@ void HomePage::touch(vector<int>& command) {
 			if (isScreenDebug) 
 				cout << "OK - HomePage::touch - Button PLA" << endl;
 
-			controller.printer->setNewPresetValue(PrinterVariables::Common::Preset::PLA);
+			controller.printer->change_preset_start(PrinterVariables::Common::Preset::PLA);
 			if (cpPreset == PrinterVariables::Common::Preset::PLA) {
 					controller.uart.updateIndicator(indicator2string(Indicator::b_preset_1), 
 					UART::Attribute::VAL, 1);
@@ -84,7 +84,7 @@ void HomePage::touch(vector<int>& command) {
 			if (isScreenDebug) 
 				cout << "OK - HomePage::touch - Button ABS" << endl;
 
-			controller.printer->setNewPresetValue(PrinterVariables::Common::Preset::ABS);
+			controller.printer->change_preset_start(PrinterVariables::Common::Preset::ABS);
 			if (cpPreset == PrinterVariables::Common::Preset::ABS) {
 					controller.uart.updateIndicator(indicator2string(Indicator::b_preset_2), 
 					UART::Attribute::VAL, 1);
@@ -95,7 +95,7 @@ void HomePage::touch(vector<int>& command) {
 			if (isScreenDebug) 
 				cout << "OK - HomePage::touch - Button PVA" << endl;
 
-			controller.printer->setNewPresetValue(PrinterVariables::Common::Preset::PVA);
+			controller.printer->change_preset_start(PrinterVariables::Common::Preset::PVA);
 			if (cpPreset == PrinterVariables::Common::Preset::PVA) {
 					controller.uart.updateIndicator(indicator2string(Indicator::b_preset_3), 
 					UART::Attribute::VAL, 1);
@@ -106,7 +106,7 @@ void HomePage::touch(vector<int>& command) {
 			if (isScreenDebug) 
 				cout << "OK - HomePage::touch - Button PRESET1" << endl;
 
-			controller.printer->setNewPresetValue(PrinterVariables::Common::Preset::PRESET1);
+			controller.printer->change_preset_start(PrinterVariables::Common::Preset::PRESET1);
 			if (cpPreset == PrinterVariables::Common::Preset::PRESET1) {
 					controller.uart.updateIndicator(indicator2string(Indicator::b_preset_4), 
 					UART::Attribute::VAL, 1);
@@ -117,7 +117,7 @@ void HomePage::touch(vector<int>& command) {
 			if (isScreenDebug) 
 				cout << "OK - HomePage::touch - Button PRESET2" << endl;
 
-			controller.printer->setNewPresetValue(PrinterVariables::Common::Preset::PRESET2);
+			controller.printer->change_preset_start(PrinterVariables::Common::Preset::PRESET2);
 			if (cpPreset == PrinterVariables::Common::Preset::PRESET2) {
 					controller.uart.updateIndicator(indicator2string(Indicator::b_preset_5), 
 					UART::Attribute::VAL, 1);
@@ -128,7 +128,7 @@ void HomePage::touch(vector<int>& command) {
 			if (isScreenDebug) 
 				cout << "OK - HomePage::touch - Button PRESET3" << endl;
 			
-			controller.printer->setNewPresetValue(PrinterVariables::Common::Preset::PRESET3);
+			controller.printer->change_preset_start(PrinterVariables::Common::Preset::PRESET3);
 			if (cpPreset == PrinterVariables::Common::Preset::PRESET3) {
 					controller.uart.updateIndicator(indicator2string(Indicator::b_preset_6), 
 					UART::Attribute::VAL, 1);

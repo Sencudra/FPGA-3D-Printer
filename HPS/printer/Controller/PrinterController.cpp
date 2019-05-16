@@ -15,6 +15,8 @@ PrinterController::PrinterController() {
     restore_default_movement_speed();
     restore_default_movement_steps();
 
+    //change_preset_start(PrinterVariables::Common::Preset::PLA);
+
     screen.initialise();
 
     state = Waiting;
@@ -95,7 +97,7 @@ void PrinterController::printing() {
         
     }
 
-    // Переключение на PRINTING_DONE
+    // Колхозное Переключение на PRINTING_DONE
     screen.setCurrentScreen(ScreenController::Screen::PRINTING_DONE);
 
     state = Waiting;

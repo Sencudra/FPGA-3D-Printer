@@ -25,8 +25,6 @@ void SettingsPresetsPage::update() {
 	if (isUpdateFirstTime) {
 		isUpdateFirstTime = false;
 	}
-
-	cout << "SettingsPresetsPage::update" << endl;
 }
 
 void SettingsPresetsPage::touch(vector<int>& command) {
@@ -160,26 +158,32 @@ void SettingsPresetsPage::touch(vector<int>& command) {
 
 		case Button::b_r1_minus: {
 			controller.printer->change_preset_settings(PreprintSetup::Nozzle_Minus);
+			isUpdateFirstTime = true;
 			break;
 		}
 		case Button::b_r2_minus: {
 			controller.printer->change_preset_settings(PreprintSetup::Pad_Minus);
+			isUpdateFirstTime = true;
 			break;
 		}
 		case Button::b_r3_minus: {
 			controller.printer->change_preset_settings(PreprintSetup::Cooler_Plus);
+			isUpdateFirstTime = true;
 			break;
 		}
 		case Button::b_r1_plus: {
 			controller.printer->change_preset_settings(PreprintSetup::Nozzle_Plus);
+			isUpdateFirstTime = true;
 			break;
 		}
 		case Button::b_r2_plus: {
 			controller.printer->change_preset_settings(PreprintSetup::Pad_Plus);
+			isUpdateFirstTime = true;
 			break;
 		}
 		case Button::b_r3_plus: {
 			controller.printer->change_preset_settings(PreprintSetup::Cooler_Plus);
+			isUpdateFirstTime = true;
 			break;
 		}
 		case Button::b_reset_def: {
