@@ -134,10 +134,6 @@ void ScreenController::setCurrentScreen(Screen name) {
 			currentPage = new SettingsMovStepsPage(*this); 
 			break;
 		}
-		case WARNING:{ 
-			//currentPage = new WarningPage(*this);
-			break;
-		}
 	}
 
 	// update current page with actial data

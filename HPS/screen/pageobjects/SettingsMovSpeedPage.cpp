@@ -8,19 +8,14 @@
 
 SettingsMovSpeedPage::SettingsMovSpeedPage(ScreenController& controller) :
 BasePage(controller) {
-
 	isUpdateFirstTime = true;
-
 	controller.uart.openScreen(UART::Screen::SETTINGS_M_SPE);
-
 	cout << "OK - SettingsMovSpeedPage::SettingsMovSpeedPage" << endl;
 }
 
 void SettingsMovSpeedPage::update() {
-
 	updatePrecisionBar();
 	updateIndicators();
-
 	if (isUpdateFirstTime) {
 		isUpdateFirstTime = false;
 	}
@@ -91,7 +86,6 @@ void SettingsMovSpeedPage::touch(vector<int>& command) {
 		}
 
 		case Button::b_precis_1: {
-			cout << "Button PRECISION 100" << endl;
 			controller.printer->setNewPrecisionValue(PrinterVariables::Common::Precision::P100);
 			if (cpPrecision == PrinterVariables::Common::Precision::P100) {
 					controller.uart.updateIndicator(indicator2string(Indicator::b_precis_1), 
@@ -100,7 +94,6 @@ void SettingsMovSpeedPage::touch(vector<int>& command) {
 			break;
 		}
 		case Button::b_precis_2: {
-			cout << "Button PRECISION 10" << endl;
 			controller.printer->setNewPrecisionValue(PrinterVariables::Common::Precision::P10);
 			if (cpPrecision == PrinterVariables::Common::Precision::P10) {
 					controller.uart.updateIndicator(indicator2string(Indicator::b_precis_2), 
@@ -109,7 +102,6 @@ void SettingsMovSpeedPage::touch(vector<int>& command) {
 			break;
 		}
 		case Button::b_precis_3: {
-			cout << "Button PRECISION 1" << endl;
 			controller.printer->setNewPrecisionValue(PrinterVariables::Common::Precision::P1);
 			if (cpPrecision == PrinterVariables::Common::Precision::P1) {
 					controller.uart.updateIndicator(indicator2string(Indicator::b_precis_3), 
@@ -118,7 +110,6 @@ void SettingsMovSpeedPage::touch(vector<int>& command) {
 			break;
 		}
 		case Button::b_precis_4: {
-			cout << "Button PRECISION 0.1" << endl;
 			controller.printer->setNewPrecisionValue(PrinterVariables::Common::Precision::P01);
 			if (cpPrecision == PrinterVariables::Common::Precision::P01) {
 					controller.uart.updateIndicator(indicator2string(Indicator::b_precis_4), 
@@ -127,7 +118,6 @@ void SettingsMovSpeedPage::touch(vector<int>& command) {
 			break;
 		}
 		case Button::b_precis_5: {
-			cout << "Button PRECISION 0.01" << endl;
 			controller.printer->setNewPrecisionValue(PrinterVariables::Common::Precision::P001);
 			if (cpPrecision == PrinterVariables::Common::Precision::P001) {
 					controller.uart.updateIndicator(indicator2string(Indicator::b_precis_5), 
@@ -138,17 +128,12 @@ void SettingsMovSpeedPage::touch(vector<int>& command) {
 		case Button::b_reset_def: {
 			if (!isScreenDebug) {
 				controller.printer->restore_default_movement_steps();
-			} else {
-				cout << "SHOULD RUN controller.printer->restore_default_movement_steps();" << endl;
 			}
 			break;
 		}
 		case Button::b_save: {
 			if (!isScreenDebug) {
 				controller.printer->save_movement_steps();
-				
-			} else {
-				cout << "SHOULD RUN controller.printer->save_movement_steps();" << endl;
 			}
 			break;
 		}

@@ -395,16 +395,19 @@ void PrinterController::start_slicing(string path)
     stl2GcodeParameters.filling_density = settings.slicer.fillingDensity / 100.0; //!< Плотность заполнения (%).
 
     switch (settings.common.currentPreset)
-    {
+    {   
         case PrinterVariables::Common::Preset::ABS:
+            cout << "ABS " << (int) settings.common.currentPreset << " " << settings.presets.ABS.nozzle << endl;
             stl2GcodeParameters.nozzle_temperature = settings.presets.ABS.nozzle; //!< Темпиратура экструдера (С).
             stl2GcodeParameters.table_temperature = settings.presets.ABS.pad; //!< Темпиратура стола (С).
             break;
         case PrinterVariables::Common::Preset::PLA:
+            cout << "PLA " << (int) settings.common.currentPreset << " "<< settings.presets.ABS.nozzle << endl;
             stl2GcodeParameters.nozzle_temperature = settings.presets.PLA.nozzle; //!< Темпиратура экструдера (С).
             stl2GcodeParameters.table_temperature = settings.presets.PLA.pad; //!< Темпиратура стола (С).
             break;
         case PrinterVariables::Common::Preset::PVA:
+            cout << "PVA " << (int) settings.common.currentPreset << endl;
             stl2GcodeParameters.nozzle_temperature = settings.presets.PVA.nozzle; //!< Темпиратура экструдера (С).
             stl2GcodeParameters.table_temperature = settings.presets.PVA.pad; //!< Темпиратура стола (С).
             break;
