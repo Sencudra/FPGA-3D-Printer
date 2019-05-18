@@ -88,9 +88,9 @@ void ControlPage::touch(vector<int>& command) {
 		case Button::b_reset_def: {
 			BasePage* warning = new WarningPage(
 						controller,
-						ScreenController::Screen::PRINTING_DONE,
-						ScreenController::Screen::PRINTING,
-						WarningPage::Reason::FOR_ABORT);
+						ScreenController::Screen::CONTROL,
+						ScreenController::Screen::CONTROL,
+						WarningPage::Reason::FOR_CONTROL_HOME);
 			break;
 		}
 		case Button::b_hor_up: {
