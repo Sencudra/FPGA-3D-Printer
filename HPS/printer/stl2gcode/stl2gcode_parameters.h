@@ -3,7 +3,7 @@
 
 struct stl2gcode_parameters {
     float layer_height = 0.2f; //!< Высота слоя (мм).
-    float nozzle_diameter = 0.25f; //!< Диаметр экструдера (мм).
+    float nozzle_diameter = 0.4f; //!< Диаметр экструдера (мм). // TODO: !!!
     float thread_thickness = 1.75f; //!< Диаметр пластика (мм).
     float top_bottom_thickness = 0.4f; //!< Высота ? (мм).
     float shell_thickness = 1.0f; //!< Толщена стенок (мм). Не будет реализовано в данной версии.
