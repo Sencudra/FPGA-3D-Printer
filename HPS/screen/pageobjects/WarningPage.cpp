@@ -40,14 +40,25 @@ void WarningPage::touch(vector<int>& command) {
 		case Button::b_confirm: {
 
 			switch (reason) {
+				case Reason::FOR_PRINT_GCODE: {
+					cout << "FOR_GCODE" << endl;
+					controller.printer->start_printing(controller.printer->to_print);
+					break;
+				}
 				case Reason::FOR_PRINT: {
+					cout << "FOR_PRINT" << endl;
 					controller.printer->start_slicing(controller.printer->to_slice);
+					break;
 				}
 				case Reason::FOR_ABORT: {
+					cout << "FOR_ABORT" << endl;
 					controller.printer->abort_printing();
+					break;
 				}
 				case Reason::FOR_CONTROL_HOME: {
+					cout << "FOR_CONTROL_HOME" << endl;
 					controller.printer->home();
+					break;
 				}
 			}
 			controller.setCurrentScreen(ok);
@@ -82,6 +93,7 @@ string WarningPage::indicator2string(const Indicator& code) const {
 int WarningPage::reas2int(const Reason& reason) const {
 	switch(reason) {
 		case Reason::FOR_PRINT:
+		case Reason::FOR_PRINT_GCODE:
 			return 555;
 		case Reason::FOR_ABORT:
 			return 553;
