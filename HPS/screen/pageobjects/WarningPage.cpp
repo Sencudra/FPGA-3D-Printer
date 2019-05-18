@@ -82,15 +82,15 @@ string WarningPage::indicator2string(const Indicator& code) const {
 int WarningPage::reas2int(const Reason& reason) const {
 	switch(reason) {
 		case Reason::FOR_PRINT:
-			return 554;
+			return 555;
 		case Reason::FOR_ABORT:
-			return 552;
+			return 553;
 		case Reason::FOR_CANCELING_SETUP:
-			return 551;
+			return 552;
 		case Reason::FOR_CONTROL_HOME:
-			return 553;
+			return 554;
 		default:
-			return 553;
+			return 554;
 		}
 
 }
