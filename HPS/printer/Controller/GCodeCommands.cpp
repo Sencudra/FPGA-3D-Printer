@@ -167,6 +167,10 @@ void PrinterController::gcode_G28(const Parameters& parameters) {
         settings.position.y = 0;
     if (parameters.find('Z'))
         settings.position.z = 0;
+    Parameters a = {{'Z', 0.3}};
+    gcode_G0(a);
+    a = {{'Z', 0}};
+    gcode_G92(a);
 }
 
 void PrinterController::gcode_G90(const Parameters& parameters) {
