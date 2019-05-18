@@ -9,37 +9,28 @@
 
 PrintingPage::PrintingPage(ScreenController& controller) :
 BasePage(controller) {
-
 	isUpdateFirstTime = true;
 	isBlocked = false;
 
 	controller.printer->settings.common.isThinking = true;
 
 	controller.uart.openScreen(UART::Screen::PRINTING);
-	
 	if (isScreenDebug) cout << "OK - PrintingPage::PrintingPage" << endl;
 }
 
 /* Public methods */
 
 void PrintingPage::update() {
-
 	updatePositionInfo();
-
 	updatePresetInfo();
-
 	updateStatusIndicators();
-
 	updateDisplayIndicators();
-
 	updateInfo();
-
 	updateProcessbar();
 
 	if (isUpdateFirstTime) {
 		isUpdateFirstTime = false;
 	}
-
 	if (isScreenDebug) {
 		controller.printer->settings.common.processBar += 1;
 	}
@@ -70,20 +61,19 @@ void PrintingPage::touch(vector<int>& command) {
 			break;
 		}
 		case Button::b_abort: {
+			BasePage* warning = new WarningPage(
+						controller,
+						ScreenController::Screen::PRINTING_DONE,
+						ScreenController::Screen::PRINTING,
+						WarningPage::Reason::FOR_CANCELING_SETUP);
 			if (!isBlocked) {
 				controller.printer->abort_printing();
-				// TODO WARNING
-				controller.setCurrentScreen(ScreenController::Screen::PRINTING_DONE);
 			}
 			break;
 		}
 		case Button::b_block_screen: {
 			isBlocked = !isBlocked;
 			controller.printer->block_screen();
-
-			if (isScreenDebug) 
-				cout << "LOCK: " << isBlocked << endl;
-
 			// update pic
 			controller.uart.updateIndicator(indicator2string(Indicator::b_block_screen),
 				UART::Attribute::PICC,
@@ -193,7 +183,6 @@ void PrintingPage::updateDisplayIndicators() {
 	int coolerPicActive 	= minActive + (((float)cooler.current / cooler.max) * rangeActive);
 
 	// Error prevention
-
 	if (nozzlePicActive > maxActive || nozzlePicNotActive > maxNotActive) {
 		nozzlePicActive = maxActive;
 		nozzlePicNotActive = maxNotActive;

@@ -206,7 +206,7 @@ void MechanicsController::wait_hotend_temperature(int32_t t) {
     {
         printer->update_parameters();
         printer->screen.update();
-        usleep(100000);
+        //usleep(100000);
     }
 }
 
@@ -228,6 +228,6 @@ void MechanicsController::wait_bed_temperature(int32_t t) {
     {
         printer->update_parameters();
         printer->screen.update();
-        usleep(100000);
+        //usleep(100000);
     }
 }

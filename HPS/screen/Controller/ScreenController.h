@@ -84,15 +84,12 @@ public:
     // shoulld be private 
     PrinterVariables copiedSettings;
 
-private:
     BasePage* currentPage;
 
+private:
+    
     // to measure time elapsed since last update method call
     clock_t sekundomer;
-
-    // Screens
-
-	/* Contructors */
 
 	/* Methods */
 
