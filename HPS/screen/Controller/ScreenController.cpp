@@ -1,3 +1,10 @@
+
+// Список косяков:
+// 0. Все
+// 1. PID-P
+// 
+
+
 #include <iostream>
 #include <cstring>
 
@@ -18,7 +25,8 @@ ScreenController::ScreenController()
 	// Initialising screen home page
 	initializeScreen();
   	
-	if (isScreenDebug) cout << "OK - ScreenController::ScreenController()" << endl;
+	if (isScreenDebug) 
+		cout << "OK - ScreenController::ScreenController()" << endl;
 }
 
 ScreenController::~ScreenController() {
@@ -47,7 +55,7 @@ void ScreenController::update() {
   	double elapsed_secs = double(timeElapsedSinceLastUpdateCall - sekundomer) / CLOCKS_PER_SEC;
 
   	// Update process
-  	if (elapsed_secs >= 0.2) {
+  	if (elapsed_secs >= 0.1) {
 
   		while (!uart.taskQueue.empty()) {
 			vector<int> command = uart.taskQueue.front();

@@ -57,6 +57,7 @@ void PrinterController::set_max_xyz(float max_x, float max_y, float max_z) {
 
         }
     }
+    f.close();
 }
 
 void PrinterController::set_preset(PrinterVariables::Common::Preset preset, int temp_nozzle, int temp_pad, int cooler) {
@@ -96,6 +97,7 @@ void PrinterController::set_preset(PrinterVariables::Common::Preset preset, int 
         test_write << line;
         if (!temp_read.eof()) test_write << endl;
     }
+    f.close();
 }
 
 void PrinterController::set_speed(float x, float y, float z, float e) {
@@ -143,6 +145,7 @@ void PrinterController::set_speed(float x, float y, float z, float e) {
             }
         }
     }
+    f.close();
 }
 
 void PrinterController::set_pid(float pid_p, float pid_i, float pid_d) {
@@ -189,6 +192,7 @@ void PrinterController::set_pid(float pid_p, float pid_i, float pid_d) {
             }
         }
     }
+    f.close();
 }
 
 void PrinterController::get_preset(PrinterVariables::Common::Preset preset, int& temp_nozzle, int& temp_pad, int& cooler) {
@@ -208,6 +212,7 @@ void PrinterController::get_preset(PrinterVariables::Common::Preset preset, int&
     temp_pad = stoi(line);
     getline(f, line);
     cooler = stoi(line);
+    f.close();
 }
 
 void PrinterController::get_max_xyz(float& max_x, float& max_y, float& max_z) {
@@ -231,6 +236,7 @@ void PrinterController::get_max_xyz(float& max_x, float& max_y, float& max_z) {
             max_z = stof(line);
         }
     }
+    f.close();
 }
 
 void PrinterController::get_pid(float& pid_p, float& pid_i, float& pid_d) {
@@ -254,6 +260,7 @@ void PrinterController::get_pid(float& pid_p, float& pid_i, float& pid_d) {
             pid_d = stof(line);
         }
     }
+    f.close();
 }
 
 void PrinterController::get_speed(float& x, float& y, float& z, float& e) {
@@ -279,6 +286,7 @@ void PrinterController::get_speed(float& x, float& y, float& z, float& e) {
             e = stof(line);
         }
     }
+    f.close();
 }
 
 void PrinterController::change_preset_start(PrinterVariables::Common::Preset preset)
@@ -469,22 +477,22 @@ void PrinterController::change_general_settings(int sg)
     Parameters a;
     switch (sg)
     {
-        case Nozzle_Minus:
+        case Nozzle_Minus: // 1
             settings.common.nozzle.set -= int(settings.common.currentPrecision / 100);
             a = {{'S', settings.common.nozzle.set}};
             gcode_M104(a);
             break;
-        case Nozzle_Plus:
+        case Nozzle_Plus: // 0
             settings.common.nozzle.set += int(settings.common.currentPrecision / 100);
             a = {{'S', settings.common.nozzle.set}};
             gcode_M104(a);
             break;
-        case Pad_Minus:
+        case Pad_Minus:  // 3
             settings.common.pad.set -= int(settings.common.currentPrecision / 100);
             a = {{'S', settings.common.nozzle.set}};
             gcode_M140(a);
             break;
-        case Pad_Plus:
+        case Pad_Plus: // 2
             settings.common.pad.set += int(settings.common.currentPrecision / 100);
             a = {{'S', settings.common.nozzle.set}};
             gcode_M140(a);
@@ -493,22 +501,22 @@ void PrinterController::change_general_settings(int sg)
             break;
         case Cooler_Plus:
             break;
-        case PID_P_Minus:
+        case PID_P_Minus: // 6
             settings.common.PID_P -= settings.common.currentPrecision / 100.0;
             break;
-        case PID_P_Plus:
+        case PID_P_Plus: // 7
             settings.common.PID_P += settings.common.currentPrecision / 100.0;
             break;
-        case PID_I_Minus:
+        case PID_I_Minus: // 8
             settings.common.PID_I -= settings.common.currentPrecision / 100.0;
             break;
-        case PID_I_Plus:
+        case PID_I_Plus:  // 9
             settings.common.PID_I += settings.common.currentPrecision / 100.0;
             break;
-        case PID_D_Minus:
+        case PID_D_Minus: // 10
             settings.common.PID_D -= settings.common.currentPrecision / 100.0;
             break;
-        case PID_D_Plus:
+        case PID_D_Plus: // 11
             settings.common.PID_D += settings.common.currentPrecision / 100.0;
             break;
         default:

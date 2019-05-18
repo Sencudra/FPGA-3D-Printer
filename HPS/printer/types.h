@@ -36,7 +36,7 @@ enum SettingsPID {  PID_P_Minus=6,
                     PID_D_Minus, 
                     PID_D_Plus};
 
-enum PreprintSetup {Nozzle_Plus, 
+enum PreprintSetup {Nozzle_Plus=0, 
                     Nozzle_Minus, 
                     Pad_Plus, 
                     Pad_Minus,
