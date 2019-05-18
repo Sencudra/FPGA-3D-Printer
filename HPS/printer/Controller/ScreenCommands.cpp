@@ -479,22 +479,30 @@ void PrinterController::change_general_settings(int sg)
     {
         case Nozzle_Minus: // 1
             settings.common.nozzle.set -= int(settings.common.currentPrecision / 100);
+            if (settings.common.nozzle.set < 0)
+                settings.common.nozzle.set = 0;
             a = {{'S', settings.common.nozzle.set}};
             gcode_M104(a);
             break;
         case Nozzle_Plus: // 0
             settings.common.nozzle.set += int(settings.common.currentPrecision / 100);
+            if (settings.common.nozzle.set > MAX_TEMP)
+                settings.common.nozzle.set = MAX_TEMP;
             a = {{'S', settings.common.nozzle.set}};
             gcode_M104(a);
             break;
         case Pad_Minus:  // 3
             settings.common.pad.set -= int(settings.common.currentPrecision / 100);
-            a = {{'S', settings.common.nozzle.set}};
+            if (settings.common.pad.set < 0)
+                settings.common.pad.set = 0;
+            a = {{'S', settings.common.pad.set}};
             gcode_M140(a);
             break;
         case Pad_Plus: // 2
             settings.common.pad.set += int(settings.common.currentPrecision / 100);
-            a = {{'S', settings.common.nozzle.set}};
+            if (settings.common.pad.set > MAX_TEMP)
+                settings.common.pad.set = MAX_TEMP;
+            a = {{'S', settings.common.pad.set}};
             gcode_M140(a);
             break;
         case Cooler_Minus:
@@ -547,21 +555,33 @@ void PrinterController::change_preset_settings(PreprintSetup ps)
             {
                 case PrinterVariables::Common::PLA:
                     settings.presets.PLA.nozzle -= i;
+                    if (settings.presets.PLA.nozzle < 0)
+                        settings.presets.PLA.nozzle = 0;
                     break;
                 case PrinterVariables::Common::ABS:
                     settings.presets.ABS.nozzle -= i;
+                    if (settings.presets.ABS.nozzle < 0)
+                        settings.presets.ABS.nozzle = 0;
                     break;
                 case PrinterVariables::Common::PVA:
                     settings.presets.PVA.nozzle -= i;
+                    if (settings.presets.PVA.nozzle < 0)
+                        settings.presets.PVA.nozzle = 0;
                     break;
                 case PrinterVariables::Common::PRESET1:
                     settings.presets.Preset1.nozzle -= i;
+                    if (settings.presets.Preset1.nozzle < 0)
+                        settings.presets.Preset1.nozzle = 0;
                     break;
                 case PrinterVariables::Common::PRESET2:
                     settings.presets.Preset2.nozzle -= i;
+                    if (settings.presets.Preset2.nozzle < 0)
+                        settings.presets.Preset2.nozzle = 0;
                     break;
                 case PrinterVariables::Common::PRESET3:
                     settings.presets.Preset3.nozzle -= i;
+                    if (settings.presets.Preset3.nozzle < 0)
+                        settings.presets.Preset3.nozzle = 0;
                     break;
                 default:
                     break;
@@ -573,21 +593,33 @@ void PrinterController::change_preset_settings(PreprintSetup ps)
             {
                 case PrinterVariables::Common::PLA:
                     settings.presets.PLA.nozzle -= i;
+                    if (settings.presets.PLA.nozzle > MAX_TEMP)
+                        settings.presets.PLA.nozzle = MAX_TEMP;
                     break;
                 case PrinterVariables::Common::ABS:
                     settings.presets.ABS.nozzle -= i;
+                    if (settings.presets.ABS.nozzle > MAX_TEMP)
+                        settings.presets.ABS.nozzle = MAX_TEMP;
                     break;
                 case PrinterVariables::Common::PVA:
                     settings.presets.PVA.nozzle -= i;
+                    if (settings.presets.PVA.nozzle > MAX_TEMP)
+                        settings.presets.PVA.nozzle = MAX_TEMP;
                     break;
                 case PrinterVariables::Common::PRESET1:
                     settings.presets.Preset1.nozzle -= i;
+                    if (settings.presets.Preset1.nozzle > MAX_TEMP)
+                        settings.presets.Preset1.nozzle = MAX_TEMP;
                     break;
                 case PrinterVariables::Common::PRESET2:
                     settings.presets.Preset2.nozzle -= i;
+                    if (settings.presets.Preset2.nozzle > MAX_TEMP)
+                        settings.presets.Preset2.nozzle = MAX_TEMP;
                     break;
                 case PrinterVariables::Common::PRESET3:
                     settings.presets.Preset3.nozzle -= i;
+                    if (settings.presets.Preset3.nozzle > MAX_TEMP)
+                        settings.presets.Preset3.nozzle = MAX_TEMP;
                     break;
                 default:
                     break;
@@ -599,21 +631,33 @@ void PrinterController::change_preset_settings(PreprintSetup ps)
             {
                 case PrinterVariables::Common::PLA:
                     settings.presets.PLA.pad -= i;
+                    if (settings.presets.PLA.pad < 0)
+                        settings.presets.PLA.pad = 0;
                     break;
                 case PrinterVariables::Common::ABS:
                     settings.presets.ABS.pad -= i;
+                    if (settings.presets.ABS.pad < 0)
+                        settings.presets.ABS.pad = 0;
                     break;
                 case PrinterVariables::Common::PVA:
                     settings.presets.PVA.pad -= i;
+                    if (settings.presets.PVA.pad < 0)
+                        settings.presets.PVA.pad = 0;
                     break;
                 case PrinterVariables::Common::PRESET1:
                     settings.presets.Preset1.pad -= i;
+                    if (settings.presets.Preset1.pad < 0)
+                        settings.presets.Preset1.pad = 0;
                     break;
                 case PrinterVariables::Common::PRESET2:
                     settings.presets.Preset2.pad -= i;
+                    if (settings.presets.Preset2.pad < 0)
+                        settings.presets.Preset2.pad = 0;
                     break;
                 case PrinterVariables::Common::PRESET3:
                     settings.presets.Preset3.pad -= i;
+                    if (settings.presets.Preset3.pad < 0)
+                        settings.presets.Preset3.pad = 0;
                     break;
                 default:
                     break;
@@ -625,21 +669,33 @@ void PrinterController::change_preset_settings(PreprintSetup ps)
             {
                 case PrinterVariables::Common::PLA:
                     settings.presets.PLA.pad -= i;
+                    if (settings.presets.PLA.pad > MAX_TEMP)
+                        settings.presets.PLA.pad = MAX_TEMP;
                     break;
                 case PrinterVariables::Common::ABS:
                     settings.presets.ABS.pad -= i;
+                    if (settings.presets.ABS.pad > MAX_TEMP)
+                        settings.presets.ABS.pad = MAX_TEMP;
                     break;
                 case PrinterVariables::Common::PVA:
                     settings.presets.PVA.pad -= i;
+                    if (settings.presets.PVA.pad > MAX_TEMP)
+                        settings.presets.PVA.pad = MAX_TEMP;
                     break;
                 case PrinterVariables::Common::PRESET1:
                     settings.presets.Preset1.pad -= i;
+                    if (settings.presets.Preset1.pad > MAX_TEMP)
+                        settings.presets.Preset1.pad = MAX_TEMP;
                     break;
                 case PrinterVariables::Common::PRESET2:
                     settings.presets.Preset2.pad -= i;
+                    if (settings.presets.Preset2.pad > MAX_TEMP)
+                        settings.presets.Preset2.pad = MAX_TEMP;
                     break;
                 case PrinterVariables::Common::PRESET3:
                     settings.presets.Preset3.pad -= i;
+                    if (settings.presets.Preset3.pad > MAX_TEMP)
+                        settings.presets.Preset3.pad = MAX_TEMP;
                     break;
                 default:
                     break;
