@@ -227,6 +227,5 @@ void MechanicsController::wait_bed_temperature(int32_t t) {
     {
         printer->update_parameters();
         printer->screen.update();
-
     }
 }

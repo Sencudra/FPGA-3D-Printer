@@ -150,7 +150,6 @@ void UART::start_listening() {
 	
 			command.push_back(int(buffer[i]));
 		}
-		cout << endl;
 
  		if (int(buffer[0]) == 101) {
 			addTask(command);

@@ -399,24 +399,21 @@ void PrinterController::start_slicing(string path)
     cout << "OK - PrinterController::start_slicing" << endl;
     to_slice = path;
 
-    stl2GcodeParameters.layer_height = settings.slicer.baseThicknes; //!< Высота слоя (мм).
-    stl2GcodeParameters.nozzle_diameter = settings.slicer.layerWidth; //!< Диаметр экструдера (мм).
+    stl2GcodeParameters.layer_height = settings.slicer.layerWidth; //!< Высота слоя (мм).
+    stl2GcodeParameters.top_bottom_thickness = settings.slicer.baseThicknes;
     stl2GcodeParameters.filling_density = settings.slicer.fillingDensity / 100.0; //!< Плотность заполнения (%).
 
     switch (settings.common.currentPreset)
     {   
         case PrinterVariables::Common::Preset::ABS:
-            cout << "ABS " << (int) settings.common.currentPreset << " " << settings.presets.ABS.nozzle << endl;
             stl2GcodeParameters.nozzle_temperature = settings.presets.ABS.nozzle; //!< Темпиратура экструдера (С).
             stl2GcodeParameters.table_temperature = settings.presets.ABS.pad; //!< Темпиратура стола (С).
             break;
         case PrinterVariables::Common::Preset::PLA:
-            cout << "PLA " << (int) settings.common.currentPreset << " "<< settings.presets.ABS.nozzle << endl;
             stl2GcodeParameters.nozzle_temperature = settings.presets.PLA.nozzle; //!< Темпиратура экструдера (С).
             stl2GcodeParameters.table_temperature = settings.presets.PLA.pad; //!< Темпиратура стола (С).
             break;
         case PrinterVariables::Common::Preset::PVA:
-            cout << "PVA " << (int) settings.common.currentPreset << endl;
             stl2GcodeParameters.nozzle_temperature = settings.presets.PVA.nozzle; //!< Темпиратура экструдера (С).
             stl2GcodeParameters.table_temperature = settings.presets.PVA.pad; //!< Темпиратура стола (С).
             break;
@@ -435,7 +432,7 @@ void PrinterController::start_slicing(string path)
     }
 
     stl2GcodeParameters.printing_speed = (int) (default_speed * 0.5 / 60); //!< Скорость печати (мм/с).
-    stl2GcodeParameters.filling_speed  = (int) (default_speed * 0.5 / 60); //!< Скорость заполнения (мм/с).
+    stl2GcodeParameters.filling_speed  = (int) (default_speed * 0.45 / 60); //!< Скорость заполнения (мм/с).
     stl2GcodeParameters.moving_speed   = (int) (default_speed / 60); //!< Скорость перемещения (мм/с).
 
     stl2GcodeParameters.printer_width  = (int) settings.movement.steps.steps_x; //!< Ширина принтера (мм).
