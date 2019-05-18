@@ -11,7 +11,7 @@ PrinterController::PrinterController() {
 
     //Считывание настроек экрана из файла
     restore_default_general_settings();
-    restore_default_preset_settings();
+    restore_default_presets();
     restore_default_movement_speed();
     restore_default_movement_steps();
 

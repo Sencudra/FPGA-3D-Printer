@@ -785,3 +785,21 @@ void PrinterController::restore_default_movement_steps()
     get_max_xyz(settings.movement.steps.steps_x, settings.movement.steps.steps_y, settings.movement.steps.steps_z);
     screen.update();
 }
+
+void PrinterController::restore_default_presets()
+{
+    settings.common.currentPreset = PrinterVariables::Common::Preset::PLA;
+    restore_default_preset_settings();
+    settings.common.currentPreset = PrinterVariables::Common::Preset::ABS;
+    restore_default_preset_settings();
+    settings.common.currentPreset = PrinterVariables::Common::Preset::PVA;
+    restore_default_preset_settings();
+    settings.common.currentPreset = PrinterVariables::Common::Preset::PRESET1;
+    restore_default_preset_settings();
+    settings.common.currentPreset = PrinterVariables::Common::Preset::PRESET2;
+    restore_default_preset_settings();
+    settings.common.currentPreset = PrinterVariables::Common::Preset::PRESET3;
+    restore_default_preset_settings();
+    settings.common.currentPreset = PrinterVariables::Common::Preset::PLA;
+    screen.update();
+}
