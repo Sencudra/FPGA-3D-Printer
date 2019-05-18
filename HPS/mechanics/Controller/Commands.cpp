@@ -50,15 +50,21 @@ void MechanicsController::move(int32_t da, int32_t db, int32_t dz, uint32_t sa, 
     usleep(100);
 
     int k = 0;
-    while (get_flags_out_stepper_state() || (k!=10))
+    while (get_flags_out_stepper_state() || (k<100))
     {
-        if (!get_flags_out_stepper_state())
-            k = k + 1;
-        else
-            k = 0;
+
         printer->update_parameters();
         printer->screen.update();
-        usleep(100000);
+        int i = 0;
+        while(i<100 && k<100)
+        {
+            usleep(1000);
+            if (!get_flags_out_stepper_state())
+                k = k + 1;
+            else
+                k = 0;
+            i++;
+        }
     }
     set_flags_in_start_driving_state(false);
 
@@ -96,15 +102,21 @@ void MechanicsController::move_extrude(int32_t da, int32_t db, int32_t dz, int32
     usleep(100);
 
     int k = 0;
-    while (get_flags_out_stepper_state() || (k!=10))
+    while (get_flags_out_stepper_state() || (k<100))
     {
-        if (!get_flags_out_stepper_state())
-            k = k + 1;
-        else
-            k = 0;
+
         printer->update_parameters();
         printer->screen.update();
-        usleep(100000);
+        int i = 0;
+        while(i<100 && k<100)
+        {
+            usleep(1000);
+            if (!get_flags_out_stepper_state())
+                k = k + 1;
+            else
+                k = 0;
+            i++;
+        }
     }
 
     set_flags_in_start_driving_state(false);
@@ -142,15 +154,21 @@ void MechanicsController::auto_home(bool x, bool y, bool z) {
     usleep(100);
 
     int k = 0;
-    while (get_flags_out_stepper_state() || (k!=10))
+    while (get_flags_out_stepper_state() || (k<100))
     {
-        if (!get_flags_out_stepper_state())
-            k = k + 1;
-        else
-            k = 0;
+
         printer->update_parameters();
         printer->screen.update();
-        usleep(100000);
+        int i = 0;
+        while(i<100 && k<100)
+        {
+            usleep(1000);
+            if (!get_flags_out_stepper_state())
+                k = k + 1;
+            else
+                k = 0;
+            i++;
+        }
     }
 
     set_flags_in_start_homing_state(false);

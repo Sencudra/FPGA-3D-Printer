@@ -11,7 +11,9 @@ PrintingPage::PrintingPage(ScreenController& controller) :
 BasePage(controller) {
 	isUpdateFirstTime = true;
 	isBlocked = false;
+
 	controller.printer->settings.common.isThinking = true;
+
 	controller.uart.openScreen(UART::Screen::PRINTING);
 	if (isScreenDebug) cout << "OK - PrintingPage::PrintingPage" << endl;
 }

@@ -51,6 +51,8 @@ void PrinterController::main_loop() {
 void PrinterController::waiting() {
     // state == Waiting
     // работа с экраном: обратобать события экрана
+    cout << "--Waiting--" << endl;
+    usleep(100000);
     update_parameters();
     screen.update();
     // экран может изменять состояния принтера
@@ -67,7 +69,7 @@ void PrinterController::slicing() {
     stl2gcode stl2Gcode(to_slice, stl2GcodeParameters);
 
     to_print = to_slice.substr(0, to_slice.length() - 3) + "gcode";
-    
+
     clock_t start = clock();
     stl2Gcode.convert(to_print);
     clock_t end = clock();
@@ -83,11 +85,17 @@ void PrinterController::printing() {
 
     cout << "OK - PrinterController::printing" << endl;
 
+    cout << "--Printing--" << endl;
+    cout << "Координаты " << settings.position.x << "; " << settings.position.y << "; " << settings.position.z << "; " <<settings.position.e << endl;
     gcodeParser parser(to_print);
     while ((!parser.is_done()) && (state != Stop_Printing)) {
         string command;
         Parameters parameters;
         tie(command, parameters) = parser.parse_command();
+
+        cout << "Command:" << command << "; Parameters: {" << parameters << "}" << endl;
+
+        // TODO$ remove comment
         if (gcode_commands.find(command)) {
             (this->*gcode_commands[command])(parameters);
             // auto error = (this->*gcode_commands[command])(parameters);
