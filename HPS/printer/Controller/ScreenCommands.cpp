@@ -15,11 +15,11 @@ void PrinterController::update_parameters()
 void PrinterController::set_max_xyz(float max_x, float max_y, float max_z) {
     fstream f;
     f.open(to_settings);
-    // проверить существует ли файл
+// проверить существует ли файл 
     if (!f.is_open()) {
         throw invalid_argument("Wrong settings file to_settings!max_xyz");
     }
-    // прочитать файл и найти свойства пресета
+// прочитать файл и найти свойства пресета 
     string line;
     int i = 0;
     bool settings_found = false;
@@ -29,7 +29,7 @@ void PrinterController::set_max_xyz(float max_x, float max_y, float max_z) {
             settings_found = true;
             getline(f, line);
             ofstream temp;
-            temp.open(to_settings);
+            temp.open(extra_set);
             f.seekg(0, f.beg);
             for(int j = 0; j < i; j++) {
                 getline(f, line);
@@ -46,7 +46,7 @@ void PrinterController::set_max_xyz(float max_x, float max_y, float max_z) {
             }
             f.clear();
             ifstream temp_read;
-            temp_read.open(to_settings);
+            temp_read.open(extra_set);
             ofstream test_write;
             test_write.open(to_settings);
             while(!temp_read.eof()) {
@@ -54,7 +54,8 @@ void PrinterController::set_max_xyz(float max_x, float max_y, float max_z) {
                 test_write << line;
                 if(!temp_read.eof()) test_write << endl;
             }
-
+            temp_read.close();
+            test_write.close();
         }
     }
     f.close();
@@ -63,16 +64,16 @@ void PrinterController::set_max_xyz(float max_x, float max_y, float max_z) {
 void PrinterController::set_preset(PrinterVariables::Common::Preset preset, int temp_nozzle, int temp_pad, int cooler) {
     fstream f;
     f.open(to_settings);
-    // проверить существует ли файл
+// проверить существует ли файл 
     if (!f.is_open()) {
         throw invalid_argument("Wrong settings file to_settings!preset");
     }
-    // прочитать файл и найти свойства пресета
+// прочитать файл и найти свойства пресета 
     string line;
     int i = 13 + preset*4 + 1;
     for(int j = 0; j<i; j++) getline(f, line);
     ofstream temp;
-    temp.open(to_settings);
+    temp.open(extra_set);
     f.seekg(0, f.beg);
     for(int j = 0; j < i; j++) {
         getline(f, line);
@@ -89,7 +90,7 @@ void PrinterController::set_preset(PrinterVariables::Common::Preset preset, int 
     }
     f.clear();
     ifstream temp_read;
-    temp_read.open(to_settings);
+    temp_read.open(extra_set);
     ofstream test_write;
     test_write.open(to_settings);
     while(!temp_read.eof()) {
@@ -97,17 +98,19 @@ void PrinterController::set_preset(PrinterVariables::Common::Preset preset, int 
         test_write << line;
         if (!temp_read.eof()) test_write << endl;
     }
+    temp_read.close();
+    test_write.close();
     f.close();
 }
 
 void PrinterController::set_speed(float x, float y, float z, float e) {
     fstream f;
     f.open(to_settings);
-    // проверить существует ли файл
+// проверить существует ли файл 
     if (!f.is_open()) {
         throw invalid_argument("Wrong settings file to_settings!speed");
     }
-    // прочитать файл и найти свойства пресета
+// прочитать файл и найти свойства пресета 
     string line;
     int i = 0;
     bool settings_found = false;
@@ -117,7 +120,7 @@ void PrinterController::set_speed(float x, float y, float z, float e) {
             settings_found = true;
             getline(f, line);
             ofstream temp;
-            temp.open(to_settings);
+            temp.open(extra_set);
             f.seekg(0, f.beg);
             for (int j = 0; j < i; j++) {
                 getline(f, line);
@@ -135,7 +138,7 @@ void PrinterController::set_speed(float x, float y, float z, float e) {
             }
             f.clear();
             ifstream temp_read;
-            temp_read.open(to_settings);
+            temp_read.open(extra_set);
             ofstream test_write;
             test_write.open(to_settings);
             while (!temp_read.eof()) {
@@ -143,6 +146,8 @@ void PrinterController::set_speed(float x, float y, float z, float e) {
                 test_write << line;
                 if (!temp_read.eof()) test_write << endl;
             }
+            temp_read.close();
+            test_write.close();
         }
     }
     f.close();
@@ -151,11 +156,11 @@ void PrinterController::set_speed(float x, float y, float z, float e) {
 void PrinterController::set_pid(float pid_p, float pid_i, float pid_d) {
     fstream f;
     f.open(to_settings);
-    // проверить существует ли файл
+// проверить существует ли файл 
     if (!f.is_open()) {
         throw invalid_argument("Wrong settings file to_settings!pid");
     }
-    // прочитать файл и найти свойства пресета
+// прочитать файл и найти свойства пресета 
     string line;
     int i = 0;
     bool settings_found = false;
@@ -165,14 +170,16 @@ void PrinterController::set_pid(float pid_p, float pid_i, float pid_d) {
             settings_found = true;
             getline(f, line);
             ofstream temp;
-            temp.open(to_settings);
+            temp.open(extra_set);
             f.seekg(0, f.beg);
             for(int j = 0; j < i; j++) {
                 getline(f, line);
                 temp << line << endl;
             }
             temp << pid_p <<endl;
-            temp << pid_i <<endl;
+            temp << pid_i
+
+            <<endl;
             temp << pid_d <<endl;
             for(int j = 0; j < 3; j++) getline(f, line);
             while(!f.eof()) {
@@ -182,7 +189,7 @@ void PrinterController::set_pid(float pid_p, float pid_i, float pid_d) {
             }
             f.clear();
             ifstream temp_read;
-            temp_read.open(to_settings);
+            temp_read.open(extra_set);
             ofstream test_write;
             test_write.open(to_settings);
             while(!temp_read.eof()) {
@@ -190,6 +197,8 @@ void PrinterController::set_pid(float pid_p, float pid_i, float pid_d) {
                 test_write << line;
                 if(!temp_read.eof()) test_write << endl;
             }
+            temp_read.close();
+            test_write.close();
         }
     }
     f.close();
