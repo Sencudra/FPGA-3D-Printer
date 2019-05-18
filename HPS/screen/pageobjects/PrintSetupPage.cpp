@@ -10,11 +10,8 @@
 
 PrintSetupPage::PrintSetupPage(ScreenController& controller) :
 BasePage(controller) {
-
 	isUpdateFirstTime = true;
-
 	controller.uart.openScreen(UART::Screen::PRINT_SETUP);
-	
 	cout << "OK - PrintSetupPage::PrintSetupPage" << endl;
 }
 
@@ -22,13 +19,9 @@ BasePage(controller) {
 /* Public Methods */
 
 void PrintSetupPage::update() {
-
 	updateIndicators();
-
 	updatePresetBar();
-
 	updatePrecisionBar();
-
 	if (isUpdateFirstTime) {
 		isUpdateFirstTime = false;
 	}
@@ -44,20 +37,23 @@ void PrintSetupPage::touch(vector<int>& command) {
 	switch(code) {
 		case Button::b_start_print: {
 			// Here should be warning page and then redirect to printing page;
-
-			if (!isScreenDebug)
-				controller.printer->start_slicing(controller.printer->to_slice);
-
-			controller.setCurrentScreen(ScreenController::Screen::PRINTING);
+			BasePage* warning = new WarningPage(
+						controller,
+						ScreenController::Screen::PRINTING,
+						ScreenController::Screen::PRINT_SETUP,
+						WarningPage::Reason::FOR_PRINT);
 			break;
 		}
 		case Button::b_return: {
 			// Here should be warning page and then redirect to print page;
-			controller.setCurrentScreen(ScreenController::Screen::PRINT);
+			BasePage* warning = new WarningPage(
+						controller,
+						ScreenController::Screen::PRINT,
+						ScreenController::Screen::PRINT_SETUP,
+						WarningPage::Reason::FOR_CANCELING_SETUP);
 			break;
 		}
 		case Button::b_preset_1: {
-			cout << "Button PLA" << endl;
 			controller.printer->setNewPresetValue(PrinterVariables::Common::Preset::PLA);
 			if (cpPreset == PrinterVariables::Common::Preset::PLA) {
 					controller.uart.updateIndicator(indicator2string(Indicator::b_preset_1), 
@@ -66,7 +62,6 @@ void PrintSetupPage::touch(vector<int>& command) {
 			break;				
 		}
 		case Button::b_preset_2: {
-			cout << "Button ABS" << endl;
 			controller.printer->setNewPresetValue(PrinterVariables::Common::Preset::ABS);
 			if (cpPreset == PrinterVariables::Common::Preset::ABS) {
 					controller.uart.updateIndicator(indicator2string(Indicator::b_preset_2), 
@@ -75,7 +70,6 @@ void PrintSetupPage::touch(vector<int>& command) {
 			break;
 		}
 		case Button::b_preset_3: {
-			cout << "Button PVA" << endl;
 			controller.printer->setNewPresetValue(PrinterVariables::Common::Preset::PVA);
 			if (cpPreset == PrinterVariables::Common::Preset::PVA) {
 					controller.uart.updateIndicator(indicator2string(Indicator::b_preset_3), 
@@ -84,7 +78,6 @@ void PrintSetupPage::touch(vector<int>& command) {
 			break;
 		}
 		case Button::b_preset_4: {
-			cout << "Button PRESET1" << endl;
 			controller.printer->setNewPresetValue(PrinterVariables::Common::Preset::PRESET1);
 			if (cpPreset == PrinterVariables::Common::Preset::PRESET1) {
 					controller.uart.updateIndicator(indicator2string(Indicator::b_preset_4), 
@@ -93,7 +86,6 @@ void PrintSetupPage::touch(vector<int>& command) {
 			break;
 		}
 		case Button::b_preset_5: {
-			cout << "Button PRESET2" << endl;
 			controller.printer->setNewPresetValue(PrinterVariables::Common::Preset::PRESET2);
 			if (cpPreset == PrinterVariables::Common::Preset::PRESET2) {
 					controller.uart.updateIndicator(indicator2string(Indicator::b_preset_5), 
@@ -102,7 +94,6 @@ void PrintSetupPage::touch(vector<int>& command) {
 			break;
 		}
 		case Button::b_preset_6: {
-			cout << "Button PRESET3" << endl;
 			controller.printer->setNewPresetValue(PrinterVariables::Common::Preset::PRESET3);
 			if (cpPreset == PrinterVariables::Common::Preset::PRESET3) {
 					controller.uart.updateIndicator(indicator2string(Indicator::b_preset_6), 
@@ -112,7 +103,6 @@ void PrintSetupPage::touch(vector<int>& command) {
 		}
 
 		case Button::b_precis_1: {
-			cout << "Button PRECISION 100" << endl;
 			controller.printer->setNewPrecisionValue(PrinterVariables::Common::Precision::P100);
 			if (cpPrecision == PrinterVariables::Common::Precision::P100) {
 					controller.uart.updateIndicator(indicator2string(Indicator::b_precis_1), 
@@ -121,7 +111,6 @@ void PrintSetupPage::touch(vector<int>& command) {
 			break;
 		}
 		case Button::b_precis_2: {
-			cout << "Button PRECISION 10" << endl;
 			controller.printer->setNewPrecisionValue(PrinterVariables::Common::Precision::P10);
 			if (cpPrecision == PrinterVariables::Common::Precision::P10) {
 					controller.uart.updateIndicator(indicator2string(Indicator::b_precis_2), 
@@ -130,7 +119,6 @@ void PrintSetupPage::touch(vector<int>& command) {
 			break;
 		}
 		case Button::b_precis_3: {
-			cout << "Button PRECISION 1" << endl;
 			controller.printer->setNewPrecisionValue(PrinterVariables::Common::Precision::P1);
 			if (cpPrecision == PrinterVariables::Common::Precision::P1) {
 					controller.uart.updateIndicator(indicator2string(Indicator::b_precis_3), 
@@ -139,7 +127,6 @@ void PrintSetupPage::touch(vector<int>& command) {
 			break;
 		}
 		case Button::b_precis_4: {
-			cout << "Button PRECISION 0.1" << endl;
 			controller.printer->setNewPrecisionValue(PrinterVariables::Common::Precision::P01);
 			if (cpPrecision == PrinterVariables::Common::Precision::P01) {
 					controller.uart.updateIndicator(indicator2string(Indicator::b_precis_4), 
@@ -148,7 +135,6 @@ void PrintSetupPage::touch(vector<int>& command) {
 			break;
 		}
 		case Button::b_precis_5: {
-			cout << "Button PRECISION 0.01" << endl;
 			controller.printer->setNewPrecisionValue(PrinterVariables::Common::Precision::P001);
 			if (cpPrecision == PrinterVariables::Common::Precision::P001) {
 					controller.uart.updateIndicator(indicator2string(Indicator::b_precis_5), 

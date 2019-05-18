@@ -8,19 +8,14 @@
 
 SettingsPage::SettingsPage(ScreenController& controller) :
 BasePage(controller) {
-
 	isUpdateFirstTime = true;
-
 	controller.uart.openScreen(UART::Screen::SETTINGS);
-
 	cout << "OK - SettingsPage::SettingsPage" << endl;
 }
 
 void SettingsPage::update() {
-
 	updatePrecisionBar();
 	updateIndicators();
-
 	if (isUpdateFirstTime) {
 		isUpdateFirstTime = false;
 	}
@@ -53,7 +48,6 @@ void SettingsPage::touch(vector<int>& command) {
 			break;
 		}
 		case Button::b_precis_1: {
-			cout << "Button PRECISION 100" << endl;
 			controller.printer->setNewPrecisionValue(PrinterVariables::Common::Precision::P100);
 			if (cpPrecision == PrinterVariables::Common::Precision::P100) {
 					controller.uart.updateIndicator(indicator2string(Indicator::b_precis_1), 
@@ -62,7 +56,6 @@ void SettingsPage::touch(vector<int>& command) {
 			break;
 		}
 		case Button::b_precis_2: {
-			cout << "Button PRECISION 10" << endl;
 			controller.printer->setNewPrecisionValue(PrinterVariables::Common::Precision::P10);
 			if (cpPrecision == PrinterVariables::Common::Precision::P10) {
 					controller.uart.updateIndicator(indicator2string(Indicator::b_precis_2), 
@@ -71,7 +64,6 @@ void SettingsPage::touch(vector<int>& command) {
 			break;
 		}
 		case Button::b_precis_3: {
-			cout << "Button PRECISION 1" << endl;
 			controller.printer->setNewPrecisionValue(PrinterVariables::Common::Precision::P1);
 			if (cpPrecision == PrinterVariables::Common::Precision::P1) {
 					controller.uart.updateIndicator(indicator2string(Indicator::b_precis_3), 
@@ -80,7 +72,6 @@ void SettingsPage::touch(vector<int>& command) {
 			break;
 		}
 		case Button::b_precis_4: {
-			cout << "Button PRECISION 0.1" << endl;
 			controller.printer->setNewPrecisionValue(PrinterVariables::Common::Precision::P01);
 			if (cpPrecision == PrinterVariables::Common::Precision::P01) {
 					controller.uart.updateIndicator(indicator2string(Indicator::b_precis_4), 
@@ -89,7 +80,6 @@ void SettingsPage::touch(vector<int>& command) {
 			break;
 		}
 		case Button::b_precis_5: {
-			cout << "Button PRECISION 0.01" << endl;
 			controller.printer->setNewPrecisionValue(PrinterVariables::Common::Precision::P001);
 			if (cpPrecision == PrinterVariables::Common::Precision::P001) {
 					controller.uart.updateIndicator(indicator2string(Indicator::b_precis_5), 
@@ -98,13 +88,13 @@ void SettingsPage::touch(vector<int>& command) {
 			break;
 		}
 		case Button::b_reset_def: {
-			// if (!isScreenDebug)
-			// 	controller.printer->restore_default_general_settings();
+			if (!isScreenDebug)
+				controller.printer->restore_default_general_settings();
 			break;
 		}
 		case Button::b_save: {
-			// if (!isScreenDebug)
-			// 	controller.printer->save_general_settings();
+			if (!isScreenDebug)
+				controller.printer->save_general_settings();
 			break;
 		}
 		case Button::b_r1_minus: {
@@ -138,13 +128,13 @@ void SettingsPage::touch(vector<int>& command) {
 			break;
 		}
 		case Button::b_r7_minus: {
-			if (!isScreenDebug)
-				controller.printer->change_general_settings(0);
+			// if (!isScreenDebug)
+			// 	controller.printer->change_general_settings(0);
 			break;
 		}
 		case Button::b_r8_minus: {
-			if (!isScreenDebug)
-				controller.printer->change_general_settings(0);
+			// if (!isScreenDebug)
+			// 	controller.printer->change_general_settings(0);
 			break;
 		}
 		case Button::b_r1_plus: {
@@ -188,7 +178,8 @@ void SettingsPage::touch(vector<int>& command) {
 			break;
 		}
 		case Button::b_temp_auto: {
-			// CODE HERE
+			// if (!isScreenDebug)
+			// 	controller.printer->change_general_settings(0);
 			break;
 		}
 		default: {
@@ -203,23 +194,24 @@ void SettingsPage::touch(vector<int>& command) {
 /* Private types */
 
 void SettingsPage::updateIndicators() {
+
 	const auto parametrs = controller.printer->settings.common;
 	const auto cpParametrs = controller.copiedSettings.common;
 
-	if (isUpdateFirstTime || isValueChanged<int>(parametrs.nozzle.current, cpParametrs.nozzle.current)) {
+	if (isUpdateFirstTime || isValueChanged<int>(parametrs.nozzle.set, cpParametrs.nozzle.set)) {
 		controller.uart.updateIndicator(indicator2string(Indicator::i_nozzle),
 				UART::Attribute::TXT,
-				parametrs.nozzle.current);
+				parametrs.nozzle.set);
 	}
-	if (isUpdateFirstTime || isValueChanged<int>(parametrs.pad.current, cpParametrs.pad.current)) {
+	if (isUpdateFirstTime || isValueChanged<int>(parametrs.pad.set, cpParametrs.pad.set)) {
 		controller.uart.updateIndicator(indicator2string(Indicator::i_pad),
 				UART::Attribute::TXT,
-				parametrs.pad.current);
+				parametrs.pad.set);
 	}
-	if (isUpdateFirstTime || isValueChanged<int>(parametrs.cooler.current, cpParametrs.cooler.current)) {
+	if (isUpdateFirstTime || isValueChanged<int>(parametrs.cooler.set, cpParametrs.cooler.set)) {
 		controller.uart.updateIndicator(indicator2string(Indicator::i_cooler),
 				UART::Attribute::TXT,
-				parametrs.cooler.current);
+				parametrs.cooler.set);
 	}
 	if (isUpdateFirstTime || isValueChanged<float>(parametrs.PID_P, cpParametrs.PID_P)) {
 		controller.uart.updateIndicator(indicator2string(Indicator::i_PID_P),

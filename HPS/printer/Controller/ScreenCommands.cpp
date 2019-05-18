@@ -395,7 +395,7 @@ void PrinterController::start_slicing(string path)
     stl2GcodeParameters.filling_density = settings.slicer.fillingDensity / 100.0; //!< Плотность заполнения (%).
 
     switch (settings.common.currentPreset)
-    {
+    {   
         case PrinterVariables::Common::Preset::ABS:
             stl2GcodeParameters.nozzle_temperature = settings.presets.ABS.nozzle; //!< Темпиратура экструдера (С).
             stl2GcodeParameters.table_temperature = settings.presets.ABS.pad; //!< Темпиратура стола (С).

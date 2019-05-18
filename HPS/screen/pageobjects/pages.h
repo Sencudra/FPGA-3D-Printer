@@ -4,12 +4,14 @@
 #include <vector>
 #include <cstring>
 
+#include "ScreenController.h"
 #include "FileManager.h"
 #include "types.h"
 #include "config.h"
 
 class ScreenController;
 class UART;
+
 
 // Classes present
 // 1. BasePage
@@ -750,28 +752,50 @@ private:
 };
 
 
-// class WarningPage: public BasePage {
+class WarningPage: public BasePage {
 
-// public:
-// 	/* Properties */
+	enum class Button {
+		b_confirm		= 2,
+		b_cancel		= 3
+	};
 
-// 	/* Constructors and destructors */
-// 	WarningPage(ScreenController& controller);
-// 	virtual ~WarningPage() { }
+	enum class Indicator {
+		i_message
+	};
 
-// 	/* Methods*/
-// 	virtual void update();
-// 	virtual void touch(std::vector<int>& command);
+public:
 
-// private:
-// 	/* Properties */
+	enum class Reason {
+		FOR_PRINT,
+		FOR_ABORT,
+		FOR_CANCELING_SETUP,
+		FOR_CONTROL_HOME
+	};
 
-// 	/* Constructors */
+	/* Constructors and destructors */
+	WarningPage(ScreenController& controller, 
+			const ScreenController::Screen ok, 
+			const ScreenController::Screen cancel, 
+			const Reason reason);
 
-// 	/* Methods*/
+	virtual ~WarningPage();
 
+	/* Methods*/
+	virtual void update() {}
+	virtual void touch(std::vector<int>& command);
 
-// };
+private:
+	/* Properties */
+	ScreenController::Screen ok;
+	ScreenController::Screen cancel;
+	Reason reason;
+	void (*f)(string name);
+
+	/* Methods*/
+	string indicator2string(const Indicator& code) const ;
+	int reas2int(const Reason& reason) const;
+
+};
 
 
 #endif // INC_3D_PRINTER_PAGEOBJECT_H

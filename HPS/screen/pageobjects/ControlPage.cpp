@@ -46,7 +46,6 @@ void ControlPage::touch(vector<int>& command) {
 			break;
 		}
 		case Button::b_precis_1: {
-			if (isScreenDebug) cout << "Button PRECISION 100" << endl;
 			controller.printer->setNewPrecisionValue(PrinterVariables::Common::Precision::P100);
 			if (cpPrecision == PrinterVariables::Common::Precision::P100) {
 					controller.uart.updateIndicator(indicator2string(Indicator::b_precis_1), 
@@ -55,7 +54,6 @@ void ControlPage::touch(vector<int>& command) {
 			break;
 		}
 		case Button::b_precis_2: {
-			if (isScreenDebug) cout << "Button PRECISION 10" << endl;
 			controller.printer->setNewPrecisionValue(PrinterVariables::Common::Precision::P10);
 			if (cpPrecision == PrinterVariables::Common::Precision::P10) {
 					controller.uart.updateIndicator(indicator2string(Indicator::b_precis_2), 
@@ -64,7 +62,6 @@ void ControlPage::touch(vector<int>& command) {
 			break;
 		}
 		case Button::b_precis_3: {
-			if (isScreenDebug) cout << "Button PRECISION 1" << endl;
 			controller.printer->setNewPrecisionValue(PrinterVariables::Common::Precision::P1);
 			if (cpPrecision == PrinterVariables::Common::Precision::P1) {
 					controller.uart.updateIndicator(indicator2string(Indicator::b_precis_3), 
@@ -73,7 +70,6 @@ void ControlPage::touch(vector<int>& command) {
 			break;
 		}
 		case Button::b_precis_4: {
-			if (isScreenDebug) cout << "Button PRECISION 0.1" << endl;
 			controller.printer->setNewPrecisionValue(PrinterVariables::Common::Precision::P01);
 			if (cpPrecision == PrinterVariables::Common::Precision::P01) {
 					controller.uart.updateIndicator(indicator2string(Indicator::b_precis_4), 
@@ -82,7 +78,6 @@ void ControlPage::touch(vector<int>& command) {
 			break;
 		}
 		case Button::b_precis_5: {
-			if (isScreenDebug) cout << "Button PRECISION 0.01" << endl;
 			controller.printer->setNewPrecisionValue(PrinterVariables::Common::Precision::P001);
 			if (cpPrecision == PrinterVariables::Common::Precision::P001) {
 					controller.uart.updateIndicator(indicator2string(Indicator::b_precis_5), 
@@ -91,7 +86,11 @@ void ControlPage::touch(vector<int>& command) {
 			break;
 		}
 		case Button::b_reset_def: {
-			controller.printer->home();
+			BasePage* warning = new WarningPage(
+						controller,
+						ScreenController::Screen::CONTROL,
+						ScreenController::Screen::CONTROL,
+						WarningPage::Reason::FOR_CONTROL_HOME);
 			break;
 		}
 		case Button::b_hor_up: {

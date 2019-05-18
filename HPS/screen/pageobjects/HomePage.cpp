@@ -21,15 +21,10 @@ BasePage(controller) {
 
 
 void HomePage::update() {
-
 	updateStatusIndicators();
-
 	updateDisplayIndicators();
-
 	updatePresetBar();
-
 	updateInfo();
-
 	if (isUpdateFirstTime) {
 		isUpdateFirstTime = false;
 	}

@@ -9,30 +9,20 @@
 
 PrintingDonePage::PrintingDonePage(ScreenController& controller) :
 BasePage(controller) {
-
 	isUpdateFirstTime = true;
-
-	controller.uart.openScreen(UART::Screen::PRINTING_DONE);
-	
+	controller.uart.openScreen(UART::Screen::PRINTING_DONE);	
 	if (isScreenDebug) cout << "OK - PrintingDonePage::PrintingDonePage" << endl;
 }
 
 /* Public methods */
 
 void PrintingDonePage::update() {
-
 	updatePositionInfo();
-
 	updatePresetInfo();
-
 	updateStatusIndicators();
-
 	updateDisplayIndicators();
-
 	updateInfo();
-
 	updateProcessbar();
-
 	if (isUpdateFirstTime) {
 		isUpdateFirstTime = false;
 	}
