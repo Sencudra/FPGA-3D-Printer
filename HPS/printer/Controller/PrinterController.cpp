@@ -40,8 +40,6 @@ void PrinterController::main_loop() {
 void PrinterController::waiting() {
     // state == Waiting
     // работа с экраном: обратобать события экрана
-    cout << "--Waiting--" << endl;
-    usleep(100000);
     update_parameters();
     screen.update();
     // экран может изменять состояния принтера

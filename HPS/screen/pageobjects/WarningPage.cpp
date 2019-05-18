@@ -17,6 +17,8 @@ BasePage(controller) {
 	this->cancel = cancel;
 	this->reason = reason;
 
+	cout << "Reason:" << reas2int(reason) << endl; 
+
 	controller.uart.openScreen(UART::Screen::WARNING);
 	controller.uart.updateIndicator(indicator2string(Indicator::i_message),
 				UART::Attribute::PIC,
