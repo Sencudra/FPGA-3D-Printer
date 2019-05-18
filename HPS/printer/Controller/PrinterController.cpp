@@ -11,18 +11,7 @@ PrinterController::PrinterController() {
 
     //Считывание настроек экрана из файла
     restore_default_general_settings();
-    settings.common.currentPreset = PrinterVariables::Common::Preset::PLA;
-    restore_default_preset_settings();
-    settings.common.currentPreset = PrinterVariables::Common::Preset::ABS;
-    restore_default_preset_settings();
-    settings.common.currentPreset = PrinterVariables::Common::Preset::PVA;
-    restore_default_preset_settings();
-    settings.common.currentPreset = PrinterVariables::Common::Preset::PRESET1;
-    restore_default_preset_settings();
-    settings.common.currentPreset = PrinterVariables::Common::Preset::PRESET2;
-    restore_default_preset_settings();
-    settings.common.currentPreset = PrinterVariables::Common::Preset::PRESET3;
-    restore_default_preset_settings();
+    restore_default_presets();
     restore_default_movement_speed();
     restore_default_movement_steps();
 

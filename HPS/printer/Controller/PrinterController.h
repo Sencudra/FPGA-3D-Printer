@@ -132,6 +132,8 @@ public:
     void change_movement_steps(StepsSettings ps);
     void save_movement_steps();
     void restore_default_movement_steps();
+
+    void restore_default_presets();
     
 };
 
