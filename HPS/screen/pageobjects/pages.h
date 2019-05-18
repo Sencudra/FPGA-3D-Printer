@@ -769,7 +769,8 @@ public:
 		FOR_PRINT,
 		FOR_ABORT,
 		FOR_CANCELING_SETUP,
-		FOR_CONTROL_HOME
+		FOR_CONTROL_HOME,
+		FOR_PRINT_GCODE
 	};
 
 	/* Constructors and destructors */
