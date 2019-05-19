@@ -372,7 +372,7 @@ void stl2gcode::gcode(const string& path) {
     out << "G0 Z0" << endl; // initial position
     out << "G92 E0" << endl; // clears the amount of extruded plastic
 
-    const float retraction = 6.5f;
+    const float retraction = 0.0f;
     float extruded = 0.0f;
     for (int l = 0; l < shells.size(); ++l) {
         out << ";LAYER:" << l << endl;

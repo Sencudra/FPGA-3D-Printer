@@ -177,8 +177,11 @@ void  PrintPage::rowButtonPressed(int row) {
 
 					if (!isScreenDebug) {
 						controller.printer->to_print = toPrint;
-						controller.printer->start_printing(toPrint);
-						controller.setCurrentScreen(ScreenController::Screen::PRINTING);
+						BasePage* warning = new WarningPage(
+							controller,
+							ScreenController::Screen::PRINTING,
+							ScreenController::Screen::PRINT,
+							WarningPage::Reason::FOR_PRINT_GCODE);
 					}
 
 				}
