@@ -24,7 +24,8 @@ static const float rotlength =  40; // количество мм на оборо
 static const int stepsperrot =  200; // количество шагов на оборот двигателя
 static const int microsteps = 16; // количество микрошагов на шаг
 static const float maxspeed = 8000; // максимальная скорость 8000 mm/min
-static const float maxspeed_z = 2000; // максимальная скорость 8000 mm/min
+static const float maxspeed_z = 2000; // максимальная скорость 2000 mm/min
+static const float maxspeed_e = 400; // максимальная скорость 400 mm/min
 static const int frequency = 1000000; //тактовая частота двигателя
 static const float default_speed = 4000; //скорость по умолчанию
 
